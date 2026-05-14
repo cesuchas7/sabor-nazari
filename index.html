@@ -375,7 +375,7 @@ tbody tr:hover td{background:var(--bg3)}
             <tr><td>Cámara 6</td><td id="dt-c6">—</td><td><span class="badge b-gray" id="dts-c6">Pendiente</span></td></tr>
             <tr><td>Obrador</td><td id="dt-ob">—</td><td><span class="badge b-gray" id="dts-ob">Pendiente</span></td></tr>
           </tbody></table>
-          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="nav('temperaturas',document.querySelectorAll('.sb-item')[7])"><i class="ti ti-plus"></i> Registrar ahora</button>
+          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="nav('temperaturas',document.querySelectorAll('.sb-item')[6])"><i class="ti ti-plus"></i> Registrar ahora</button>
         </div>
       </div>
     </div>
@@ -785,7 +785,7 @@ function nav(id,el){
   if(el)el.classList.add('active');
   document.getElementById('page-title').textContent=titulos[id]||id;
   document.getElementById('page-sub').textContent=subs[id]||'';
-  const loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:()=>{renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:renderExpedicion,fichaje:cargarFichaje,trazabilidad:()=>{},productos:renderProductos};
+  const loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:()=>{renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:renderExpedicion,fichaje:cargarFichaje,trazabilidad:()=>{},productos:renderProductos,etiquetas:cargarEtiquetas};
   if(loaders[id])loaders[id]();
 }
 
@@ -913,17 +913,17 @@ async function cargarTemperaturas(){
   if(!data||!data.length){t.innerHTML='<tr><td colspan="9" class="empty-state">Sin registros</td></tr>';return;}
   document.getElementById('d-temp').textContent=data.length;
   const r=data[0];
-  if(r.cam2)document.getElementById('dt-c2').textContent=r.cam2+'°C';
-  if(r.cam5)document.getElementById('dt-c5').textContent=r.cam5+'°C';
-  if(r.cam6)document.getElementById('dt-c6').textContent=r.cam6+'°C';
-  if(r.obrador)document.getElementById('dt-ob').textContent=r.obrador+'°C';
+  if(r.cam2!=null)document.getElementById('dt-c2').textContent=r.cam2+'°C';
+  if(r.cam5!=null)document.getElementById('dt-c5').textContent=r.cam5+'°C';
+  if(r.cam6!=null)document.getElementById('dt-c6').textContent=r.cam6+'°C';
+  if(r.obrador!=null)document.getElementById('dt-ob').textContent=r.obrador+'°C';
   t.innerHTML=data.map(r=>`<tr>
     <td>${r.fecha}</td>
-    <td style="${r.cam2>=4?'color:var(--red-text);font-weight:700':''}">${r.cam2?r.cam2+'°C':'—'}</td>
-    <td>${r.cam5?r.cam5+'°/'+(r.cam5_hum||'—')+'%':'—'}</td>
-    <td>${r.cam6?r.cam6+'°/'+(r.cam6_hum||'—')+'%':'—'}</td>
-    <td style="${r.obrador>23?'color:var(--red-text);font-weight:700':r.obrador>=20?'color:var(--orange-text);font-weight:600':''}">${r.obrador?r.obrador+'°C':'—'}</td>
-    <td style="${r.envasado>23?'color:var(--red-text);font-weight:700':r.envasado>=20?'color:var(--orange-text);font-weight:600':''}">${r.envasado?r.envasado+'°C':'—'}</td>
+    <td style="${r.cam2!=null&&r.cam2>=4?'color:var(--red-text);font-weight:700':''}">${r.cam2!=null?r.cam2+'°C':'—'}</td>
+    <td>${r.cam5!=null?r.cam5+'°/'+(r.cam5_hum!=null?r.cam5_hum:'—')+'%':'—'}</td>
+    <td>${r.cam6!=null?r.cam6+'°/'+(r.cam6_hum!=null?r.cam6_hum:'—')+'%':'—'}</td>
+    <td style="${r.obrador!=null&&r.obrador>23?'color:var(--red-text);font-weight:700':r.obrador!=null&&r.obrador>=20?'color:var(--orange-text);font-weight:600':''}">${r.obrador!=null?r.obrador+'°C':'—'}</td>
+    <td style="${r.envasado!=null&&r.envasado>23?'color:var(--red-text);font-weight:700':r.envasado!=null&&r.envasado>=20?'color:var(--orange-text);font-weight:600':''}">${r.envasado!=null?r.envasado+'°C':'—'}</td>
     <td>${r.responsable||'—'}</td>
     <td><span class="badge ${r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok'}">${r.estado==='alerta'?'⚠ Alerta':r.estado==='cuidado'?'⚠ Cuidado':'✓ OK'}</span></td>
     <td><button class="btn btn-danger btn-sm" onclick="borrar('temperaturas','${r.id}',cargarTemperaturas)"><i class="ti ti-trash"></i></button></td>
@@ -1255,7 +1255,7 @@ async function cargarTrabajadores(){
     <td>${w.fecha_alta||'—'}</td>
     <td><span class="badge ${w.estado==='activo'?'b-ok':w.estado==='baja'?'b-warn':'b-gray'}">${w.estado||'activo'}</span></td>
     <td><div style="display:flex;gap:4px">
-      <button class="btn btn-sec btn-sm" onclick="verPerfilTrabajador('${w.id}','${w.nombre}')"><i class="ti ti-user"></i> Perfil</button>
+      <button class="btn btn-sec btn-sm" onclick='verPerfilTrabajador(${JSON.stringify(w.id)},${JSON.stringify(w.nombre)})'><i class="ti ti-user"></i> Perfil</button>
       <button class="btn btn-edit btn-sm" onclick='abrirModalTrabajador(${JSON.stringify(w).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
       <button class="btn btn-danger btn-sm" onclick="borrar('trabajadores','${w.id}',cargarTrabajadores)"><i class="ti ti-trash"></i></button>
     </div></td>
@@ -1282,12 +1282,12 @@ async function verPerfilTrabajador(id,nombre){
     <div class="sep"></div>
     <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Documentos del trabajador</div>
     <div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById('upload-trab-doc').click()">
-      <input type="file" id="upload-trab-doc" multiple onchange="subirDocTrabajador(this,'${nombre}','${id}')"/>
+      <input type="file" id="upload-trab-doc" multiple onchange="subirDocTrabajador(this,${JSON.stringify(nombre)},${JSON.stringify(id)})"/>
       <i class="ti ti-upload" style="font-size:20px"></i>
       <p><strong style="color:var(--dorado)">Subir documentos</strong> · Contrato, DNI, formación, carnet manipulador...</p>
     </div>
     <div id="docs-trabajador-${id}">
-      ${docs&&docs.length?docs.map(d=>`<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${new Date(d.created_at).toLocaleDateString('es-ES')}</div></div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>verPerfilTrabajador('${id}','${nombre}'))"><i class="ti ti-trash"></i></button></div>`).join(''):'<div class="empty-state">Sin documentos subidos</div>'}
+      ${docs&&docs.length?docs.map(d=>`<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${new Date(d.created_at).toLocaleDateString('es-ES')}</div></div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>verPerfilTrabajador(${JSON.stringify(id)},${JSON.stringify(nombre)}))"><i class="ti ti-trash"></i></button></div>`).join(''):'<div class="empty-state">Sin documentos subidos</div>'}
     </div>`;
   abrirModal('modal-perfil-trabajador');
 }
@@ -1429,7 +1429,7 @@ function renderCalendario(eventos=[]){
   }
 }
 
-function cambiarMes(dir){calFecha.setMonth(calFecha.getMonth()+dir);cargarEventos();}
+function cambiarMes(dir){calFecha=new Date(calFecha.getFullYear(),calFecha.getMonth()+dir,1);cargarEventos();}
 function abrirModalCal(){document.getElementById('ev-fecha').value=today.toISOString().split('T')[0];abrirModal('modal-cal');}
 
 // PRODUCTOS
@@ -1532,24 +1532,37 @@ function generarEtiqueta(){
   ['et-1','et-2','et-3','et-4'].forEach(id=>document.getElementById(id).innerHTML=html);
 }
 
+// ETIQUETAS
+async function cargarEtiquetas(){
+  const {data}=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(50);
+  const sel=document.getElementById('et-lote');
+  if(!data||!data.length){sel.innerHTML='<option value="">Sin elaboraciones registradas</option>';return;}
+  sel.innerHTML=data.map(e=>{const mad=e.maduracion?(e.maduracion>=60?Math.round(e.maduracion/30)+' meses':e.maduracion+' días'):'30 días';const val=`${e.lote}|${e.codigo}|${e.producto}|${e.peso_final||0}|${e.unidades||0}|${mad}|${e.color||'blanco'}`;return `<option value="${val}">${e.lote} — ${e.producto}</option>`;}).join('');
+}
+
 // BORRAR GENÉRICO
 async function borrar(tabla,id,callback){
   if(!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.'))return;
-  await db.from(tabla).delete().eq('id',id);
+  const {error}=await db.from(tabla).delete().eq('id',id);
+  if(error){toast('Error al eliminar: '+error.message,false);return;}
   toast('Registro eliminado');
   if(callback)callback();
 }
 
 // DASHBOARD
 async function cargarDashboard(){
-  const [{data:elabs},{data:temps},{data:docs},{data:clis}]=await Promise.all([
-    db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(5),
+  const [{data:elabs},{data:temps},{count:totalElabs},{count:totalTemps},{data:docs},{data:clis}]=await Promise.all([
+    db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(3),
     db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(1),
+    db.from('elaboraciones').select('*',{count:'exact',head:true}),
+    db.from('temperaturas').select('*',{count:'exact',head:true}),
     db.from('documentos').select('id'),
     db.from('clientes').select('id')
   ]);
-  if(elabs){document.getElementById('d-elab').textContent=elabs.length;const t=document.getElementById('dash-elabs');t.innerHTML=elabs.length?elabs.slice(0,3).map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.producto}</td><td><span class="badge b-purple">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin elaboraciones</td></tr>';}
-  if(temps&&temps.length){const r=temps[0];if(r.cam2)document.getElementById('dt-c2').textContent=r.cam2+'°C';if(r.cam5)document.getElementById('dt-c5').textContent=r.cam5+'°C';if(r.cam6)document.getElementById('dt-c6').textContent=r.cam6+'°C';if(r.obrador)document.getElementById('dt-ob').textContent=r.obrador+'°C';}
+  if(totalElabs!=null)document.getElementById('d-elab').textContent=totalElabs;
+  if(totalTemps!=null)document.getElementById('d-temp').textContent=totalTemps;
+  if(elabs){const t=document.getElementById('dash-elabs');t.innerHTML=elabs.length?elabs.map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.producto}</td><td><span class="badge b-purple">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin elaboraciones</td></tr>';}
+  if(temps&&temps.length){const r=temps[0];if(r.cam2!=null)document.getElementById('dt-c2').textContent=r.cam2+'°C';if(r.cam5!=null)document.getElementById('dt-c5').textContent=r.cam5+'°C';if(r.cam6!=null)document.getElementById('dt-c6').textContent=r.cam6+'°C';if(r.obrador!=null)document.getElementById('dt-ob').textContent=r.obrador+'°C';}
   if(docs)document.getElementById('d-docs').textContent=docs.length;
   if(clis)document.getElementById('d-cli').textContent=clis.length;
 }
