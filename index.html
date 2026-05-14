@@ -1182,7 +1182,7 @@ const proveedoresDefault=[
 function abrirModalProveedor(data=null){
   document.getElementById('prov-modal-titulo').textContent=data?'Editar proveedor':'Nuevo proveedor';
   document.getElementById('prov-id').value=data?.id||'';
-  ['codigo','nombre','pais','actividad','registro','tel','email','notas'].forEach(f=>{const el=document.getElementById('prov-'+f);if(el)el.value=data?.[f]||'':''});
+  ['codigo','nombre','pais','actividad','registro','tel','email','notas'].forEach(f=>{const el=document.getElementById('prov-'+f);if(el)el.value=data?(data[f]||''):'';});
   if(data?.sae){document.getElementById('prov-sae').value=data.sae;}
   if(data?.estado){document.getElementById('prov-estado').value=data.estado;}
   abrirModal('modal-proveedor');
@@ -1225,7 +1225,7 @@ async function cargarProveedores(){
 function abrirModalTrabajador(data=null){
   document.getElementById('trab-modal-titulo').textContent=data?'Editar trabajador':'Nuevo trabajador';
   document.getElementById('trab-id').value=data?.id||'';
-  ['nombre','dni','cargo','tel','email','ss','obs'].forEach(f=>{const el=document.getElementById('trab-'+f);if(el)el.value=data?.[f]||data?.telefono&&f==='tel'?data.telefono:data?.num_ss&&f==='ss'?data.num_ss:data?.observaciones&&f==='obs'?data.observaciones:'':''});
+  ['nombre','dni','cargo','tel','email','ss','obs'].forEach(f=>{const el=document.getElementById('trab-'+f);if(!el)return;if(f==='tel')el.value=data?(data.telefono||''):'';else if(f==='ss')el.value=data?(data.num_ss||''):'';else if(f==='obs')el.value=data?(data.observaciones||''):'';else el.value=data?(data[f]||''):'';});
   if(data?.fecha_alta){document.getElementById('trab-alta').value=data.fecha_alta;}
   if(data?.estado){document.getElementById('trab-estado').value=data.estado;}
   abrirModal('modal-trabajador');
