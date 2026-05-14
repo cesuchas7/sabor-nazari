@@ -166,6 +166,10 @@ tbody tr:hover td{background:var(--bg3)}
 
 .sae-plantilla{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
 .sae-doc{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
+.dash-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:12px}
+.dash-btn:hover{border-color:var(--dorado);background:var(--dorado-bg);transform:translateY(-2px);box-shadow:0 4px 12px rgba(201,168,76,0.15)}
+.dash-btn i{font-size:32px;color:var(--dorado)}
+.dash-btn span{font-size:13px;font-weight:600;color:var(--text)}
 </style>
 </head>
 <body>
@@ -176,12 +180,14 @@ tbody tr:hover td{background:var(--bg3)}
 <div class="modal-overlay" id="modal-cal">
   <div class="modal">
     <div class="modal-title">Nuevo evento <button class="modal-close" onclick="cerrarModal('modal-cal')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="ev-id"/>
     <div class="grid2" style="margin-bottom:10px">
       <div><label>Fecha</label><input type="date" id="ev-fecha"/></div>
       <div><label>Tipo</label><select id="ev-tipo"><option value="produccion">Producción</option><option value="auditoria">Auditoría</option><option value="inspeccion">Inspección</option><option value="recepcion">Recepción materia prima</option><option value="envio">Envío de pedido</option><option value="otro">Otro</option></select></div>
     </div>
     <div style="margin-bottom:14px"><label>Descripción</label><input type="text" id="ev-desc" placeholder="Describe el evento..."/></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-danger" id="btn-eliminar-evento" style="display:none" onclick="eliminarEvento()"><i class="ti ti-trash"></i> Eliminar</button>
       <button class="btn btn-sec" onclick="cerrarModal('modal-cal')">Cancelar</button>
       <button class="btn btn-gold" onclick="guardarEvento()"><i class="ti ti-check"></i> Guardar</button>
     </div>
@@ -288,13 +294,109 @@ tbody tr:hover td{background:var(--bg3)}
       <div><label>País destino</label><select id="exp-pais"><option>UAE — Emiratos Árabes Unidos</option><option>Arabia Saudí</option><option>Qatar</option><option>Kuwait</option><option>Otro</option></select></div>
       <div><label>Fecha prevista de salida</label><input type="date" id="exp-fecha"/></div>
     </div>
-    <div class="grid2" style="margin-bottom:14px">
+    <div class="grid2" style="margin-bottom:10px">
       <div><label>Nº DAC</label><input type="text" id="exp-dac" placeholder="DAC-2026-XXX"/></div>
       <div><label>Certificado ASE</label><input type="text" id="exp-ase" value="ASE-3187"/></div>
+    </div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Tipo</label><select id="exp-tipo"><option value="real">Real</option><option value="simulacro">Simulacro</option></select></div>
+      <div><label>Notas</label><input type="text" id="exp-notas" placeholder="Observaciones..."/></div>
     </div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-sec" onclick="cerrarModal('modal-nueva-expedicion')">Cancelar</button>
       <button class="btn btn-gold" onclick="crearExpedicion()"><i class="ti ti-check"></i> Crear expediente</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-nc">
+  <div class="modal">
+    <div class="modal-title"><span id="nc-modal-titulo">Nueva no conformidad</span><button class="modal-close" onclick="cerrarModal('modal-nc')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="nc-id"/>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Fecha</label><input type="date" id="nc-fecha"/></div>
+      <div><label>Área</label><select id="nc-area"><option value="produccion">Producción</option><option value="almacen">Almacén</option><option value="expedicion">Expedición</option><option value="limpieza">Limpieza</option><option value="otro">Otro</option></select></div>
+    </div>
+    <div style="margin-bottom:10px"><label>Descripción</label><textarea id="nc-descripcion" placeholder="Describe la no conformidad..."></textarea></div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Gravedad</label><select id="nc-gravedad"><option value="leve">Leve</option><option value="grave">Grave</option><option value="critica">Crítica</option></select></div>
+      <div><label>Responsable</label><input type="text" id="nc-responsable" placeholder="Nombre"/></div>
+      <div><label>Fecha límite</label><input type="date" id="nc-fecha-limite"/></div>
+    </div>
+    <div style="margin-bottom:10px"><label>Acción correctiva</label><textarea id="nc-accion" placeholder="Acción correctiva a tomar..."></textarea></div>
+    <div style="margin-bottom:14px"><label>Estado</label><select id="nc-estado"><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-nc')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarNC()"><i class="ti ti-check"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-editar-elab">
+  <div class="modal">
+    <div class="modal-title">Editar elaboración <button class="modal-close" onclick="cerrarModal('modal-editar-elab')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="edit-elab-id"/>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Lote</label><input type="text" id="edit-elab-lote" readonly style="background:var(--bg3);color:var(--text3)"/></div>
+      <div><label>Estado</label><select id="edit-elab-estado"><option value="secadero">Secadero</option><option value="expedicion">Expedición</option><option value="vendido">Vendido</option><option value="incidencia">Incidencia</option></select></div>
+    </div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Unidades</label><input type="number" id="edit-elab-uds"/></div>
+      <div><label>Peso final (kg)</label><input type="number" step="0.1" id="edit-elab-peso"/></div>
+      <div><label>Días maduración</label><input type="number" id="edit-elab-mad"/></div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div><label>Color</label>
+        <select id="edit-elab-color">
+          <option value="blanco">⚪ Blanco</option><option value="rojo">🔴 Rojo</option><option value="azul">🔵 Azul</option>
+          <option value="verde">🟢 Verde</option><option value="amarillo">🟡 Amarillo</option><option value="morado">🟣 Morado</option>
+          <option value="verdiblanco">🟢⚪ Verdiblanco</option><option value="rojiblanco">🔴⚪ Rojiblanco</option>
+          <option value="rojiamarillo">🔴🟡 Rojiamarillo</option><option value="malla">🟫 Malla plástico</option>
+        </select>
+      </div>
+      <div><label>Proceso</label><select id="edit-elab-proceso"><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-editar-elab')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarEditarElab()"><i class="ti ti-check"></i> Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-etiqueta">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-title">Etiqueta <button class="modal-close" onclick="cerrarModal('modal-etiqueta')"><i class="ti ti-x"></i></button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg3);border-radius:var(--radius);margin-bottom:14px">
+      <div id="modal-et-1"></div><div id="modal-et-2"></div>
+      <div id="modal-et-3"></div><div id="modal-et-4"></div>
+    </div>
+    <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir 4 etiquetas</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-subir-doc">
+  <div class="modal">
+    <div class="modal-title">Subir documento <button class="modal-close" onclick="cerrarModal('modal-subir-doc')"><i class="ti ti-x"></i></button></div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Nombre</label><input type="text" id="sdoc-nombre" placeholder="Nombre del documento"/></div>
+      <div><label>Categoría</label>
+        <select id="sdoc-cat" onchange="actualizarSubcat()">
+          <option value="APPCC">APPCC</option>
+          <option value="SAE / Exportación">SAE / Exportación</option>
+          <option value="Fichas técnicas">Fichas técnicas</option>
+          <option value="Halal">Halal</option>
+          <option value="Proveedores">Proveedores</option>
+          <option value="Legal">Legal</option>
+          <option value="Fichaje">Fichaje</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+    </div>
+    <div id="sdoc-extra" style="display:none;margin-bottom:10px"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-subir-doc')">Cancelar</button>
+      <button class="btn btn-gold" onclick="document.getElementById('doc-file-smart').click()"><i class="ti ti-upload"></i> Seleccionar archivo</button>
+      <input type="file" id="doc-file-smart" style="display:none" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png" onchange="subirDocumentoInteligente(this)"/>
     </div>
   </div>
 </div>
@@ -313,11 +415,11 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="sb-item" onclick="nav('elaboraciones',this)"><i class="ti ti-clipboard-list"></i> Elaboraciones</div>
     <div class="sb-item" onclick="nav('productos',this)"><i class="ti ti-meat"></i> Productos</div>
     <div class="sb-item" onclick="nav('trazabilidad',this)"><i class="ti ti-search"></i> Trazabilidad</div>
-    <div class="sb-item" onclick="nav('etiquetas',this)"><i class="ti ti-printer"></i> Etiquetas</div>
 
     <div class="sb-cat">Calidad</div>
     <div class="sb-item" onclick="nav('temperaturas',this)"><i class="ti ti-thermometer"></i> Temperaturas</div>
     <div class="sb-item" onclick="nav('appcc',this)"><i class="ti ti-shield-check"></i> APPCC</div>
+    <div class="sb-item" onclick="nav('noconformidades',this)"><i class="ti ti-alert-circle"></i> No conformidades</div>
     <div class="sb-item" onclick="nav('halal',this)"><i class="ti ti-certificate"></i> Halal</div>
 
     <div class="sb-cat">Exportación</div>
@@ -345,7 +447,7 @@ tbody tr:hover td{background:var(--bg3)}
     </div>
     <div style="display:flex;align-items:center;gap:10px">
       <span style="font-size:11px;color:var(--text2);background:var(--bg3);padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border2)" id="fecha-hoy"></span>
-      <button class="btn btn-gold" onclick="nav('elaboraciones',document.querySelectorAll('.sb-item')[2])"><i class="ti ti-plus"></i> Nueva elaboración</button>
+      <button class="btn btn-gold" onclick="navBtn('elaboraciones')"><i class="ti ti-plus"></i> Nueva elaboración</button>
     </div>
   </div>
 
@@ -353,29 +455,22 @@ tbody tr:hover td{background:var(--bg3)}
 
     <!-- DASHBOARD -->
     <div class="screen active" id="screen-dashboard">
-      <div class="notif"><i class="ti ti-alert-triangle"></i> Firma Linex pendiente en EXP-2026-001 · Auditoría SAE UAE próximamente</div>
-      <div class="grid4" style="margin-bottom:14px">
-        <div class="metric"><div class="metric-icon"><i class="ti ti-clipboard-list"></i></div><div class="metric-val" id="d-elab">—</div><div class="metric-label">Elaboraciones</div></div>
-        <div class="metric"><div class="metric-icon"><i class="ti ti-thermometer"></i></div><div class="metric-val" id="d-temp">—</div><div class="metric-label">Registros temp.</div></div>
-        <div class="metric"><div class="metric-icon"><i class="ti ti-folder"></i></div><div class="metric-val" id="d-docs">—</div><div class="metric-label">Documentos</div></div>
-        <div class="metric"><div class="metric-icon"><i class="ti ti-users"></i></div><div class="metric-val" id="d-cli">—</div><div class="metric-label">Clientes</div></div>
-      </div>
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-clipboard-list"></i> Últimas elaboraciones</div>
-          <table><thead><tr><th>Lote</th><th>Producto</th><th>Estado</th></tr></thead>
-          <tbody id="dash-elabs"><tr><td colspan="3" class="empty-state">Cargando...</td></tr></tbody></table>
+      <div class="notif" id="dash-notif" style="display:none"><i class="ti ti-alert-triangle"></i> <span id="dash-notif-msg"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:8px">
+        <div class="dash-btn" onclick="navBtn('temperaturas')">
+          <i class="ti ti-thermometer"></i><span>Registrar temperaturas</span>
         </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-thermometer"></i> Temperaturas hoy</div>
-          <table><thead><tr><th>Zona</th><th>Temp.</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>Cámara 2</td><td id="dt-c2">—</td><td><span class="badge b-gray" id="dts-c2">Pendiente</span></td></tr>
-            <tr><td>Cámara 5</td><td id="dt-c5">—</td><td><span class="badge b-gray" id="dts-c5">Pendiente</span></td></tr>
-            <tr><td>Cámara 6</td><td id="dt-c6">—</td><td><span class="badge b-gray" id="dts-c6">Pendiente</span></td></tr>
-            <tr><td>Obrador</td><td id="dt-ob">—</td><td><span class="badge b-gray" id="dts-ob">Pendiente</span></td></tr>
-          </tbody></table>
-          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="nav('temperaturas',document.querySelectorAll('.sb-item')[6])"><i class="ti ti-plus"></i> Registrar ahora</button>
+        <div class="dash-btn" onclick="navBtn('elaboraciones')">
+          <i class="ti ti-clipboard-list"></i><span>Nueva elaboración</span>
+        </div>
+        <div class="dash-btn" onclick="abrirModal('modal-nueva-expedicion')">
+          <i class="ti ti-plane-departure"></i><span>Nueva expedición</span>
+        </div>
+        <div class="dash-btn" onclick="abrirModalCliente()">
+          <i class="ti ti-users"></i><span>Añadir cliente</span>
+        </div>
+        <div class="dash-btn" onclick="abrirModalProveedor()">
+          <i class="ti ti-truck"></i><span>Añadir proveedor</span>
         </div>
       </div>
     </div>
@@ -418,24 +513,26 @@ tbody tr:hover td{background:var(--bg3)}
         <div class="grid3" style="margin-bottom:10px">
           <div><label>Producto</label>
             <select id="el-prod" onchange="genLote()">
+              <option value="">— Seleccionar producto —</option>
               <option value="302|Chorizo picante|embutido|E|rojo">302 — Chorizo picante</option>
-              <option value="301|Chorizo dulce|embutido|E|verde">301 — Chorizo dulce</option>
+              <option value="301|Chorizo dulce|embutido|E|azul">301 — Chorizo dulce</option>
               <option value="201|Salchichón natural|embutido|E|blanco">201 — Salchichón natural</option>
-              <option value="202|Salchichón pistacho|embutido|E|verde">202 — Salchichón pistacho</option>
-              <option value="203|Salchichón almendra|embutido|E|amarillo">203 — Salchichón almendra</option>
-              <option value="204|Salchichón ahumado|embutido|N|morado">204 — Salchichón ahumado</option>
+              <option value="202|Salchichón pistacho|embutido|E|verdiblanco">202 — Salchichón pistacho</option>
+              <option value="203|Salchichón almendra|embutido|E|rojiblanco">203 — Salchichón almendra</option>
+              <option value="204|Salchichón ahumado|embutido|N|verde">204 — Salchichón ahumado</option>
               <option value="205|Salchichón higos|embutido|E|amarillo">205 — Salchichón higos</option>
-              <option value="206|Salchichón nueces|embutido|E|rojiblanco">206 — Salchichón nueces</option>
-              <option value="401|Sobrasada picante|embutido|E|rojo">401 — Sobrasada picante</option>
+              <option value="206|Salchichón nueces|embutido|E|morado">206 — Salchichón nueces</option>
+              <option value="401|Sobrasada picante|embutido|E|rojiamarillo">401 — Sobrasada picante</option>
               <option value="501|Fuet|embutido|E|blanco">501 — Fuet</option>
-              <option value="101|Cecina de ternera|cecina|N|azul">101 — Cecina de ternera</option>
-              <option value="102|Pierna de cordero|cecina|N|azul">102 — Pierna de cordero</option>
+              <option value="101|Cecina de ternera|cecina|N|malla">101 — Cecina de ternera</option>
+              <option value="102|Pierna de cordero|cecina|N|">102 — Pierna de cordero</option>
               <option value="103|Pierna de oveja|cecina|N|verde">103 — Pierna de oveja</option>
-              <option value="104|Pierna de pavo curada|cecina|E|morado">104 — Pierna de pavo curada</option>
+              <option value="104|Pierna de pavo curada|cecina|E|malla">104 — Pierna de pavo curada</option>
             </select>
           </div>
           <div><label>Proveedor</label>
             <select id="el-prov" onchange="genLote()">
+              <option value="">— Seleccionar proveedor —</option>
               <option value="01">01 — Sabor Nazarí</option>
               <option value="02">02 — Cosegur</option>
               <option value="03">03 — La Comarca</option>
@@ -448,7 +545,7 @@ tbody tr:hover td{background:var(--bg3)}
           <div><label>Fecha</label><input type="date" id="el-fecha" onchange="genLote()"/></div>
         </div>
         <div class="grid3" style="margin-bottom:10px">
-          <div><label>Exportación</label><select id="el-exp" onchange="genLote()"><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
+          <div><label>Exportación</label><select id="el-exp" onchange="genLote()"><option value="">— Tipo de elaboración —</option><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
           <div><label>Proceso</label><select id="el-proceso"><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
           <div><label>Color identificación</label>
             <select id="el-color">
@@ -496,12 +593,11 @@ tbody tr:hover td{background:var(--bg3)}
         </div>
         <div style="margin-top:14px;display:flex;gap:8px">
           <button class="btn btn-gold" onclick="guardarElab()"><i class="ti ti-check"></i> Guardar elaboración</button>
-          <button class="btn btn-sec" onclick="nav('etiquetas',document.querySelectorAll('.sb-item')[5])"><i class="ti ti-printer"></i> Etiqueta</button>
         </div>
       </div>
       <div class="card">
         <div class="card-title"><i class="ti ti-history"></i> Historial de elaboraciones</div>
-        <table><thead><tr><th>Lote</th><th>Producto</th><th>Color</th><th>Fecha</th><th>Uds</th><th>Peso</th><th>Estado</th><th>Borrar</th></tr></thead>
+        <table><thead><tr><th>Lote</th><th>Producto</th><th>Color</th><th>Fecha</th><th>Uds</th><th>Peso</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-elabs"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
       </div>
     </div>
@@ -539,27 +635,6 @@ tbody tr:hover td{background:var(--bg3)}
         <button class="btn btn-gold" onclick="buscarTrazabilidad()"><i class="ti ti-search"></i> Buscar</button>
       </div>
       <div id="tr-resultados"></div>
-    </div>
-
-    <!-- ETIQUETAS -->
-    <div class="screen" id="screen-etiquetas">
-      <div class="card">
-        <div class="card-title"><i class="ti ti-printer"></i> Generar etiqueta</div>
-        <div class="grid2" style="margin-bottom:14px">
-          <div><label>Lote</label><select id="et-lote"><option value="E302-031326|302|Chorizo picante|58.5|120|30 días|rojo">E302-031326 — Chorizo picante</option><option value="E104-0434725|104|Pierna de pavo curada|310.57|180|3-4 meses|morado">E104-0434725 — Pierna de pavo curada</option></select></div>
-          <div><label>Formato</label><select><option>1/4 folio — 4 etiquetas por A4</option><option>100×70mm</option></select></div>
-        </div>
-        <button class="btn btn-gold" onclick="generarEtiqueta()"><i class="ti ti-eye"></i> Vista previa</button>
-      </div>
-      <div id="et-preview" style="display:none">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-layout-grid"></i> 4 etiquetas listas</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px;background:var(--bg3);border-radius:var(--radius)">
-            <div id="et-1"></div><div id="et-2"></div><div id="et-3"></div><div id="et-4"></div>
-          </div>
-          <button class="btn btn-dark" style="margin-top:12px" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir</button>
-        </div>
-      </div>
     </div>
 
     <!-- TEMPERATURAS -->
@@ -631,47 +706,46 @@ tbody tr:hover td{background:var(--bg3)}
       <div class="card">
         <div class="card-title"><i class="ti ti-truck"></i> Certificados Halal de proveedores</div>
         <table><thead><tr><th>Proveedor</th><th>Documento</th><th>Vigencia</th><th>Estado</th><th>Subir</th></tr></thead>
-        <tbody id="tabla-halal-prov">
-          <tr><td>Linex Handelsgesellschaft MbH</td><td id="halal-linex-doc">—</td><td>—</td><td><span class="badge b-pend">Pendiente</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-linex').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-linex" style="display:none" onchange="subirHalalProv(this,'Linex Handelsgesellschaft MbH','halal-linex-doc')"/></td></tr>
-          <tr><td>La Comarca</td><td id="halal-comarca-doc">—</td><td>—</td><td><span class="badge b-pend">Pendiente</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-comarca').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-comarca" style="display:none" onchange="subirHalalProv(this,'La Comarca','halal-comarca-doc')"/></td></tr>
-          <tr><td>Al-Hambra</td><td id="halal-alhambra-doc">—</td><td>—</td><td><span class="badge b-pend">Pendiente</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-alhambra').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-alhambra" style="display:none" onchange="subirHalalProv(this,'Al-Hambra','halal-alhambra-doc')"/></td></tr>
-          <tr><td>Matadero del Sur</td><td id="halal-matadero-doc">—</td><td>—</td><td><span class="badge b-pend">Pendiente</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-matadero').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-matadero" style="display:none" onchange="subirHalalProv(this,'Matadero del Sur','halal-matadero-doc')"/></td></tr>
-        </tbody></table>
+        <tbody id="tabla-halal-prov"><tr><td colspan="5" class="empty-state">Cargando...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- NO CONFORMIDADES -->
+    <div class="screen" id="screen-noconformidades">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button class="btn btn-gold" onclick="abrirModalNC()"><i class="ti ti-plus"></i> Nueva no conformidad</button>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-alert-circle"></i> Registro de no conformidades</div>
+        <table><thead><tr><th>Nº</th><th>Fecha</th><th>Área</th><th>Descripción</th><th>Gravedad</th><th>Responsable</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="tabla-nc"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
       </div>
     </div>
 
     <!-- EXPEDICIONES SAE -->
     <div class="screen" id="screen-expediciones">
-      <div class="notif"><i class="ti ti-alert-triangle"></i> EXP-2026-001 — Firma Linex pendiente · Auditoría UAE próximamente</div>
-      <div class="grid2" style="margin-bottom:12px">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-folder-open"></i> Plantillas y modelos SAE</div>
-          <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Descarga las plantillas, rellénalas y súbelas al expediente correspondiente.</div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">ASE-3187 — Certificado veterinario UAE</div><div style="font-size:10px;color:var(--text3)">Aves de corral · Bilingüe ES/EN</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button></div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">SAE-11 — Procedimiento de trazabilidad</div><div style="font-size:10px;color:var(--text3)">Rev. 00</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button></div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">SAE-08 — Check-list aptitud de partidas</div><div style="font-size:10px;color:var(--text3)">Exportación</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button></div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">SAE-10 — DAC</div><div style="font-size:10px;color:var(--text3)">Documento de acompañamiento comercial</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button></div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">Simulacro de trazabilidad · B.6-R04</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button></div>
-          <div style="margin-top:10px">
-            <div class="upload-area" style="padding:14px" onclick="document.getElementById('upload-plantilla-sae').click()">
-              <input type="file" id="upload-plantilla-sae" onchange="subirPlantillaSAE(this)"/>
-              <i class="ti ti-upload" style="font-size:20px"></i>
-              <p><strong style="color:var(--dorado)">Subir nueva plantilla</strong></p>
-            </div>
-          </div>
+      <div class="notif" id="exp-notif" style="display:none"><i class="ti ti-alert-triangle"></i> <span id="exp-notif-msg"></span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">ASE-3187 — Certificado veterinario UAE</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i></button></div>
         </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-plane-departure"></i> Expediciones</div>
-          <table><thead><tr><th>Expediente</th><th>Lote</th><th>Cliente</th><th>Destino</th><th>Estado</th></tr></thead>
-          <tbody id="tabla-expediciones">
-            <tr><td style="font-weight:700;color:var(--dorado3)">EXP-2026-001</td><td style="font-family:monospace;font-size:11px">E104-0434725</td><td>Alhambra Foods</td><td><span class="badge b-info">UAE</span></td><td><span class="badge b-pend">2 pend.</span></td></tr>
-          </tbody></table>
-          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="abrirModal('modal-nueva-expedicion')"><i class="ti ti-plus"></i> Nueva expedición</button>
-        </div>
+        <button class="btn btn-gold" onclick="abrirModal('modal-nueva-expedicion')"><i class="ti ti-plus"></i> Nueva expedición</button>
       </div>
-      <div class="card" id="expediente-detalle">
-        <div class="card-title"><i class="ti ti-files"></i> Expediente EXP-2026-001 — E104-0434725</div>
-        <div id="exp-docs-container"></div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-plane-departure"></i> Expediciones</div>
+        <table><thead><tr><th>Expediente</th><th>Tipo</th><th>Lote</th><th>Cliente</th><th>Destino</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="tabla-expediciones-new"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
+      </div>
+      <div id="expedicion-detalle-new" style="display:none">
+        <div class="card">
+          <div class="card-title" id="exp-detalle-titulo"><i class="ti ti-files"></i> Documentos del expediente</div>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+            <button class="btn btn-gold btn-sm" onclick="document.getElementById('upload-exp-doc').click()"><i class="ti ti-upload"></i> Subir documento</button>
+            <input type="file" id="upload-exp-doc" style="display:none" onchange="subirDocExpedicion(this)"/>
+          </div>
+          <table><thead><tr><th>Documento</th><th>Fecha subida</th><th>Acciones</th></tr></thead>
+          <tbody id="tabla-exp-docs"><tr><td colspan="3" class="empty-state">Sin documentos</td></tr></tbody></table>
+        </div>
       </div>
     </div>
 
@@ -743,14 +817,9 @@ tbody tr:hover td{background:var(--bg3)}
             <select id="doc-cat"><option>Fichas técnicas</option><option>APPCC</option><option>SAE / Exportación</option><option>Certificados</option><option>Proveedores</option><option>Legal</option><option>Halal</option><option>Otros</option></select>
           </div>
         </div>
-        <div class="upload-area" onclick="document.getElementById('doc-file').click()">
-          <input type="file" id="doc-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png" onchange="subirDocumento(this)"/>
+        <div class="upload-area" onclick="abrirModal('modal-subir-doc')">
           <i class="ti ti-cloud-upload"></i>
           <p><strong style="color:var(--dorado)">Seleccionar archivo</strong><br>PDF, Word, Excel, imágenes</p>
-        </div>
-        <div id="upload-progress" style="display:none;margin-top:10px">
-          <div style="font-size:12px;color:var(--text2);margin-bottom:6px" id="upload-status">Subiendo...</div>
-          <div class="prog-bar"><div class="prog-fill" id="upload-bar" style="width:0%"></div></div>
         </div>
       </div>
       <div class="card">
@@ -775,17 +844,20 @@ document.getElementById('tp-fecha').value=today.toISOString().split('T')[0];
 document.getElementById('el-fecha').value=today.toISOString().split('T')[0];
 document.getElementById('fich-mes').value=today.toISOString().slice(0,7);
 
-const titulos={dashboard:'Inicio',calendario:'Calendario',elaboraciones:'Elaboraciones',productos:'Productos',trazabilidad:'Trazabilidad',etiquetas:'Etiquetas',temperaturas:'Temperaturas',appcc:'APPCC',halal:'Certificación Halal',expediciones:'Expediciones SAE',clientes:'Clientes',proveedores:'Proveedores',trabajadores:'Trabajadores',fichaje:'Fichaje',documentos:'Documentos'};
-const subs={dashboard:'Resumen general',calendario:'Planificación y eventos',elaboraciones:'Registro de producciones',productos:'Catálogo y fichas técnicas',trazabilidad:'Búsqueda por lote, producto o fecha',etiquetas:'Generación e impresión',temperaturas:'Registro diario APPCC · 07:30',appcc:'Sistema de autocontrol',halal:'HQC · Certificación y auditorías',expediciones:'SAE · UAE · ASE-3187 · PR-EXP Rev.4',clientes:'Base de datos',proveedores:'Proveedores homologados SAE',trabajadores:'Equipo Sabor Nazarí',fichaje:'Archivos mensuales CSV',documentos:'Repositorio centralizado'};
+const titulos={dashboard:'Inicio',calendario:'Calendario',elaboraciones:'Elaboraciones',productos:'Productos',trazabilidad:'Trazabilidad',temperaturas:'Temperaturas',appcc:'APPCC',noconformidades:'No Conformidades',halal:'Certificación Halal',expediciones:'Expediciones SAE',clientes:'Clientes',proveedores:'Proveedores',trabajadores:'Trabajadores',fichaje:'Fichaje',documentos:'Documentos'};
+const subs={dashboard:'Resumen general',calendario:'Planificación y eventos',elaboraciones:'Registro de producciones',productos:'Catálogo y fichas técnicas',trazabilidad:'Búsqueda por lote, producto o fecha',temperaturas:'Registro diario APPCC · 07:30',appcc:'Sistema de autocontrol',noconformidades:'Registro de incidencias y acciones correctivas',halal:'HQC · Certificación y auditorías',expediciones:'SAE · UAE · ASE-3187 · PR-EXP Rev.4',clientes:'Base de datos',proveedores:'Proveedores homologados SAE',trabajadores:'Equipo Sabor Nazarí',fichaje:'Archivos mensuales CSV',documentos:'Repositorio centralizado'};
+
+function navBtn(id){const items=document.querySelectorAll('.sb-item');let found=null;items.forEach(item=>{if(item.getAttribute('onclick')&&item.getAttribute('onclick').includes("'"+id+"'"))found=item;});nav(id,found);}
 
 function nav(id,el){
+  localStorage.setItem('sn-seccion',id);
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
   if(el)el.classList.add('active');
   document.getElementById('page-title').textContent=titulos[id]||id;
   document.getElementById('page-sub').textContent=subs[id]||'';
-  const loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:()=>{renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:renderExpedicion,fichaje:cargarFichaje,trazabilidad:()=>{},productos:renderProductos,etiquetas:cargarEtiquetas};
+  const loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:()=>{renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:cargarExpediciones,noconformidades:cargarNoConformidades,fichaje:cargarFichaje,trazabilidad:()=>{},productos:renderProductos};
   if(loaders[id])loaders[id]();
 }
 
@@ -799,11 +871,12 @@ function getDia(d){return [7,1,2,3,4,5,6][new Date(d).getDay()];}
 const diasN=['','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 
 function genLote(){
-  const p=document.getElementById('el-prod').value.split('|');
+  const pVal=document.getElementById('el-prod').value;
   const prov=document.getElementById('el-prov').value;
   const fecha=document.getElementById('el-fecha').value;
   const exp=document.getElementById('el-exp').value;
-  if(!fecha)return;
+  if(!pVal||!prov||!exp||!fecha){document.getElementById('el-lote').textContent='—';document.getElementById('el-lote-sub').textContent='Selecciona producto, proveedor, tipo y fecha';return;}
+  const p=pVal.split('|');
   const sem=String(getSem(fecha)).padStart(2,'0');
   const dia=getDia(fecha);
   const anio=String(new Date(fecha).getFullYear()).slice(-2);
@@ -811,9 +884,7 @@ function genLote(){
   document.getElementById('el-lote').textContent=lote;
   document.getElementById('el-lote-sub').textContent=`${p[1]} · Prov. ${prov} · ${diasN[dia]} · Sem. ${sem} · 20${anio}`;
   document.getElementById('el-mad').value=p[2]==='cecina'?90:30;
-  const cs=document.getElementById('el-color');
-  const cv=p[4]||'blanco';
-  for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===cv){cs.selectedIndex=i;break;}}
+  if(p[4]){const cs=document.getElementById('el-color');for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===p[4]){cs.selectedIndex=i;break;}}}
 }
 
 const carnesOpts=['Redondo de ternera','Pierna de cordero','Pierna de pavo','Carne de ternera','Carne de pavo','Grasa de pavo'];
@@ -825,17 +896,14 @@ function addIng(tipo){
   const d=document.createElement('div');
   if(tipo==='auxiliar'){
     d.className='ing-row-aux';
-    d.innerHTML=`<select>${auxiliarOpts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
+    d.innerHTML=`<select><option value="">— Seleccionar —</option>${auxiliarOpts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
   } else {
     d.className='ing-row';
     const opts=tipo==='carnes'?carnesOpts:especiasOpts;
-    d.innerHTML=`<select>${opts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="${tipo==='carnes'?'kg':'g/kg'}"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
+    d.innerHTML=`<select><option value="">— Seleccionar —</option>${opts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="${tipo==='carnes'?'kg':'g/kg'}"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
   }
   c.appendChild(d);
 }
-
-// Inicializar ingredientes
-['carnes','especias','auxiliar'].forEach(t=>addIng(t));
 
 async function guardarElab(){
   const lote=document.getElementById('el-lote').textContent;
@@ -863,7 +931,11 @@ async function cargarElaboraciones(){
     <td>${e.fecha||'—'}</td><td>${e.unidades||'—'}</td>
     <td>${e.peso_final?e.peso_final+' kg':'—'}</td>
     <td><span class="badge b-purple">${e.estado||'secadero'}</span></td>
-    <td><button class="btn btn-danger btn-sm" onclick="borrar('elaboraciones','${e.id}',cargarElaboraciones)"><i class="ti ti-trash"></i></button></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="btn btn-sec btn-sm" onclick='abrirEtiqueta(${JSON.stringify(e)})'><i class="ti ti-tag"></i></button>
+      <button class="btn btn-edit btn-sm" onclick='abrirModalEditarElab(${JSON.stringify(e)})'><i class="ti ti-edit"></i></button>
+      <button class="btn btn-danger btn-sm" onclick="borrar('elaboraciones','${e.id}',cargarElaboraciones)"><i class="ti ti-trash"></i></button>
+    </div></td>
   </tr>`).join('');
   const db2=document.getElementById('dash-elabs');
   if(db2)db2.innerHTML=data.slice(0,3).map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.producto}</td><td><span class="badge b-purple">${e.estado}</span></td></tr>`).join('');
@@ -951,6 +1023,7 @@ async function buscarTrazabilidad(){
     <table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>
       ${[['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',e.fecha],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso final',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']].map(([k,v])=>`<tr><td style="color:var(--text2);font-size:11px">${k}</td><td style="font-weight:500">${v||'—'}</td></tr>`).join('')}
     </tbody></table>
+    <button class="btn btn-gold btn-sm" style="margin-top:8px" onclick='abrirEtiqueta(${JSON.stringify(e)})'><i class="ti ti-tag"></i> Ver etiqueta</button>
   </div>`).join('');
 }
 
@@ -1015,14 +1088,25 @@ async function subirHalalProv(input,proveedor,tdId){
 }
 
 async function cargarHalal(){
-  const {data}=await db.from('documentos').select('*').like('categoria','Halal%').order('created_at',{ascending:false});
-  if(!data)return;
-  const propios=data.filter(d=>d.categoria==='Halal_Certificado propio');
-  const audits=data.filter(d=>d.categoria==='Halal_Auditoría');
+  const [{data:docs},{data:provs}]=await Promise.all([
+    db.from('documentos').select('*').like('categoria','Halal%').order('created_at',{ascending:false}),
+    db.from('proveedores').select('*').order('codigo')
+  ]);
+  if(!docs)return;
+  const propios=docs.filter(d=>d.categoria==='Halal_Certificado propio');
+  const audits=docs.filter(d=>d.categoria==='Halal_Auditoría');
   const t1=document.getElementById('tabla-halal-propios');
   t1.innerHTML=propios.length?propios.map(d=>`<tr><td style="font-weight:500">${d.nombre}</td><td><span class="badge b-info">${d.categoria}</span></td><td>${new Date(d.created_at).toLocaleDateString('es-ES')}</td><td><div style="display:flex;gap:6px"><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin documentos propios</td></tr>';
   const t2=document.getElementById('tabla-halal-audits');
   t2.innerHTML=audits.length?audits.map(d=>`<tr><td style="font-weight:500">${d.nombre}</td><td>${new Date(d.created_at).toLocaleDateString('es-ES')}</td><td><div style="display:flex;gap:6px"><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin auditorías</td></tr>';
+  const provList=(provs&&provs.length)?provs:proveedoresDefault;
+  const t3=document.getElementById('tabla-halal-prov');
+  t3.innerHTML=provList.map(p=>{
+    const safeName=p.nombre.replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const doc=docs.find(d=>d.categoria==='Halal_Proveedor'&&d.nombre.includes(p.nombre));
+    const tdId=`halal-prov-doc-${safeName}`;
+    return `<tr><td>${p.nombre}</td><td id="${tdId}">${doc?`<a href="${doc.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`:'—'}</td><td>—</td><td><span class="badge ${doc?'b-ok':'b-pend'}">${doc?'OK':'Pendiente'}</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-${safeName}').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-${safeName}" style="display:none" onchange="subirHalalProv(this,${JSON.stringify(p.nombre)},'${tdId}')"/></td></tr>`;
+  }).join('');
 }
 
 // APPCC
@@ -1078,11 +1162,12 @@ async function subirAppccCarpeta(input,categoria,targetId){
 }
 
 async function subirRegistroAppcc(input,nombreReg){
+  const mesRef=prompt('¿A qué mes corresponde? (YYYY-MM)',new Date().toISOString().slice(0,7))||new Date().toISOString().slice(0,7);
   for(const file of input.files){
     const path=`appcc/registros/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.publicUrl,descripcion:file.name});
+    await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.publicUrl,descripcion:`[${mesRef}] ${file.name}`});
   }
   toast('✓ Registro subido: '+nombreReg);
   input.value='';
@@ -1110,12 +1195,13 @@ async function cargarDocsAppcc(){
         <button class="btn btn-gold btn-sm" onclick="document.getElementById('upload-reg-${i}').click()"><i class="ti ti-upload"></i> Subir</button>
         <input type="file" id="upload-reg-${i}" style="display:none" multiple onchange="subirRegistroAppcc(this,'${r}')"/>
       </div>
-      ${subidos.map(d=>`<div class="doc-row" style="margin-left:20px;padding:6px 10px">
+      ${[...subidos].sort((a,b)=>{const ma=(a.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mb=(b.descripcion||'').match(/\[(\d{4}-\d{2})\]/);return (mb?mb[1]:'')>(ma?ma[1]:'')?1:-1;}).map(d=>{const mRef=(d.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mes=mRef?mRef[1]:'';const fname=(d.descripcion||d.nombre).replace(/^\[\d{4}-\d{2}\]\s*/,'');return`<div class="doc-row" style="margin-left:20px;padding:6px 10px">
         <i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>
-        <div style="flex:1;font-size:11px">${d.descripcion||d.nombre} · ${new Date(d.created_at).toLocaleDateString('es-ES')}</div>
+        ${mes?`<span class="badge b-gray" style="font-size:9px;margin-right:4px">${mes}</span>`:''}
+        <div style="flex:1;font-size:11px">${fname}</div>
         <a href="${d.url}" target="_blank" class="btn btn-sec btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a>
         <button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>{renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>
-      </div>`).join('')}
+      </div>`;}).join('')}
     </div>`;
   }).join('');
 }
@@ -1332,50 +1418,76 @@ async function subirPlantillaSAE(input){
   toast('✓ Plantilla SAE subida');input.value='';
 }
 
+let expedicionActivaId=null;
+let expedicionActivaNum='';
+
+async function cargarExpediciones(){
+  const {data}=await db.from('expediciones').select('*').order('created_at',{ascending:false});
+  const t=document.getElementById('tabla-expediciones-new');
+  if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin expediciones</td></tr>';return;}
+  const estBadge={activo:'<span class="badge b-pend">En curso</span>',finalizada:'<span class="badge b-ok">Finalizada</span>'};
+  const tipoBadge={real:'<span class="badge b-blue">Real</span>',simulacro:'<span class="badge b-gray">Simulacro</span>'};
+  t.innerHTML=data.map((e,i)=>{
+    const num='EXP-'+new Date(e.created_at).getFullYear()+'-'+String(i+1).padStart(3,'0');
+    return `<tr>
+      <td style="font-weight:700;color:var(--dorado3)">${num}</td>
+      <td>${tipoBadge[e.tipo||'real']}</td>
+      <td style="font-family:monospace;font-size:11px">${e.lote||'—'}</td>
+      <td>${e.cliente||'—'}</td>
+      <td><span class="badge b-info">${(e.pais||'—').split('—')[0].trim()}</span></td>
+      <td>${e.fecha_salida||'—'}</td>
+      <td>${estBadge[e.estado||'activo']}</td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-gold btn-sm" onclick="abrirExpedicion('${e.id}','${num}')"><i class="ti ti-folder-open"></i></button>
+        ${e.estado!=='finalizada'?`<button class="btn btn-sec btn-sm" onclick="finalizarExpedicion('${e.id}')" title="Finalizar"><i class="ti ti-check"></i></button>`:''}
+        <button class="btn btn-danger btn-sm" onclick="borrar('expediciones','${e.id}',cargarExpediciones)"><i class="ti ti-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  const activas=data.filter(e=>e.estado!=='finalizada');
+  const notif=document.getElementById('exp-notif');
+  if(notif&&activas.length){notif.style.display='flex';document.getElementById('exp-notif-msg').textContent=activas.length+' expedición(es) activa(s): '+activas.map(e=>e.lote||e.cliente).join(', ');}
+  else if(notif){notif.style.display='none';}
+}
+
+async function abrirExpedicion(id,num){
+  expedicionActivaId=id;expedicionActivaNum=num;
+  document.getElementById('expedicion-detalle-new').style.display='block';
+  document.getElementById('exp-detalle-titulo').innerHTML=`<i class="ti ti-files"></i> Documentos — ${num}`;
+  const {data}=await db.from('documentos').select('*').eq('categoria','SAE_Exp_'+id).order('created_at',{ascending:false});
+  const t=document.getElementById('tabla-exp-docs');
+  t.innerHTML=data&&data.length?data.map(d=>`<tr>
+    <td style="font-weight:500">${d.nombre}</td>
+    <td style="font-size:11px;color:var(--text2)">${new Date(d.created_at).toLocaleDateString('es-ES')}</td>
+    <td><div style="display:flex;gap:4px">${d.url?`<a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`:''}<button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>abrirExpedicion('${id}','${num}'))"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin documentos adjuntos</td></tr>';
+  document.getElementById('expedicion-detalle-new').scrollIntoView({behavior:'smooth'});
+}
+
+async function subirDocExpedicion(input){
+  const file=input.files[0];if(!file||!expedicionActivaId)return;
+  const nombre=prompt('Nombre del documento:',file.name)||file.name;
+  const path=`sae/expediciones/${expedicionActivaId}/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  await db.storage.from('documentos').upload(path,file);
+  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
+  await db.from('documentos').insert({nombre,categoria:'SAE_Exp_'+expedicionActivaId,url:urlData.publicUrl,descripcion:file.name});
+  toast('✓ Documento subido');input.value='';
+  abrirExpedicion(expedicionActivaId,expedicionActivaNum);
+}
+
+async function finalizarExpedicion(id){
+  if(!confirm('¿Marcar como finalizada?'))return;
+  await db.from('expediciones').update({estado:'finalizada'}).eq('id',id);
+  toast('✓ Expedición finalizada');cargarExpediciones();
+}
+
 async function crearExpedicion(){
   const lote=document.getElementById('exp-lote').value;
   const cliente=document.getElementById('exp-cliente').value;
   if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
-  await db.from('expediciones').insert({lote,cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,certificado_ase:document.getElementById('exp-ase').value,estado:'activo'}).catch(()=>{});
-  toast('✓ Expedición creada: '+lote);
-  cerrarModal('modal-nueva-expedicion');
-}
-
-const docsExpedicion=[
-  {id:'trazabilidad',nombre:'Hoja resumen de trazabilidad',ref:'COD B.6-R04',estado:'ok'},
-  {id:'balance',nombre:'Balance de masas',ref:'Merma 55,3% OK',estado:'ok'},
-  {id:'dac',nombre:'DAC-2026-001',ref:'Alhambra Foods',estado:'ok'},
-  {id:'checklist',nombre:'Check-list aptitud SAE-08',ref:'Apto UAE',estado:'ok'},
-  {id:'ase3187',nombre:'ASE-3187 — Certificado veterinario UAE',ref:'Requiere firma veterinario oficial',estado:'pendiente'},
-  {id:'linex',nombre:'SAE-02-02 — Firma Linex',ref:'Pendiente respuesta Alemania',estado:'urgente'},
-];
-
-function renderExpedicion(){
-  const c=document.getElementById('exp-docs-container');
-  c.innerHTML=docsExpedicion.map(d=>`
-    <div class="sae-doc">
-      <span class="badge ${d.estado==='ok'?'b-ok':d.estado==='pendiente'?'b-pend':'b-alert'}">${d.estado==='ok'?'OK':d.estado==='pendiente'?'Pendiente':'Urgente'}</span>
-      <div style="flex:1">
-        <div style="font-size:12px;font-weight:600">${d.nombre}</div>
-        <div style="font-size:10px;color:var(--text3)">${d.ref}</div>
-      </div>
-      <div style="display:flex;gap:6px">
-        ${d.estado==='ok'?`<button class="btn btn-gold btn-sm"><i class="ti ti-download"></i> Descargar</button>`:`<button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-exp-${d.id}').click()"><i class="ti ti-upload"></i> Subir firmado</button><input type="file" id="upload-exp-${d.id}" style="display:none" onchange="subirDocExp(this,'${d.id}','${d.nombre}')"/>`}
-      </div>
-    </div>`).join('');
-}
-
-async function subirDocExp(input,docId,nombre){
-  const file=input.files[0];if(!file)return;
-  const path=`sae/expediciones/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre,categoria:'SAE_Expedicion',url:urlData.publicUrl,descripcion:file.name});
-  toast('✓ Documento SAE subido: '+nombre);
-  input.value='';
-  const d=docsExpedicion.find(x=>x.id===docId);
-  if(d)d.estado='ok';
-  renderExpedicion();
+  const {error}=await db.from('expediciones').insert({lote,cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,certificado_ase:document.getElementById('exp-ase').value,tipo:document.getElementById('exp-tipo')?.value||'real',notas:document.getElementById('exp-notas')?.value||'',estado:'activo'});
+  if(error){toast('Error: '+error.message,false);return;}
+  toast('✓ Expedición creada: '+lote);cerrarModal('modal-nueva-expedicion');cargarExpediciones();
 }
 
 // CALENDARIO
@@ -1385,9 +1497,10 @@ async function guardarEvento(){
   const fecha=document.getElementById('ev-fecha').value;
   const tipo=document.getElementById('ev-tipo').value;
   const descripcion=document.getElementById('ev-desc').value;
+  const id=document.getElementById('ev-id').value;
   if(!fecha||!descripcion){toast('Completa fecha y descripción',false);return;}
-  await db.from('eventos_calendario').insert({fecha,tipo,descripcion});
-  toast('✓ Evento guardado');
+  if(id){await db.from('eventos_calendario').update({fecha,tipo,descripcion}).eq('id',id);toast('✓ Evento actualizado');}
+  else{await db.from('eventos_calendario').insert({fecha,tipo,descripcion});toast('✓ Evento guardado');}
   cerrarModal('modal-cal');
   cargarEventos();
 }
@@ -1423,30 +1536,50 @@ function renderCalendario(eventos=[]){
     d.className='cal-day'+(esHoy?' today':'');
     const fechaStr=`${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
     const evsDia=eventos.filter(e=>e.fecha===fechaStr);
-    d.innerHTML=`<div class="cal-day-num">${dia}</div>${evsDia.map(e=>`<div class="cal-event ev-${e.tipo}">${e.descripcion.substring(0,15)}</div>`).join('')}`;
+    d.innerHTML=`<div class="cal-day-num">${dia}</div>${evsDia.map(e=>`<div class="cal-event ev-${e.tipo}" onclick="event.stopPropagation();editarEvento(${JSON.stringify(e)})">${e.descripcion.substring(0,15)}</div>`).join('')}`;
     d.onclick=()=>{document.getElementById('ev-fecha').value=fechaStr;abrirModal('modal-cal');};
     grid.appendChild(d);
   }
 }
 
 function cambiarMes(dir){calFecha=new Date(calFecha.getFullYear(),calFecha.getMonth()+dir,1);cargarEventos();}
-function abrirModalCal(){document.getElementById('ev-fecha').value=today.toISOString().split('T')[0];abrirModal('modal-cal');}
+function abrirModalCal(){
+  document.getElementById('ev-id').value='';
+  document.getElementById('ev-fecha').value=today.toISOString().split('T')[0];
+  document.getElementById('ev-desc').value='';
+  document.getElementById('btn-eliminar-evento').style.display='none';
+  abrirModal('modal-cal');
+}
+function editarEvento(e){
+  document.getElementById('ev-id').value=e.id;
+  document.getElementById('ev-fecha').value=e.fecha;
+  document.getElementById('ev-tipo').value=e.tipo;
+  document.getElementById('ev-desc').value=e.descripcion;
+  document.getElementById('btn-eliminar-evento').style.display='inline-flex';
+  abrirModal('modal-cal');
+}
+async function eliminarEvento(){
+  const id=document.getElementById('ev-id').value;if(!id)return;
+  if(!confirm('¿Eliminar este evento?'))return;
+  await db.from('eventos_calendario').delete().eq('id',id);
+  toast('Evento eliminado');cerrarModal('modal-cal');cargarEventos();
+}
 
 // PRODUCTOS
 const catalogoProductos=[
-  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',halal:true,desc:'Cecina elaborada con redondo de ternera, salada y curada en secadero natural.'},
-  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',halal:true,desc:'Pierna de cordero curada en secadero natural.'},
+  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',halal:true,desc:'Cecina elaborada con redondo de ternera, salada y curada en secadero natural.'},
+  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'',halal:true,desc:'Pierna de cordero curada en secadero natural.'},
   {cod:'103',nombre:'Pierna de oveja',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'verde',halal:true,desc:'Pierna de oveja curada.'},
-  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'morado',halal:true,desc:'Pierna de pavo curada. Apta para exportación UAE.'},
+  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',halal:true,desc:'Pierna de pavo curada. Apta para exportación UAE.'},
   {cod:'201',nombre:'Salchichón natural',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'blanco',halal:true,desc:'Salchichón halal elaborado con carne de ternera y pavo.'},
-  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verde',halal:true,desc:'Salchichón con pistacho.'},
-  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',halal:true,desc:'Salchichón con almendra.'},
-  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'morado',halal:true,desc:'Salchichón ahumado con humo en polvo.'},
+  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verdiblanco',halal:true,desc:'Salchichón con pistacho.'},
+  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',halal:true,desc:'Salchichón con almendra.'},
+  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'verde',halal:true,desc:'Salchichón ahumado con humo en polvo.'},
   {cod:'205',nombre:'Salchichón higos',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',halal:true,desc:'Salchichón con higos.'},
-  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',halal:true,desc:'Salchichón con nueces.'},
-  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'verde',halal:true,desc:'Chorizo halal dulce.'},
+  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'morado',halal:true,desc:'Salchichón con nueces.'},
+  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'azul',halal:true,desc:'Chorizo halal dulce.'},
   {cod:'302',nombre:'Chorizo picante',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'rojo',halal:true,desc:'Chorizo halal picante. Apto exportación UAE.'},
-  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojo',halal:true,desc:'Sobrasada halal picante.'},
+  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojiamarillo',halal:true,desc:'Sobrasada halal picante.'},
   {cod:'501',nombre:'Fuet',familia:'Fuet',proceso:'Embutido',maduracion:'30 días',color:'blanco',halal:true,desc:'Fuet halal.'},
 ];
 
@@ -1511,33 +1644,113 @@ async function subirFichaTecnica(input,nombreProd){
   input.value='';
 }
 
+// NO CONFORMIDADES
+function abrirModalNC(data=null){
+  document.getElementById('nc-modal-titulo').textContent=data?'Editar no conformidad':'Nueva no conformidad';
+  document.getElementById('nc-id').value=data?.id||'';
+  document.getElementById('nc-fecha').value=data?.fecha||new Date().toISOString().split('T')[0];
+  document.getElementById('nc-area').value=data?.area||'produccion';
+  document.getElementById('nc-descripcion').value=data?.descripcion||'';
+  document.getElementById('nc-gravedad').value=data?.gravedad||'leve';
+  document.getElementById('nc-responsable').value=data?.responsable||'';
+  document.getElementById('nc-fecha-limite').value=data?.fecha_limite||'';
+  document.getElementById('nc-accion').value=data?.accion_correctiva||'';
+  document.getElementById('nc-estado').value=data?.estado||'abierta';
+  abrirModal('modal-nc');
+}
+async function guardarNC(){
+  const descripcion=document.getElementById('nc-descripcion').value;
+  if(!descripcion){toast('Introduce la descripción',false);return;}
+  const id=document.getElementById('nc-id').value;
+  const datos={fecha:document.getElementById('nc-fecha').value,descripcion,area:document.getElementById('nc-area').value,gravedad:document.getElementById('nc-gravedad').value,responsable:document.getElementById('nc-responsable').value,accion_correctiva:document.getElementById('nc-accion').value,fecha_limite:document.getElementById('nc-fecha-limite').value||null,estado:document.getElementById('nc-estado').value};
+  if(id){await db.from('no_conformidades').update(datos).eq('id',id);}
+  else{await db.from('no_conformidades').insert(datos);}
+  toast('✓ No conformidad guardada');cerrarModal('modal-nc');cargarNoConformidades();
+}
+async function cargarNoConformidades(){
+  const {data}=await db.from('no_conformidades').select('*').order('created_at',{ascending:false});
+  const t=document.getElementById('tabla-nc');
+  if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin no conformidades</td></tr>';return;}
+  const gravBadge={leve:'<span class="badge b-ok">Leve</span>',grave:'<span class="badge b-warn">Grave</span>',critica:'<span class="badge b-alert">Crítica</span>'};
+  const estBadge={abierta:'<span class="badge b-alert">Abierta</span>',en_proceso:'<span class="badge b-pend">En proceso</span>',cerrada:'<span class="badge b-ok">Cerrada</span>'};
+  t.innerHTML=data.map(nc=>`<tr>
+    <td style="font-weight:700;color:var(--dorado3)">${nc.numero||'—'}</td>
+    <td>${nc.fecha||'—'}</td>
+    <td><span class="badge b-gray">${nc.area}</span></td>
+    <td style="max-width:200px;font-size:11px">${nc.descripcion}</td>
+    <td>${gravBadge[nc.gravedad]||nc.gravedad}</td>
+    <td>${nc.responsable||'—'}</td>
+    <td>${estBadge[nc.estado]||nc.estado}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="btn btn-edit btn-sm" onclick='abrirModalNC(${JSON.stringify(nc).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
+      <button class="btn btn-danger btn-sm" onclick="borrar('no_conformidades','${nc.id}',cargarNoConformidades)"><i class="ti ti-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+// EDITAR ELABORACIONES
+function abrirModalEditarElab(e){
+  document.getElementById('edit-elab-id').value=e.id;
+  document.getElementById('edit-elab-lote').value=e.lote;
+  document.getElementById('edit-elab-estado').value=e.estado||'secadero';
+  document.getElementById('edit-elab-uds').value=e.unidades||'';
+  document.getElementById('edit-elab-peso').value=e.peso_final||'';
+  document.getElementById('edit-elab-mad').value=e.maduracion||'';
+  const cs=document.getElementById('edit-elab-color');
+  for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===e.color){cs.selectedIndex=i;break;}}
+  const ps=document.getElementById('edit-elab-proceso');
+  for(let i=0;i<ps.options.length;i++){if(ps.options[i].textContent===e.proceso){ps.selectedIndex=i;break;}}
+  abrirModal('modal-editar-elab');
+}
+async function guardarEditarElab(){
+  const id=document.getElementById('edit-elab-id').value;
+  const datos={estado:document.getElementById('edit-elab-estado').value,unidades:parseInt(document.getElementById('edit-elab-uds').value)||0,peso_final:parseFloat(document.getElementById('edit-elab-peso').value)||0,maduracion:parseInt(document.getElementById('edit-elab-mad').value)||30,color:document.getElementById('edit-elab-color').value,proceso:document.getElementById('edit-elab-proceso').value};
+  const {error}=await db.from('elaboraciones').update(datos).eq('id',id);
+  if(error){toast('Error: '+error.message,false);return;}
+  toast('✓ Elaboración actualizada');cerrarModal('modal-editar-elab');cargarElaboraciones();
+}
+
 // ETIQUETAS
-function generarEtiqueta(){
-  const sel=document.getElementById('et-lote').value.split('|');
-  const[lote,cod,nombre,peso,uds,mad,color]=sel;
+function abrirEtiqueta(e){
   const hoy=new Date().toLocaleDateString('es-ES');
+  const mad=e.maduracion?(e.maduracion>=60?Math.round(e.maduracion/30)+' meses':e.maduracion+' días'):'30 días';
   const html=`<div style="background:#fff;border:1px dashed #ccc;border-radius:6px;overflow:hidden;font-family:sans-serif">
     <div style="background:#141414;padding:8px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700;color:#fff;letter-spacing:.1em">SABOR <span style="color:#C9A84C">NAZARÍ</span></span><span style="font-size:8px;color:#C9A84C;border:1px solid rgba(201,168,76,.4);padding:1px 6px;border-radius:3px">HALAL</span></div>
-    <div style="padding:8px 12px 5px;border-bottom:1px solid #eee"><div style="font-size:13px;font-weight:700">${nombre}</div><div style="font-size:9px;color:#888">Ref. ${cod} · ${colores[color]||''} ${color}</div></div>
-    <div style="background:rgba(201,168,76,.08);padding:7px 12px;border-bottom:1px solid rgba(201,168,76,.2)"><div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div><div style="font-size:14px;font-weight:700;color:#8a6a1e;font-family:monospace">${lote}</div></div>
+    <div style="padding:8px 12px 5px;border-bottom:1px solid #eee"><div style="font-size:13px;font-weight:700">${e.producto||''}</div><div style="font-size:9px;color:#888">Ref. ${e.codigo||''} · ${colores[e.color]||''} ${e.color||''}</div></div>
+    <div style="background:rgba(201,168,76,.08);padding:7px 12px;border-bottom:1px solid rgba(201,168,76,.2)"><div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div><div style="font-size:14px;font-weight:700;color:#8a6a1e;font-family:monospace">${e.lote}</div></div>
     <div style="padding:6px 12px;border-bottom:1px solid #eee;font-size:9px">
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">${hoy}</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">${peso} kg</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">${uds} uds</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">${e.fecha||hoy}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">${e.peso_final||0} kg</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">${e.unidades||0} uds</span></div>
       <div style="display:flex;justify-content:space-between"><span style="color:#888">Maduración</span><span style="font-weight:600">${mad}</span></div>
     </div>
     <div style="padding:5px 12px;font-size:8px;color:#888">Sabor Nazarí · Huéscar, Granada · APPCC B.6-AN01</div>
   </div>`;
-  document.getElementById('et-preview').style.display='block';
-  ['et-1','et-2','et-3','et-4'].forEach(id=>document.getElementById(id).innerHTML=html);
+  ['modal-et-1','modal-et-2','modal-et-3','modal-et-4'].forEach(id=>document.getElementById(id).innerHTML=html);
+  abrirModal('modal-etiqueta');
 }
 
-// ETIQUETAS
-async function cargarEtiquetas(){
-  const {data}=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(50);
-  const sel=document.getElementById('et-lote');
-  if(!data||!data.length){sel.innerHTML='<option value="">Sin elaboraciones registradas</option>';return;}
-  sel.innerHTML=data.map(e=>{const mad=e.maduracion?(e.maduracion>=60?Math.round(e.maduracion/30)+' meses':e.maduracion+' días'):'30 días';const val=`${e.lote}|${e.codigo}|${e.producto}|${e.peso_final||0}|${e.unidades||0}|${mad}|${e.color||'blanco'}`;return `<option value="${val}">${e.lote} — ${e.producto}</option>`;}).join('');
+// SUBIDA INTELIGENTE
+function actualizarSubcat(){
+  const cat=document.getElementById('sdoc-cat').value;
+  const extra=document.getElementById('sdoc-extra');
+  if(cat==='SAE / Exportación'){extra.style.display='block';extra.innerHTML='<label>Expedición (opcional)</label><input type="text" id="sdoc-exp" placeholder="Ej: EXP-2026-001"/>';}
+  else if(cat==='Halal'){extra.style.display='block';extra.innerHTML='<label>Tipo</label><select id="sdoc-halal-tipo"><option value="Certificado propio">Certificado propio</option><option value="Auditoría">Auditoría</option><option value="Proveedor">Proveedor</option></select>';}
+  else{extra.style.display='none';}
+}
+async function subirDocumentoInteligente(input){
+  const file=input.files[0];if(!file)return;
+  const nombre=document.getElementById('sdoc-nombre').value||file.name;
+  const cat=document.getElementById('sdoc-cat').value;
+  let path='docs/';
+  if(cat==='APPCC')path='appcc/';else if(cat==='SAE / Exportación')path='sae/';else if(cat==='Fichas técnicas')path='fichas/';else if(cat==='Halal')path='halal/';else if(cat==='Fichaje')path='fichaje/';else if(cat==='Proveedores')path='proveedores/';
+  path+=Date.now()+'_'+file.name.replace(/\s+/g,'_');
+  cerrarModal('modal-subir-doc');
+  await db.storage.from('documentos').upload(path,file);
+  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
+  await db.from('documentos').insert({nombre,categoria:cat,url:urlData.publicUrl,descripcion:file.name});
+  toast('✓ Documento subido: '+nombre);input.value='';document.getElementById('sdoc-nombre').value='';
+  cargarDocumentos();
 }
 
 // BORRAR GENÉRICO
@@ -1551,29 +1764,27 @@ async function borrar(tabla,id,callback){
 
 // DASHBOARD
 async function cargarDashboard(){
-  const [{data:elabs},{data:temps},{count:totalElabs},{count:totalTemps},{data:docs},{data:clis}]=await Promise.all([
-    db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(3),
-    db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(1),
-    db.from('elaboraciones').select('*',{count:'exact',head:true}),
-    db.from('temperaturas').select('*',{count:'exact',head:true}),
-    db.from('documentos').select('id'),
-    db.from('clientes').select('id')
-  ]);
-  if(totalElabs!=null)document.getElementById('d-elab').textContent=totalElabs;
-  if(totalTemps!=null)document.getElementById('d-temp').textContent=totalTemps;
-  if(elabs){const t=document.getElementById('dash-elabs');t.innerHTML=elabs.length?elabs.map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.producto}</td><td><span class="badge b-purple">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin elaboraciones</td></tr>';}
-  if(temps&&temps.length){const r=temps[0];if(r.cam2!=null)document.getElementById('dt-c2').textContent=r.cam2+'°C';if(r.cam5!=null)document.getElementById('dt-c5').textContent=r.cam5+'°C';if(r.cam6!=null)document.getElementById('dt-c6').textContent=r.cam6+'°C';if(r.obrador!=null)document.getElementById('dt-ob').textContent=r.obrador+'°C';}
-  if(docs)document.getElementById('d-docs').textContent=docs.length;
-  if(clis)document.getElementById('d-cli').textContent=clis.length;
+  const {data:expsPend}=await db.from('expediciones').select('lote,cliente,estado').neq('estado','finalizada').catch(()=>({data:null}));
+  const notif=document.getElementById('dash-notif');
+  if(expsPend&&expsPend.length){
+    notif.style.display='flex';
+    document.getElementById('dash-notif-msg').textContent=expsPend.length+' expedición(es) activa(s): '+expsPend.map(x=>x.lote||x.cliente).join(' · ');
+  } else {
+    notif.style.display='none';
+  }
 }
 
 // INIT
 async function init(){
   await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(()=>{});
   genLote();
-  cargarDashboard();
+  const savedSection=localStorage.getItem('sn-seccion');
+  if(savedSection&&document.getElementById('screen-'+savedSection)){
+    navBtn(savedSection);
+  } else {
+    cargarDashboard();
+  }
   renderCalendario();
-  renderExpedicion();
 }
 
 init();
