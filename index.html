@@ -1181,7 +1181,7 @@ async function cargarDocsAppcc(){
     const el=document.getElementById('appcc-docs-'+f.id);
     if(!el)return;
     const docs=data.filter(d=>d.categoria==='APPCC_'+f.nombre);
-    el.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${new Date(d.created_at).toLocaleDateString('es-ES')}</div></div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',renderAppcc)"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:11px;color:var(--text3);padding:8px">Sin documentos subidos</div>';
+    el.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${new Date(d.created_at).toLocaleDateString('es-ES')}</div></div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(&quot;documentos&quot;,&quot;${d.id}&quot;,renderAppcc)"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:11px;color:var(--text3);padding:8px">Sin documentos subidos</div>';
   });
   const regsEl=document.getElementById('appcc-registros-lista');
   if(!regsEl)return;
@@ -1200,7 +1200,7 @@ async function cargarDocsAppcc(){
         ${mes?`<span class="badge b-gray" style="font-size:9px;margin-right:4px">${mes}</span>`:''}
         <div style="flex:1;font-size:11px">${fname}</div>
         <a href="${d.url}" target="_blank" class="btn btn-sec btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a>
-        <button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>{renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="borrar(&quot;documentos&quot;,&quot;${d.id}&quot;,()=>{renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>
       </div>`;}).join('')}
     </div>`;
   }).join('');
