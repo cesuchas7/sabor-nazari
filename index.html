@@ -26,13 +26,12 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg3)}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
-
-.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--negro);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--negro);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;overflow-y:auto}
 .sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
 .sb-logo{font-size:15px;font-weight:700;color:#fff;letter-spacing:.12em}
 .sb-logo span{color:var(--dorado)}
 .sb-tagline{font-size:9px;color:#444;margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
-.sb-nav{flex:1;padding:6px 0;overflow-y:auto}
+.sb-nav{flex:1;padding:6px 0}
 .sb-cat{font-size:9px;color:var(--dorado);font-weight:700;letter-spacing:.12em;padding:12px 16px 4px;text-transform:uppercase;opacity:.8}
 .sb-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;color:#777;cursor:pointer;border-left:2px solid transparent;transition:all .15s}
 .sb-item:hover{color:#ddd;background:#1a1a1a}
@@ -42,36 +41,31 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .sb-user{font-size:12px;font-weight:600;color:#ddd}
 .sb-role{font-size:10px;color:#444;margin-top:1px}
 .sb-ver{font-size:9px;color:#333;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04)}
-
 .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
 .page-title{font-size:15px;font-weight:700;color:var(--negro)}
 .page-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .content{padding:20px 24px;flex:1}
 .screen{display:none}.screen.active{display:block}
-
-.btn{border:none;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn{border:none;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;text-decoration:none}
 .btn-gold{background:var(--dorado);color:var(--negro)}.btn-gold:hover{background:var(--dorado2)}
 .btn-dark{background:var(--negro);color:#fff}.btn-dark:hover{background:var(--negro3)}
 .btn-sec{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}.btn-sec:hover{background:var(--bg4)}
 .btn-sm{padding:5px 10px;font-size:11px}
 .btn-danger{background:var(--red-bg);color:var(--red-text);border:1px solid rgba(192,57,43,0.2)}
 .btn-edit{background:var(--blue-bg);color:var(--blue-text);border:1px solid rgba(26,86,219,0.2)}
-
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 .card-title{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.06em}
 .card-title i{font-size:16px;color:var(--dorado)}
-
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 label{font-size:11px;color:var(--text2);display:block;margin-bottom:4px;font-weight:600}
 input,select,textarea{width:100%;font-size:12px;padding:8px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);outline:none;transition:border .15s;font-family:inherit}
 input:focus,select:focus,textarea:focus{border-color:var(--dorado);box-shadow:0 0 0 2px var(--dorado-bg)}
 textarea{resize:none;height:70px}
 .sep{height:1px;background:var(--border);margin:14px 0}
-
 .badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;white-space:nowrap;display:inline-block}
 .b-ok{background:var(--green-bg);color:var(--green-text)}
 .b-pend{background:var(--amber-bg);color:var(--amber-text)}
@@ -81,95 +75,67 @@ textarea{resize:none;height:70px}
 .b-gray{background:var(--gray-bg);color:var(--gray-text)}
 .b-purple{background:var(--purple-bg);color:var(--purple-text)}
 .b-blue{background:var(--blue-bg);color:var(--blue-text)}
-
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{text-align:left;font-size:10px;font-weight:700;color:var(--text3);padding:7px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.05em;background:var(--bg3)}
 td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--bg3)}
-
-.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;text-align:center;transition:all .15s}
-.metric:hover{border-color:var(--dorado-border)}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
 .metric-val{font-size:28px;font-weight:700;color:var(--negro);line-height:1}
 .metric-label{font-size:11px;color:var(--text3);margin-top:5px}
-.metric-icon{font-size:20px;color:var(--dorado);margin-bottom:6px}
-
+.metric-icon{font-size:22px;color:var(--dorado);margin-bottom:8px}
 .lote-box{background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:14px 16px;margin:12px 0}
 .lote-cod{font-size:22px;font-weight:700;color:var(--dorado3);font-family:monospace;letter-spacing:.06em}
 .lote-sub{font-size:11px;color:var(--dorado);margin-top:3px}
-
-.notif{display:flex;align-items:center;gap:10px;background:var(--amber-bg);border:1px solid rgba(201,168,76,0.4);border-radius:var(--radius);padding:11px 16px;font-size:12px;color:var(--amber-text);margin-bottom:16px}
-
 .upload-area{border:2px dashed var(--dorado-border);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--dorado-bg)}
 .upload-area:hover{border-color:var(--dorado)}
 .upload-area i{font-size:28px;color:var(--dorado);margin-bottom:6px;display:block}
 .upload-area p{font-size:12px;color:var(--text2)}
 .upload-area input[type=file]{display:none}
-
+.doc-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
 .folder{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:8px;overflow:hidden}
 .folder-header{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;transition:background .15s;user-select:none}
 .folder-header:hover{background:var(--bg3)}
 .folder-title{font-size:13px;font-weight:600;color:var(--negro);flex:1}
-.folder-count{font-size:11px;color:var(--text3)}
 .folder-body{display:none;padding:12px 16px 16px;border-top:1px solid var(--border)}
 .folder-body.open{display:block}
-
-.doc-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px;transition:all .15s}
-.doc-row:hover{border-color:var(--border2)}
-
-.prog-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
-.prog-fill{height:100%;background:var(--dorado);border-radius:2px;transition:width .3s}
-
 .toast{position:fixed;bottom:24px;right:24px;background:var(--negro);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:12px 18px;font-size:12px;color:#fff;z-index:9999;display:none;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
 .toast.show{display:flex}
-
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:var(--bg2);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:650px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
 .modal-title{font-size:15px;font-weight:700;color:var(--negro);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
 .modal-close{cursor:pointer;color:var(--text3);font-size:20px;background:none;border:none;display:flex;align-items:center}
-
+.ing-section{background:var(--bg3);border-radius:var(--radius);padding:12px;margin-bottom:8px}
+.ing-section-title{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.ing-row{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center}
+.ing-row-aux{display:grid;grid-template-columns:2fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center}
+.btn-remove{background:var(--red-bg);color:var(--red-text);border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;flex-shrink:0}
+.temp-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+.temp-nombre{font-size:12px;font-weight:700;color:var(--negro);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.temp-limite{font-size:10px;color:var(--text3);margin-bottom:10px}
+.empty-state{text-align:center;padding:24px;color:var(--text3);font-size:12px;font-style:italic}
 .cal-header-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px}
 .cal-day-name{text-align:center;font-size:10px;font-weight:700;color:var(--text3);padding:4px;text-transform:uppercase}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-day{min-height:72px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:6px;cursor:pointer;transition:all .15s;position:relative}
+.cal-day{min-height:72px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:6px;cursor:pointer;transition:all .15s}
 .cal-day:hover{border-color:var(--dorado-border);background:var(--dorado-bg)}
 .cal-day.today{border-color:var(--dorado);background:var(--dorado-bg)}
 .cal-day.other-month{background:var(--bg3);opacity:.5}
 .cal-day-num{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:3px}
-.cal-event{font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;cursor:pointer}
+.cal-event{font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .ev-produccion{background:#dbeafe;color:#1e40af}
 .ev-auditoria{background:#fce7f3;color:#9d174d}
 .ev-inspeccion{background:#fef3c7;color:#92400e}
 .ev-recepcion{background:#d1fae5;color:#065f46}
 .ev-envio{background:#ede9fe;color:#4c1d95}
 .ev-otro{background:var(--bg4);color:var(--text2)}
-
-.ing-section{background:var(--bg3);border-radius:var(--radius);padding:12px;margin-bottom:8px}
-.ing-section-title{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.ing-row{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center}
-.ing-row-aux{display:grid;grid-template-columns:2fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center}
-.btn-remove{background:var(--red-bg);color:var(--red-text);border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-
-.hora-badge{font-size:13px;font-weight:700;color:var(--dorado3);background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:7px 14px;display:inline-flex;align-items:center;gap:6px;font-family:monospace}
-.temp-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:all .15s}
-.temp-card:hover{border-color:var(--dorado-border)}
-.temp-nombre{font-size:12px;font-weight:700;color:var(--negro);margin-bottom:2px;display:flex;align-items:center;gap:6px}
-.temp-limite{font-size:10px;color:var(--text3);margin-bottom:10px}
-
-.empty-state{text-align:center;padding:24px;color:var(--text3);font-size:12px;font-style:italic}
-.reloj{font-size:36px;font-weight:700;color:var(--dorado3);font-variant-numeric:tabular-nums;font-family:monospace;text-align:center;margin:10px 0}
-
-.perfil-header{background:linear-gradient(135deg,var(--negro),var(--negro3));border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;color:#fff}
-.perfil-nombre{font-size:18px;font-weight:700;color:#fff}
-.perfil-cargo{font-size:12px;color:#aaa;margin-top:3px}
-
-.sae-plantilla{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
-.sae-doc{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
-.dash-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:12px}
-.dash-btn:hover{border-color:var(--dorado);background:var(--dorado-bg);transform:translateY(-2px);box-shadow:0 4px 12px rgba(201,168,76,0.15)}
-.dash-btn i{font-size:32px;color:var(--dorado)}
-.dash-btn span{font-size:13px;font-weight:600;color:var(--text)}
+.quick-btn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;cursor:pointer;transition:all .2s}
+.quick-btn:hover{border-color:var(--dorado);background:var(--dorado-bg)}
+.quick-btn i{font-size:28px;color:var(--dorado);margin-bottom:10px;display:block}
+.quick-btn span{font-size:12px;font-weight:600;color:var(--negro)}
+.prog-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px}
+.prog-fill{height:100%;background:var(--dorado);border-radius:2px;transition:width .3s}
 </style>
 </head>
 <body>
@@ -179,7 +145,7 @@ tbody tr:hover td{background:var(--bg3)}
 <!-- MODALES -->
 <div class="modal-overlay" id="modal-cal">
   <div class="modal">
-    <div class="modal-title">Nuevo evento <button class="modal-close" onclick="cerrarModal('modal-cal')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-title">Evento de calendario <button class="modal-close" onclick="cerrarModal('modal-cal')"><i class="ti ti-x"></i></button></div>
     <input type="hidden" id="ev-id"/>
     <div class="grid2" style="margin-bottom:10px">
       <div><label>Fecha</label><input type="date" id="ev-fecha"/></div>
@@ -187,7 +153,7 @@ tbody tr:hover td{background:var(--bg3)}
     </div>
     <div style="margin-bottom:14px"><label>Descripción</label><input type="text" id="ev-desc" placeholder="Describe el evento..."/></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-danger" id="btn-eliminar-evento" style="display:none" onclick="eliminarEvento()"><i class="ti ti-trash"></i> Eliminar</button>
+      <button class="btn btn-danger btn-sm" id="btn-borrar-ev" style="display:none" onclick="borrarEvento()">Borrar</button>
       <button class="btn btn-sec" onclick="cerrarModal('modal-cal')">Cancelar</button>
       <button class="btn btn-gold" onclick="guardarEvento()"><i class="ti ti-check"></i> Guardar</button>
     </div>
@@ -211,7 +177,7 @@ tbody tr:hover td{background:var(--bg3)}
       <div><label>Teléfono</label><input type="text" id="prov-tel" placeholder="600 000 000"/></div>
       <div><label>Email</label><input type="text" id="prov-email" placeholder="contacto@empresa.com"/></div>
     </div>
-    <div class="grid2" style="margin-bottom:10px">
+    <div class="grid2" style="margin-bottom:14px">
       <div><label>SAE</label><select id="prov-sae"><option value="na">N/A</option><option value="sin_sae">Sin SAE</option><option value="nivel1">Nivel 1</option><option value="nivel2">Nivel 2</option></select></div>
       <div><label>Estado</label><select id="prov-estado"><option value="homologado">Homologado</option><option value="pendiente">Pendiente</option><option value="suspendido">Suspendido</option></select></div>
     </div>
@@ -232,18 +198,18 @@ tbody tr:hover td{background:var(--bg3)}
       <div><label>DNI / NIE</label><input type="text" id="trab-dni" placeholder="00000000X"/></div>
     </div>
     <div class="grid2" style="margin-bottom:10px">
-      <div><label>Cargo / Puesto</label><input type="text" id="trab-cargo" placeholder="Ej: Operario de producción"/></div>
+      <div><label>Cargo</label><input type="text" id="trab-cargo" placeholder="Ej: Operario"/></div>
       <div><label>Teléfono</label><input type="tel" id="trab-tel" placeholder="600 000 000"/></div>
     </div>
     <div class="grid2" style="margin-bottom:10px">
       <div><label>Email</label><input type="email" id="trab-email" placeholder="email@ejemplo.com"/></div>
       <div><label>Fecha de alta</label><input type="date" id="trab-alta"/></div>
     </div>
-    <div class="grid2" style="margin-bottom:10px">
+    <div class="grid2" style="margin-bottom:14px">
       <div><label>Nº Seguridad Social</label><input type="text" id="trab-ss" placeholder="000/00000000/00"/></div>
       <div><label>Estado</label><select id="trab-estado"><option value="activo">Activo</option><option value="baja">Baja temporal</option><option value="inactivo">Inactivo</option></select></div>
     </div>
-    <div style="margin-bottom:14px"><label>Observaciones</label><textarea id="trab-obs" placeholder="Notas adicionales..."></textarea></div>
+    <div style="margin-bottom:14px"><label>Observaciones</label><textarea id="trab-obs" placeholder="Notas..."></textarea></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-sec" onclick="cerrarModal('modal-trabajador')">Cancelar</button>
       <button class="btn btn-gold" onclick="guardarTrabajador()"><i class="ti ti-check"></i> Guardar</button>
@@ -264,7 +230,7 @@ tbody tr:hover td{background:var(--bg3)}
       <div><label>Teléfono</label><input type="tel" id="cli-tel" placeholder="600 000 000"/></div>
       <div><label>Email</label><input type="email" id="cli-email" placeholder="contacto@empresa.com"/></div>
     </div>
-    <div class="grid2" style="margin-bottom:10px">
+    <div class="grid2" style="margin-bottom:14px">
       <div><label>País</label><input type="text" id="cli-pais" placeholder="España"/></div>
       <div><label>Tipo</label><select id="cli-tipo"><option>Distribuidor</option><option>Mayorista</option><option>Minorista</option><option>Exportación</option><option>Maquila</option></select></div>
     </div>
@@ -276,55 +242,58 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-perfil-trabajador">
-  <div class="modal" style="max-width:700px">
-    <div class="modal-title"><span id="perfil-trab-nombre">Perfil trabajador</span><button class="modal-close" onclick="cerrarModal('modal-perfil-trabajador')"><i class="ti ti-x"></i></button></div>
-    <div id="perfil-trab-contenido"></div>
+<div class="modal-overlay" id="modal-expedicion">
+  <div class="modal">
+    <div class="modal-title">Nueva expedición SAE <button class="modal-close" onclick="cerrarModal('modal-expedicion')"><i class="ti ti-x"></i></button></div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Lote</label><input type="text" id="exp-lote" placeholder="Ej: E104-0434725"/></div>
+      <div><label>Cliente</label><input type="text" id="exp-cliente" placeholder="Ej: Alhambra Foods S.L."/></div>
+    </div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Tipo</label><select id="exp-tipo"><option value="real">Expedición real</option><option value="simulacro">Simulacro</option></select></div>
+      <div><label>País destino</label><select id="exp-pais"><option>UAE</option><option>Arabia Saudí</option><option>Qatar</option><option>Kuwait</option><option>Otro</option></select></div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div><label>Fecha prevista</label><input type="date" id="exp-fecha"/></div>
+      <div><label>Nº DAC</label><input type="text" id="exp-dac" placeholder="DAC-2026-XXX"/></div>
+    </div>
+    <div style="margin-bottom:14px"><label>Notas</label><textarea id="exp-notas" placeholder="Observaciones..."></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-expedicion')">Cancelar</button>
+      <button class="btn btn-gold" onclick="crearExpedicion()"><i class="ti ti-check"></i> Crear</button>
+    </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-nueva-expedicion">
-  <div class="modal">
-    <div class="modal-title">Nueva expedición SAE <button class="modal-close" onclick="cerrarModal('modal-nueva-expedicion')"><i class="ti ti-x"></i></button></div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Lote de elaboración</label><input type="text" id="exp-lote" placeholder="Ej: E104-0434725"/></div>
-      <div><label>Cliente / Trader</label><input type="text" id="exp-cliente" placeholder="Ej: Alhambra Foods S.L."/></div>
-    </div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>País destino</label><select id="exp-pais"><option>UAE — Emiratos Árabes Unidos</option><option>Arabia Saudí</option><option>Qatar</option><option>Kuwait</option><option>Otro</option></select></div>
-      <div><label>Fecha prevista de salida</label><input type="date" id="exp-fecha"/></div>
-    </div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Nº DAC</label><input type="text" id="exp-dac" placeholder="DAC-2026-XXX"/></div>
-      <div><label>Certificado ASE</label><input type="text" id="exp-ase" value="ASE-3187"/></div>
-    </div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Tipo</label><select id="exp-tipo"><option value="real">Real</option><option value="simulacro">Simulacro</option></select></div>
-      <div><label>Notas</label><input type="text" id="exp-notas" placeholder="Observaciones..."/></div>
-    </div>
+<div class="modal-overlay" id="modal-etiqueta">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-title">Etiqueta A6 <button class="modal-close" onclick="cerrarModal('modal-etiqueta')"><i class="ti ti-x"></i></button></div>
+    <div id="etiqueta-contenido" style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:14px;min-height:200px"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-sec" onclick="cerrarModal('modal-nueva-expedicion')">Cancelar</button>
-      <button class="btn btn-gold" onclick="crearExpedicion()"><i class="ti ti-check"></i> Crear expediente</button>
+      <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir A6</button>
+      <button class="btn btn-sec" onclick="cerrarModal('modal-etiqueta')">Cerrar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-nc">
   <div class="modal">
-    <div class="modal-title"><span id="nc-modal-titulo">Nueva no conformidad</span><button class="modal-close" onclick="cerrarModal('modal-nc')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-title"><span id="nc-modal-titulo">No conformidad</span><button class="modal-close" onclick="cerrarModal('modal-nc')"><i class="ti ti-x"></i></button></div>
     <input type="hidden" id="nc-id"/>
     <div class="grid2" style="margin-bottom:10px">
-      <div><label>Fecha</label><input type="date" id="nc-fecha"/></div>
-      <div><label>Área</label><select id="nc-area"><option value="produccion">Producción</option><option value="almacen">Almacén</option><option value="expedicion">Expedición</option><option value="limpieza">Limpieza</option><option value="otro">Otro</option></select></div>
+      <div><label>Fecha detección</label><input type="date" id="nc-fecha"/></div>
+      <div><label>Área</label><select id="nc-area"><option value="">Seleccionar...</option><option>Producción</option><option>Almacén</option><option>Expedición</option><option>Limpieza</option><option>Otro</option></select></div>
     </div>
-    <div style="margin-bottom:10px"><label>Descripción</label><textarea id="nc-descripcion" placeholder="Describe la no conformidad..."></textarea></div>
-    <div class="grid3" style="margin-bottom:10px">
-      <div><label>Gravedad</label><select id="nc-gravedad"><option value="leve">Leve</option><option value="grave">Grave</option><option value="critica">Crítica</option></select></div>
-      <div><label>Responsable</label><input type="text" id="nc-responsable" placeholder="Nombre"/></div>
-      <div><label>Fecha límite</label><input type="date" id="nc-fecha-limite"/></div>
+    <div style="margin-bottom:10px"><label>Descripción</label><textarea id="nc-desc" placeholder="Describe la no conformidad..."></textarea></div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Gravedad</label><select id="nc-gravedad"><option value="">Seleccionar...</option><option value="leve">Leve</option><option value="grave">Grave</option><option value="critica">Crítica</option></select></div>
+      <div><label>Responsable</label><input type="text" id="nc-resp" placeholder="Nombre"/></div>
     </div>
-    <div style="margin-bottom:10px"><label>Acción correctiva</label><textarea id="nc-accion" placeholder="Acción correctiva a tomar..."></textarea></div>
-    <div style="margin-bottom:14px"><label>Estado</label><select id="nc-estado"><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
+    <div style="margin-bottom:10px"><label>Acción correctiva</label><textarea id="nc-accion" placeholder="Acción propuesta..."></textarea></div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div><label>Fecha límite cierre</label><input type="date" id="nc-limite"/></div>
+      <div><label>Estado</label><select id="nc-estado"><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
+    </div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-sec" onclick="cerrarModal('modal-nc')">Cancelar</button>
       <button class="btn btn-gold" onclick="guardarNC()"><i class="ti ti-check"></i> Guardar</button>
@@ -332,110 +301,37 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-editar-elab">
-  <div class="modal">
-    <div class="modal-title">Editar elaboración <button class="modal-close" onclick="cerrarModal('modal-editar-elab')"><i class="ti ti-x"></i></button></div>
-    <input type="hidden" id="edit-elab-id"/>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Lote</label><input type="text" id="edit-elab-lote" readonly style="background:var(--bg3);color:var(--text3)"/></div>
-      <div><label>Estado</label><select id="edit-elab-estado"><option value="secadero">Secadero</option><option value="expedicion">Expedición</option><option value="vendido">Vendido</option><option value="incidencia">Incidencia</option></select></div>
-    </div>
-    <div class="grid3" style="margin-bottom:10px">
-      <div><label>Unidades</label><input type="number" id="edit-elab-uds"/></div>
-      <div><label>Peso final (kg)</label><input type="number" step="0.1" id="edit-elab-peso"/></div>
-      <div><label>Días maduración</label><input type="number" id="edit-elab-mad"/></div>
-    </div>
-    <div class="grid2" style="margin-bottom:14px">
-      <div><label>Color</label>
-        <select id="edit-elab-color">
-          <option value="blanco">⚪ Blanco</option><option value="rojo">🔴 Rojo</option><option value="azul">🔵 Azul</option>
-          <option value="verde">🟢 Verde</option><option value="amarillo">🟡 Amarillo</option><option value="morado">🟣 Morado</option>
-          <option value="verdiblanco">🟢⚪ Verdiblanco</option><option value="rojiblanco">🔴⚪ Rojiblanco</option>
-          <option value="rojiamarillo">🔴🟡 Rojiamarillo</option><option value="malla">🟫 Malla plástico</option>
-        </select>
-      </div>
-      <div><label>Proceso</label><select id="edit-elab-proceso"><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-sec" onclick="cerrarModal('modal-editar-elab')">Cancelar</button>
-      <button class="btn btn-gold" onclick="guardarEditarElab()"><i class="ti ti-check"></i> Guardar cambios</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-etiqueta">
-  <div class="modal" style="max-width:500px">
-    <div class="modal-title">Etiqueta <button class="modal-close" onclick="cerrarModal('modal-etiqueta')"><i class="ti ti-x"></i></button></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg3);border-radius:var(--radius);margin-bottom:14px">
-      <div id="modal-et-1"></div><div id="modal-et-2"></div>
-      <div id="modal-et-3"></div><div id="modal-et-4"></div>
-    </div>
-    <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir 4 etiquetas</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-subir-doc">
-  <div class="modal">
-    <div class="modal-title">Subir documento <button class="modal-close" onclick="cerrarModal('modal-subir-doc')"><i class="ti ti-x"></i></button></div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Nombre</label><input type="text" id="sdoc-nombre" placeholder="Nombre del documento"/></div>
-      <div><label>Categoría</label>
-        <select id="sdoc-cat" onchange="actualizarSubcat()">
-          <option value="APPCC">APPCC</option>
-          <option value="SAE / Exportación">SAE / Exportación</option>
-          <option value="Fichas técnicas">Fichas técnicas</option>
-          <option value="Halal">Halal</option>
-          <option value="Proveedores">Proveedores</option>
-          <option value="Legal">Legal</option>
-          <option value="Fichaje">Fichaje</option>
-          <option value="Otro">Otro</option>
-        </select>
-      </div>
-    </div>
-    <div id="sdoc-extra" style="display:none;margin-bottom:10px"></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-sec" onclick="cerrarModal('modal-subir-doc')">Cancelar</button>
-      <button class="btn btn-gold" onclick="document.getElementById('doc-file-smart').click()"><i class="ti ti-upload"></i> Seleccionar archivo</button>
-      <input type="file" id="doc-file-smart" style="display:none" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png" onchange="subirDocumentoInteligente(this)"/>
-    </div>
-  </div>
-</div>
-
 <div class="sidebar">
   <div class="sb-brand">
     <div class="sb-logo">SABOR <span>NAZARÍ</span></div>
-    <div class="sb-tagline">Sistema interno · v4.0</div>
+    <div class="sb-tagline">Sistema interno · v5.0</div>
   </div>
   <div class="sb-nav">
     <div class="sb-cat">Principal</div>
-    <div class="sb-item active" onclick="nav('dashboard',this)"><i class="ti ti-home"></i> Inicio</div>
-    <div class="sb-item" onclick="nav('calendario',this)"><i class="ti ti-calendar"></i> Calendario</div>
-
+    <div class="sb-item" onclick="nav('dashboard')"><i class="ti ti-home"></i> Inicio</div>
+    <div class="sb-item" onclick="nav('calendario')"><i class="ti ti-calendar"></i> Calendario</div>
     <div class="sb-cat">Producción</div>
-    <div class="sb-item" onclick="nav('elaboraciones',this)"><i class="ti ti-clipboard-list"></i> Elaboraciones</div>
-    <div class="sb-item" onclick="nav('productos',this)"><i class="ti ti-meat"></i> Productos</div>
-    <div class="sb-item" onclick="nav('trazabilidad',this)"><i class="ti ti-search"></i> Trazabilidad</div>
-
+    <div class="sb-item" onclick="nav('elaboraciones')"><i class="ti ti-clipboard-list"></i> Elaboraciones</div>
+    <div class="sb-item" onclick="nav('productos')"><i class="ti ti-meat"></i> Productos</div>
+    <div class="sb-item" onclick="nav('trazabilidad')"><i class="ti ti-search"></i> Trazabilidad</div>
     <div class="sb-cat">Calidad</div>
-    <div class="sb-item" onclick="nav('temperaturas',this)"><i class="ti ti-thermometer"></i> Temperaturas</div>
-    <div class="sb-item" onclick="nav('appcc',this)"><i class="ti ti-shield-check"></i> APPCC</div>
-    <div class="sb-item" onclick="nav('noconformidades',this)"><i class="ti ti-alert-circle"></i> No conformidades</div>
-    <div class="sb-item" onclick="nav('halal',this)"><i class="ti ti-certificate"></i> Halal</div>
-
+    <div class="sb-item" onclick="nav('temperaturas')"><i class="ti ti-thermometer"></i> Temperaturas</div>
+    <div class="sb-item" onclick="nav('appcc')"><i class="ti ti-shield-check"></i> APPCC</div>
+    <div class="sb-item" onclick="nav('noconformidades')"><i class="ti ti-alert-triangle"></i> No conformidades</div>
+    <div class="sb-item" onclick="nav('halal')"><i class="ti ti-certificate"></i> Halal</div>
     <div class="sb-cat">Exportación</div>
-    <div class="sb-item" onclick="nav('expediciones',this)"><i class="ti ti-plane-departure"></i> Expediciones SAE</div>
-
+    <div class="sb-item" onclick="nav('expediciones')"><i class="ti ti-plane-departure"></i> Expediciones SAE</div>
     <div class="sb-cat">Empresa</div>
-    <div class="sb-item" onclick="nav('clientes',this)"><i class="ti ti-users"></i> Clientes</div>
-    <div class="sb-item" onclick="nav('proveedores',this)"><i class="ti ti-truck"></i> Proveedores</div>
-    <div class="sb-item" onclick="nav('trabajadores',this)"><i class="ti ti-id-badge"></i> Trabajadores</div>
-    <div class="sb-item" onclick="nav('fichaje',this)"><i class="ti ti-clock"></i> Fichaje</div>
-    <div class="sb-item" onclick="nav('documentos',this)"><i class="ti ti-folder"></i> Documentos</div>
+    <div class="sb-item" onclick="nav('clientes')"><i class="ti ti-users"></i> Clientes</div>
+    <div class="sb-item" onclick="nav('proveedores')"><i class="ti ti-truck"></i> Proveedores</div>
+    <div class="sb-item" onclick="nav('trabajadores')"><i class="ti ti-id-badge"></i> Trabajadores</div>
+    <div class="sb-item" onclick="nav('fichaje')"><i class="ti ti-clock"></i> Fichaje</div>
+    <div class="sb-item" onclick="nav('documentos')"><i class="ti ti-folder"></i> Documentos</div>
   </div>
   <div class="sb-footer">
     <div class="sb-user">César Romero Gómez</div>
     <div class="sb-role">Dirección · Responsable de calidad</div>
-    <div class="sb-ver">Sabor Nazarí S.L. · Huéscar, Granada<br>Sala 10.01428/GR · B75900506</div>
+    <div class="sb-ver">Sabor Nazarí S.L. · Huéscar · B75900506</div>
   </div>
 </div>
 
@@ -443,34 +339,35 @@ tbody tr:hover td{background:var(--bg3)}
   <div class="topbar">
     <div>
       <div class="page-title" id="page-title">Inicio</div>
-      <div class="page-sub" id="page-sub">Sabor Nazarí S.L. · Huéscar, Granada</div>
+      <div class="page-sub" id="page-sub">Sabor Nazarí S.L.</div>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
       <span style="font-size:11px;color:var(--text2);background:var(--bg3);padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border2)" id="fecha-hoy"></span>
-      <button class="btn btn-gold" onclick="navBtn('elaboraciones')"><i class="ti ti-plus"></i> Nueva elaboración</button>
+      <button class="btn btn-gold" onclick="nav('elaboraciones')"><i class="ti ti-plus"></i> Nueva elaboración</button>
     </div>
   </div>
-
   <div class="content">
 
     <!-- DASHBOARD -->
-    <div class="screen active" id="screen-dashboard">
-      <div class="notif" id="dash-notif" style="display:none"><i class="ti ti-alert-triangle"></i> <span id="dash-notif-msg"></span></div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:8px">
-        <div class="dash-btn" onclick="navBtn('temperaturas')">
-          <i class="ti ti-thermometer"></i><span>Registrar temperaturas</span>
+    <div class="screen" id="screen-dashboard">
+      <div class="grid5" style="margin-bottom:16px">
+        <div class="quick-btn" onclick="nav('temperaturas')"><i class="ti ti-thermometer"></i><span>Registrar temperaturas</span></div>
+        <div class="quick-btn" onclick="nav('elaboraciones')"><i class="ti ti-clipboard-list"></i><span>Nueva elaboración</span></div>
+        <div class="quick-btn" onclick="nav('expediciones')"><i class="ti ti-plane-departure"></i><span>Nueva expedición</span></div>
+        <div class="quick-btn" onclick="abrirModalCliente()"><i class="ti ti-user-plus"></i><span>Añadir cliente</span></div>
+        <div class="quick-btn" onclick="abrirModalProveedor()"><i class="ti ti-truck"></i><span>Añadir proveedor</span></div>
+      </div>
+      <div id="dash-alertas"></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-clipboard-list"></i> Últimas elaboraciones</div>
+          <table><thead><tr><th>Lote</th><th>Producto</th><th>Estado</th></tr></thead>
+          <tbody id="dash-elabs"><tr><td colspan="3" class="empty-state">Cargando...</td></tr></tbody></table>
         </div>
-        <div class="dash-btn" onclick="navBtn('elaboraciones')">
-          <i class="ti ti-clipboard-list"></i><span>Nueva elaboración</span>
-        </div>
-        <div class="dash-btn" onclick="abrirModal('modal-nueva-expedicion')">
-          <i class="ti ti-plane-departure"></i><span>Nueva expedición</span>
-        </div>
-        <div class="dash-btn" onclick="abrirModalCliente()">
-          <i class="ti ti-users"></i><span>Añadir cliente</span>
-        </div>
-        <div class="dash-btn" onclick="abrirModalProveedor()">
-          <i class="ti ti-truck"></i><span>Añadir proveedor</span>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-thermometer"></i> Temperaturas recientes</div>
+          <table><thead><tr><th>Fecha</th><th>Cám.2</th><th>Obrador</th><th>Estado</th></tr></thead>
+          <tbody id="dash-temps"><tr><td colspan="4" class="empty-state">Cargando...</td></tr></tbody></table>
         </div>
       </div>
     </div>
@@ -478,20 +375,13 @@ tbody tr:hover td{background:var(--bg3)}
     <!-- CALENDARIO -->
     <div class="screen" id="screen-calendario">
       <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
           <div style="display:flex;align-items:center;gap:12px">
             <button class="btn btn-sec btn-sm" onclick="cambiarMes(-1)"><i class="ti ti-chevron-left"></i></button>
-            <div style="font-size:16px;font-weight:700;color:var(--negro);min-width:160px;text-align:center" id="cal-titulo"></div>
+            <div style="font-size:16px;font-weight:700;min-width:160px;text-align:center" id="cal-titulo"></div>
             <button class="btn btn-sec btn-sm" onclick="cambiarMes(1)"><i class="ti ti-chevron-right"></i></button>
           </div>
-          <button class="btn btn-gold btn-sm" onclick="abrirModalCal()"><i class="ti ti-plus"></i> Añadir evento</button>
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-          <span style="font-size:10px;font-weight:700;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:4px">Producción</span>
-          <span style="font-size:10px;font-weight:700;background:#fce7f3;color:#9d174d;padding:2px 8px;border-radius:4px">Auditoría</span>
-          <span style="font-size:10px;font-weight:700;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px">Inspección</span>
-          <span style="font-size:10px;font-weight:700;background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:4px">Recepción MP</span>
-          <span style="font-size:10px;font-weight:700;background:#ede9fe;color:#4c1d95;padding:2px 8px;border-radius:4px">Envío</span>
+          <button class="btn btn-gold btn-sm" onclick="abrirModalCal(null)"><i class="ti ti-plus"></i> Añadir evento</button>
         </div>
         <div class="cal-header-days">
           <div class="cal-day-name">Lun</div><div class="cal-day-name">Mar</div><div class="cal-day-name">Mié</div>
@@ -513,26 +403,26 @@ tbody tr:hover td{background:var(--bg3)}
         <div class="grid3" style="margin-bottom:10px">
           <div><label>Producto</label>
             <select id="el-prod" onchange="genLote()">
-              <option value="">— Seleccionar producto —</option>
+              <option value="">Seleccionar producto...</option>
               <option value="302|Chorizo picante|embutido|E|rojo">302 — Chorizo picante</option>
-              <option value="301|Chorizo dulce|embutido|E|azul">301 — Chorizo dulce</option>
+              <option value="301|Chorizo dulce|embutido|E|verde">301 — Chorizo dulce</option>
               <option value="201|Salchichón natural|embutido|E|blanco">201 — Salchichón natural</option>
-              <option value="202|Salchichón pistacho|embutido|E|verdiblanco">202 — Salchichón pistacho</option>
-              <option value="203|Salchichón almendra|embutido|E|rojiblanco">203 — Salchichón almendra</option>
-              <option value="204|Salchichón ahumado|embutido|N|verde">204 — Salchichón ahumado</option>
+              <option value="202|Salchichón pistacho|embutido|E|verde">202 — Salchichón pistacho</option>
+              <option value="203|Salchichón almendra|embutido|E|amarillo">203 — Salchichón almendra</option>
+              <option value="204|Salchichón ahumado|embutido|N|morado">204 — Salchichón ahumado</option>
               <option value="205|Salchichón higos|embutido|E|amarillo">205 — Salchichón higos</option>
-              <option value="206|Salchichón nueces|embutido|E|morado">206 — Salchichón nueces</option>
-              <option value="401|Sobrasada picante|embutido|E|rojiamarillo">401 — Sobrasada picante</option>
+              <option value="206|Salchichón nueces|embutido|E|rojiblanco">206 — Salchichón nueces</option>
+              <option value="401|Sobrasada picante|embutido|E|rojo">401 — Sobrasada picante</option>
               <option value="501|Fuet|embutido|E|blanco">501 — Fuet</option>
-              <option value="101|Cecina de ternera|cecina|N|malla">101 — Cecina de ternera</option>
-              <option value="102|Pierna de cordero|cecina|N|">102 — Pierna de cordero</option>
+              <option value="101|Cecina de ternera|cecina|N|azul">101 — Cecina de ternera</option>
+              <option value="102|Pierna de cordero|cecina|N|azul">102 — Pierna de cordero</option>
               <option value="103|Pierna de oveja|cecina|N|verde">103 — Pierna de oveja</option>
-              <option value="104|Pierna de pavo curada|cecina|E|malla">104 — Pierna de pavo curada</option>
+              <option value="104|Pierna de pavo curada|cecina|E|morado">104 — Pierna de pavo curada</option>
             </select>
           </div>
           <div><label>Proveedor</label>
             <select id="el-prov" onchange="genLote()">
-              <option value="">— Seleccionar proveedor —</option>
+              <option value="">Seleccionar...</option>
               <option value="01">01 — Sabor Nazarí</option>
               <option value="02">02 — Cosegur</option>
               <option value="03">03 — La Comarca</option>
@@ -545,14 +435,15 @@ tbody tr:hover td{background:var(--bg3)}
           <div><label>Fecha</label><input type="date" id="el-fecha" onchange="genLote()"/></div>
         </div>
         <div class="grid3" style="margin-bottom:10px">
-          <div><label>Exportación</label><select id="el-exp" onchange="genLote()"><option value="">— Tipo de elaboración —</option><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
-          <div><label>Proceso</label><select id="el-proceso"><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
+          <div><label>Exportación</label><select id="el-exp" onchange="genLote()"><option value="">Seleccionar...</option><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
+          <div><label>Proceso</label><select id="el-proceso"><option value="">Seleccionar...</option><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
           <div><label>Color identificación</label>
             <select id="el-color">
-              <option value="blanco">⚪ Blanco</option><option value="rojo">🔴 Rojo</option><option value="azul">🔵 Azul</option>
-              <option value="verde">🟢 Verde</option><option value="amarillo">🟡 Amarillo</option><option value="morado">🟣 Morado</option>
-              <option value="verdiblanco">🟢⚪ Verdiblanco</option><option value="rojiblanco">🔴⚪ Rojiblanco</option>
-              <option value="rojiamarillo">🔴🟡 Rojiamarillo</option><option value="malla">🟫 Malla plástico</option>
+              <option value="">Seleccionar...</option>
+              <option value="blanco">Blanco</option><option value="rojo">Rojo</option><option value="azul">Azul</option>
+              <option value="verde">Verde</option><option value="amarillo">Amarillo</option><option value="morado">Morado</option>
+              <option value="verdiblanco">Verdiblanco</option><option value="rojiblanco">Rojiblanco</option>
+              <option value="rojiamarillo">Rojiamarillo</option><option value="malla">Malla plástico</option>
             </select>
           </div>
         </div>
@@ -562,32 +453,25 @@ tbody tr:hover td{background:var(--bg3)}
           <div class="lote-sub" id="el-lote-sub">Selecciona producto y fecha</div>
         </div>
         <div class="sep"></div>
-
         <div class="ing-section">
-          <div class="ing-section-title"><i class="ti ti-meat" style="margin-right:4px"></i> Carnes y materias primas cárnicas</div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:4px"><label>Ingrediente</label><label>Lote proveedor</label><label>Cantidad (kg)</label><span></span></div>
+          <div class="ing-section-title">Carnes y materias primas</div>
           <div id="ing-carnes"></div>
           <button class="btn btn-sec btn-sm" onclick="addIng('carnes')"><i class="ti ti-plus"></i> Añadir</button>
         </div>
-
         <div class="ing-section">
-          <div class="ing-section-title"><i class="ti ti-salt" style="margin-right:4px"></i> Especias y aditivos</div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:4px"><label>Especia / Aditivo</label><label>Lote proveedor</label><label>Dosis (g/kg)</label><span></span></div>
+          <div class="ing-section-title">Especias y aditivos</div>
           <div id="ing-especias"></div>
           <button class="btn btn-sec btn-sm" onclick="addIng('especias')"><i class="ti ti-plus"></i> Añadir</button>
         </div>
-
         <div class="ing-section">
-          <div class="ing-section-title"><i class="ti ti-tool" style="margin-right:4px"></i> Material auxiliar</div>
-          <div style="display:grid;grid-template-columns:2fr 1fr auto;gap:6px;margin-bottom:4px"><label>Material</label><label>Lote</label><span></span></div>
+          <div class="ing-section-title">Material auxiliar</div>
           <div id="ing-auxiliar"></div>
           <button class="btn btn-sec btn-sm" onclick="addIng('auxiliar')"><i class="ti ti-plus"></i> Añadir</button>
         </div>
-
         <div class="sep"></div>
         <div class="grid4">
           <div><label>Nº unidades</label><input type="number" id="el-uds" placeholder="120"/></div>
-          <div><label>Sin contabilizar</label><input type="number" id="el-uds-extra" placeholder="0" title="Unidades no contabilizadas"/></div>
+          <div><label>Sin contabilizar</label><input type="number" id="el-uds-extra" placeholder="0"/></div>
           <div><label>Peso total (kg)</label><input type="number" id="el-peso" placeholder="58.5"/></div>
           <div><label>Días maduración</label><input type="number" id="el-mad" placeholder="30"/></div>
         </div>
@@ -596,7 +480,7 @@ tbody tr:hover td{background:var(--bg3)}
         </div>
       </div>
       <div class="card">
-        <div class="card-title"><i class="ti ti-history"></i> Historial de elaboraciones</div>
+        <div class="card-title"><i class="ti ti-history"></i> Historial</div>
         <table><thead><tr><th>Lote</th><th>Producto</th><th>Color</th><th>Fecha</th><th>Uds</th><th>Peso</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-elabs"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
       </div>
@@ -604,12 +488,7 @@ tbody tr:hover td{background:var(--bg3)}
 
     <!-- PRODUCTOS -->
     <div class="screen" id="screen-productos">
-      <div class="grid2">
-        <div id="lista-productos"></div>
-        <div id="detalle-producto" style="display:none">
-          <div class="card" id="detalle-prod-card"></div>
-        </div>
-      </div>
+      <div id="lista-productos"></div>
     </div>
 
     <!-- TRAZABILIDAD -->
@@ -640,22 +519,19 @@ tbody tr:hover td{background:var(--bg3)}
     <!-- TEMPERATURAS -->
     <div class="screen" id="screen-temperaturas">
       <div class="card">
-        <div class="card-title"><i class="ti ti-thermometer"></i> Registro diario · APPCC · 07:30</div>
+        <div class="card-title"><i class="ti ti-thermometer"></i> Registro diario · APPCC</div>
         <div style="display:flex;gap:14px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap">
           <div><label>Fecha</label><input type="date" id="tp-fecha" style="width:160px"/></div>
-          <div><label>Hora</label><div class="hora-badge"><i class="ti ti-clock"></i> 07:30</div></div>
           <div><label>Responsable</label><input type="text" id="tp-resp" value="César Romero" style="width:180px"/></div>
         </div>
         <div class="grid3" style="gap:10px">
-          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-snowflake" style="color:var(--dorado)"></i> Cámara 2</div><div class="temp-limite">Recepción · Máx. 4 °C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-c2" placeholder="°C" style="flex:1" oninput="evalTemp('c2',this.value,'max',4,null)"/><span class="badge b-gray" id="tb-c2">—</span></div></div>
-          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-wind" style="color:var(--dorado)"></i> Cámara 5</div><div class="temp-limite">Maceración · 0–5 °C</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="number" step="0.1" id="tp-c5" placeholder="°C" style="flex:1" oninput="evalTemp('c5',this.value,'rango',0,5)"/><span class="badge b-gray" id="tb-c5">—</span></div><label>Humedad (%)</label><input type="number" step="1" id="tp-c5h" placeholder="%"/></div>
-          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-building" style="color:var(--dorado)"></i> Cámara 6</div><div class="temp-limite">Secadero · 13–16 °C</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="number" step="0.1" id="tp-c6" placeholder="°C" style="flex:1" oninput="evalTemp('c6',this.value,'rango',13,16)"/><span class="badge b-gray" id="tb-c6">—</span></div><label>Humedad (%)</label><input type="number" step="1" id="tp-c6h" placeholder="%"/></div>
-          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-tools" style="color:var(--dorado)"></i> Obrador</div><div class="temp-limite">Elaboración · OK &lt;20°C · Cuidado 20-23°C · Alerta &gt;23°C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-ob" placeholder="°C" style="flex:1" oninput="evalTemp('ob',this.value,'max_warn',20,23)"/><span class="badge b-gray" id="tb-ob">—</span></div></div>
-          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-package" style="color:var(--dorado)"></i> Envasado</div><div class="temp-limite">Terminado · OK &lt;20°C · Cuidado 20-23°C · Alerta &gt;23°C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-en" placeholder="°C" style="flex:1" oninput="evalTemp('en',this.value,'max_warn',20,23)"/><span class="badge b-gray" id="tb-en">—</span></div></div>
+          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-snowflake" style="color:var(--dorado)"></i> Cámara 2</div><div class="temp-limite">Recepción · Máx. 4°C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-c2" placeholder="°C" style="flex:1" oninput="evalTemp('c2',this.value,'max',4,null)"/><span class="badge b-gray" id="tb-c2">—</span></div></div>
+          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-wind" style="color:var(--dorado)"></i> Cámara 5</div><div class="temp-limite">Maceración · 0–5°C</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="number" step="0.1" id="tp-c5" placeholder="°C" style="flex:1" oninput="evalTemp('c5',this.value,'rango',0,5)"/><span class="badge b-gray" id="tb-c5">—</span></div><label>Humedad %</label><input type="number" id="tp-c5h" placeholder="%"/></div>
+          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-building" style="color:var(--dorado)"></i> Cámara 6</div><div class="temp-limite">Secadero · 13–16°C</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><input type="number" step="0.1" id="tp-c6" placeholder="°C" style="flex:1" oninput="evalTemp('c6',this.value,'rango',13,16)"/><span class="badge b-gray" id="tb-c6">—</span></div><label>Humedad %</label><input type="number" id="tp-c6h" placeholder="%"/></div>
+          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-tools" style="color:var(--dorado)"></i> Obrador</div><div class="temp-limite">OK &lt;20°C · Cuidado 20-23°C · Alerta &gt;23°C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-ob" placeholder="°C" style="flex:1" oninput="evalTemp('ob',this.value,'warn',20,23)"/><span class="badge b-gray" id="tb-ob">—</span></div></div>
+          <div class="temp-card"><div class="temp-nombre"><i class="ti ti-package" style="color:var(--dorado)"></i> Envasado</div><div class="temp-limite">OK &lt;20°C · Cuidado 20-23°C · Alerta &gt;23°C</div><div style="display:flex;gap:8px;align-items:center"><input type="number" step="0.1" id="tp-en" placeholder="°C" style="flex:1" oninput="evalTemp('en',this.value,'warn',20,23)"/><span class="badge b-gray" id="tb-en">—</span></div></div>
         </div>
-        <div style="margin-top:16px;display:flex;gap:8px">
-          <button class="btn btn-gold" onclick="guardarTemp()"><i class="ti ti-check"></i> Guardar registro</button>
-        </div>
+        <div style="margin-top:16px"><button class="btn btn-gold" onclick="guardarTemp()"><i class="ti ti-check"></i> Guardar registro</button></div>
       </div>
       <div class="card">
         <div class="card-title"><i class="ti ti-history"></i> Historial</div>
@@ -672,79 +548,70 @@ tbody tr:hover td{background:var(--bg3)}
       </div>
     </div>
 
-    <!-- HALAL -->
-    <div class="screen" id="screen-halal">
-      <div class="card">
-        <div class="card-title"><i class="ti ti-certificate"></i> Sabor Nazarí — Certificación propia</div>
-        <div class="grid2" style="margin-bottom:10px">
-          <div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:14px">
-            <div style="font-size:11px;font-weight:700;color:var(--dorado3);margin-bottom:3px">ORGANISMO CERTIFICADOR</div>
-            <div style="font-size:14px;font-weight:700">HQC — Halal Quality Control</div>
-            <div style="font-size:11px;color:var(--text2);margin-top:2px">En proceso de certificación</div>
-          </div>
-          <div>
-            <div class="upload-area" onclick="document.getElementById('upload-cert-propio').click()" style="padding:16px">
-              <input type="file" id="upload-cert-propio" onchange="subirHalal(this,'Certificado Halal Sabor Nazarí','Certificado propio')"/>
-              <i class="ti ti-upload" style="font-size:20px"></i>
-              <p><strong style="color:var(--dorado)">Subir certificado propio</strong></p>
-            </div>
-          </div>
-        </div>
-        <table><thead><tr><th>Documento</th><th>Tipo</th><th>Fecha</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-halal-propios"><tr><td colspan="4" class="empty-state">Sin documentos</td></tr></tbody></table>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-file-check"></i> Auditorías HQC</div>
-        <div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById('upload-audit-halal').click()">
-          <input type="file" id="upload-audit-halal" multiple onchange="subirHalal(this,'Auditoría HQC','Auditoría')"/>
-          <i class="ti ti-cloud-upload"></i>
-          <p><strong style="color:var(--dorado)">Subir informe de auditoría HQC</strong></p>
-        </div>
-        <table><thead><tr><th>Documento</th><th>Fecha</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-halal-audits"><tr><td colspan="3" class="empty-state">Sin auditorías</td></tr></tbody></table>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-truck"></i> Certificados Halal de proveedores</div>
-        <table><thead><tr><th>Proveedor</th><th>Documento</th><th>Vigencia</th><th>Estado</th><th>Subir</th></tr></thead>
-        <tbody id="tabla-halal-prov"><tr><td colspan="5" class="empty-state">Cargando...</td></tr></tbody></table>
-      </div>
-    </div>
-
     <!-- NO CONFORMIDADES -->
     <div class="screen" id="screen-noconformidades">
       <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
         <button class="btn btn-gold" onclick="abrirModalNC()"><i class="ti ti-plus"></i> Nueva no conformidad</button>
       </div>
       <div class="card">
-        <div class="card-title"><i class="ti ti-alert-circle"></i> Registro de no conformidades</div>
-        <table><thead><tr><th>Nº</th><th>Fecha</th><th>Área</th><th>Descripción</th><th>Gravedad</th><th>Responsable</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-nc"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
+        <div class="card-title"><i class="ti ti-alert-triangle"></i> Registro de no conformidades</div>
+        <table><thead><tr><th>Nº</th><th>Fecha</th><th>Área</th><th>Descripción</th><th>Gravedad</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="tabla-nc"><tr><td colspan="7" class="empty-state">Cargando...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- HALAL -->
+    <div class="screen" id="screen-halal">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-certificate"></i> Certificación propia — HQC</div>
+        <div class="upload-area" onclick="document.getElementById('upload-cert-propio').click()">
+          <input type="file" id="upload-cert-propio" onchange="subirDocCat(this,'Halal Certificado propio')"/>
+          <i class="ti ti-upload"></i>
+          <p><strong style="color:var(--dorado)">Subir certificado halal propio</strong></p>
+        </div>
+        <div id="halal-propios-lista" style="margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-file-check"></i> Auditorías HQC</div>
+        <div class="upload-area" onclick="document.getElementById('upload-audit-halal').click()">
+          <input type="file" id="upload-audit-halal" multiple onchange="subirDocCat(this,'Halal Auditoría')"/>
+          <i class="ti ti-cloud-upload"></i>
+          <p><strong style="color:var(--dorado)">Subir informe de auditoría</strong></p>
+        </div>
+        <div id="halal-audits-lista" style="margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-truck"></i> Certificados de proveedores</div>
+        <div id="halal-proveedores-lista"></div>
       </div>
     </div>
 
     <!-- EXPEDICIONES SAE -->
     <div class="screen" id="screen-expediciones">
-      <div class="notif" id="exp-notif" style="display:none"><i class="ti ti-alert-triangle"></i> <span id="exp-notif-msg"></span></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div>
-          <div class="sae-plantilla"><i class="ti ti-file-text" style="color:var(--dorado);font-size:18px"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">ASE-3187 — Certificado veterinario UAE</div></div><button class="btn btn-gold btn-sm"><i class="ti ti-download"></i></button></div>
-        </div>
-        <button class="btn btn-gold" onclick="abrirModal('modal-nueva-expedicion')"><i class="ti ti-plus"></i> Nueva expedición</button>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-plane-departure"></i> Expediciones</div>
-        <table><thead><tr><th>Expediente</th><th>Tipo</th><th>Lote</th><th>Cliente</th><th>Destino</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-expediciones-new"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
-      </div>
-      <div id="expedicion-detalle-new" style="display:none">
-        <div class="card">
-          <div class="card-title" id="exp-detalle-titulo"><i class="ti ti-files"></i> Documentos del expediente</div>
-          <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-            <button class="btn btn-gold btn-sm" onclick="document.getElementById('upload-exp-doc').click()"><i class="ti ti-upload"></i> Subir documento</button>
-            <input type="file" id="upload-exp-doc" style="display:none" onchange="subirDocExpedicion(this)"/>
+      <div class="grid2" style="margin-bottom:12px">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title"><i class="ti ti-folder-open"></i> Plantillas SAE</div>
+          <div id="sae-plantillas-lista"></div>
+          <div class="upload-area" style="margin-top:10px;padding:14px" onclick="document.getElementById('upload-plantilla').click()">
+            <input type="file" id="upload-plantilla" onchange="subirDocCat(this,'SAE Plantilla')"/>
+            <i class="ti ti-upload" style="font-size:20px"></i>
+            <p><strong style="color:var(--dorado)">Subir nueva plantilla</strong></p>
           </div>
-          <table><thead><tr><th>Documento</th><th>Fecha subida</th><th>Acciones</th></tr></thead>
-          <tbody id="tabla-exp-docs"><tr><td colspan="3" class="empty-state">Sin documentos</td></tr></tbody></table>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title"><i class="ti ti-plane-departure"></i> Expediciones</div>
+          <table><thead><tr><th>Nº</th><th>Tipo</th><th>Lote</th><th>Cliente</th><th>Estado</th></tr></thead>
+          <tbody id="tabla-expediciones"><tr><td colspan="5" class="empty-state">Cargando...</td></tr></tbody></table>
+          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="abrirModal('modal-expedicion')"><i class="ti ti-plus"></i> Nueva expedición</button>
+        </div>
+      </div>
+      <div class="card" id="exp-detalle" style="display:none">
+        <div class="card-title" id="exp-detalle-titulo"><i class="ti ti-files"></i> Documentos de expedición</div>
+        <div id="exp-detalle-docs"></div>
+        <div class="upload-area" style="margin-top:10px;padding:14px" onclick="document.getElementById('upload-exp-doc').click()">
+          <input type="file" id="upload-exp-doc" multiple onchange="subirDocExpedicion(this)"/>
+          <i class="ti ti-upload" style="font-size:20px"></i>
+          <p><strong style="color:var(--dorado)">Añadir documento a esta expedición</strong></p>
         </div>
       </div>
     </div>
@@ -767,8 +634,8 @@ tbody tr:hover td{background:var(--bg3)}
         <button class="btn btn-gold" onclick="abrirModalProveedor()"><i class="ti ti-plus"></i> Nuevo proveedor</button>
       </div>
       <div class="card">
-        <div class="card-title"><i class="ti ti-truck"></i> Proveedores homologados</div>
-        <table><thead><tr><th>Cód.</th><th>Proveedor</th><th>País</th><th>Actividad</th><th>Reg. sanitario</th><th>SAE</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <div class="card-title"><i class="ti ti-truck"></i> Proveedores</div>
+        <table><thead><tr><th>Cód.</th><th>Nombre</th><th>País</th><th>Actividad</th><th>Registro</th><th>SAE</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-proveedores"><tr><td colspan="8" class="empty-state">Cargando...</td></tr></tbody></table>
       </div>
     </div>
@@ -779,7 +646,7 @@ tbody tr:hover td{background:var(--bg3)}
         <button class="btn btn-gold" onclick="abrirModalTrabajador()"><i class="ti ti-plus"></i> Nuevo trabajador</button>
       </div>
       <div class="card">
-        <div class="card-title"><i class="ti ti-id-badge"></i> Equipo Sabor Nazarí</div>
+        <div class="card-title"><i class="ti ti-id-badge"></i> Equipo</div>
         <table><thead><tr><th>Nombre</th><th>DNI</th><th>Cargo</th><th>Teléfono</th><th>Alta</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-trabajadores"><tr><td colspan="7" class="empty-state">Cargando...</td></tr></tbody></table>
       </div>
@@ -789,20 +656,20 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="screen" id="screen-fichaje">
       <div class="card">
         <div class="card-title"><i class="ti ti-clock"></i> Fichaje mensual</div>
-        <div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:12px 16px;margin-bottom:14px;font-size:12px;color:var(--amber-text)"><i class="ti ti-info-circle" style="margin-right:6px"></i>El fichaje diario se gestiona desde la app de fichaje. Aquí se suben los archivos CSV de resumen mensual.</div>
+        <div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:12px 16px;margin-bottom:14px;font-size:12px;color:var(--amber-text)"><i class="ti ti-info-circle" style="margin-right:6px"></i>El fichaje diario se gestiona desde la app de fichaje. Aquí se suben los CSV mensuales.</div>
         <div class="grid2" style="margin-bottom:12px">
-          <div><label>Mes de referencia</label><input type="month" id="fich-mes"/></div>
+          <div><label>Mes</label><input type="month" id="fich-mes"/></div>
           <div><label>Trabajador (opcional)</label><input type="text" id="fich-nombre" placeholder="Todos o nombre específico"/></div>
         </div>
         <div class="upload-area" onclick="document.getElementById('fich-file').click()">
           <input type="file" id="fich-file" accept=".csv,.xlsx,.xls" onchange="subirFichaje(this)"/>
           <i class="ti ti-file-spreadsheet"></i>
-          <p><strong style="color:var(--dorado)">Subir archivo CSV de fichajes</strong></p>
+          <p><strong style="color:var(--dorado)">Subir CSV de fichajes</strong></p>
         </div>
       </div>
       <div class="card">
         <div class="card-title"><i class="ti ti-history"></i> Archivos subidos</div>
-        <table><thead><tr><th>Mes</th><th>Archivo</th><th>Subido</th><th>Acciones</th></tr></thead>
+        <table><thead><tr><th>Mes</th><th>Archivo</th><th>Fecha</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-fichaje"><tr><td colspan="4" class="empty-state">Sin archivos</td></tr></tbody></table>
       </div>
     </div>
@@ -813,13 +680,16 @@ tbody tr:hover td{background:var(--bg3)}
         <div class="card-title"><i class="ti ti-upload"></i> Subir documento</div>
         <div class="grid2" style="margin-bottom:14px">
           <div><label>Nombre</label><input type="text" id="doc-nombre" placeholder="Nombre del documento"/></div>
-          <div><label>Categoría</label>
-            <select id="doc-cat"><option>Fichas técnicas</option><option>APPCC</option><option>SAE / Exportación</option><option>Certificados</option><option>Proveedores</option><option>Legal</option><option>Halal</option><option>Otros</option></select>
-          </div>
+          <div><label>Categoría</label><select id="doc-cat"><option>Fichas técnicas</option><option>APPCC</option><option>SAE / Exportación</option><option>Certificados</option><option>Proveedores</option><option>Legal</option><option>Halal</option><option>Otros</option></select></div>
         </div>
-        <div class="upload-area" onclick="abrirModal('modal-subir-doc')">
+        <div class="upload-area" onclick="document.getElementById('doc-file').click()">
+          <input type="file" id="doc-file" onchange="subirDocumento(this)"/>
           <i class="ti ti-cloud-upload"></i>
-          <p><strong style="color:var(--dorado)">Seleccionar archivo</strong><br>PDF, Word, Excel, imágenes</p>
+          <p><strong style="color:var(--dorado)">Seleccionar archivo</strong></p>
+        </div>
+        <div id="upload-progress" style="display:none;margin-top:10px">
+          <div style="font-size:12px;color:var(--text2);margin-bottom:6px" id="upload-status">Subiendo...</div>
+          <div class="prog-bar"><div class="prog-fill" id="upload-bar" style="width:0%"></div></div>
         </div>
       </div>
       <div class="card">
@@ -833,998 +703,925 @@ tbody tr:hover td{background:var(--bg3)}
 </div>
 
 <script>
-const SUPA_URL='https://xdhkturyyoncjnzctbcn.supabase.co';
-const SUPA_KEY='sb_publishable_70Fhj63mL3UiORfDGShThA_e4SUsci4';
-const {createClient}=supabase;
-const db=createClient(SUPA_URL,SUPA_KEY);
+var SUPA_URL='https://xdhkturyyoncjnzctbcn.supabase.co';
+var SUPA_KEY='sb_publishable_70Fhj63mL3UiORfDGShThA_e4SUsci4';
+var db=supabase.createClient(SUPA_URL,SUPA_KEY);
+var today=new Date();
+var calFecha=new Date();
+var eventosList=[];
+var expActual=null;
 
-const today=new Date();
 document.getElementById('fecha-hoy').textContent=today.toLocaleDateString('es-ES',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 document.getElementById('tp-fecha').value=today.toISOString().split('T')[0];
 document.getElementById('el-fecha').value=today.toISOString().split('T')[0];
-document.getElementById('fich-mes').value=today.toISOString().slice(0,7);
+if(document.getElementById('fich-mes'))document.getElementById('fich-mes').value=today.toISOString().slice(0,7);
 
-const titulos={dashboard:'Inicio',calendario:'Calendario',elaboraciones:'Elaboraciones',productos:'Productos',trazabilidad:'Trazabilidad',temperaturas:'Temperaturas',appcc:'APPCC',noconformidades:'No Conformidades',halal:'Certificación Halal',expediciones:'Expediciones SAE',clientes:'Clientes',proveedores:'Proveedores',trabajadores:'Trabajadores',fichaje:'Fichaje',documentos:'Documentos'};
-const subs={dashboard:'Resumen general',calendario:'Planificación y eventos',elaboraciones:'Registro de producciones',productos:'Catálogo y fichas técnicas',trazabilidad:'Búsqueda por lote, producto o fecha',temperaturas:'Registro diario APPCC · 07:30',appcc:'Sistema de autocontrol',noconformidades:'Registro de incidencias y acciones correctivas',halal:'HQC · Certificación y auditorías',expediciones:'SAE · UAE · ASE-3187 · PR-EXP Rev.4',clientes:'Base de datos',proveedores:'Proveedores homologados SAE',trabajadores:'Equipo Sabor Nazarí',fichaje:'Archivos mensuales CSV',documentos:'Repositorio centralizado'};
+var titulos={dashboard:'Inicio',calendario:'Calendario',elaboraciones:'Elaboraciones',productos:'Productos',trazabilidad:'Trazabilidad',temperaturas:'Temperaturas',appcc:'APPCC',noconformidades:'No conformidades',halal:'Halal',expediciones:'Expediciones SAE',clientes:'Clientes',proveedores:'Proveedores',trabajadores:'Trabajadores',fichaje:'Fichaje',documentos:'Documentos'};
+var subs={dashboard:'Acceso rápido',calendario:'Planificación y eventos',elaboraciones:'Registro de producciones',productos:'Catálogo y fichas técnicas',trazabilidad:'Búsqueda por lote, producto o fecha',temperaturas:'Registro diario APPCC',appcc:'Sistema de autocontrol',noconformidades:'Registro y seguimiento',halal:'HQC · Certificación',expediciones:'SAE · UAE · ASE-3187',clientes:'Base de datos',proveedores:'Proveedores homologados',trabajadores:'Equipo Sabor Nazarí',fichaje:'Archivos CSV mensuales',documentos:'Repositorio centralizado'};
 
-function navBtn(id){const items=document.querySelectorAll('.sb-item');let found=null;items.forEach(item=>{if(item.getAttribute('onclick')&&item.getAttribute('onclick').includes("'"+id+"'"))found=item;});nav(id,found);}
-
-function nav(id,el){
-  localStorage.setItem('sn-seccion',id);
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-  if(el)el.classList.add('active');
+function nav(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active');});
+  var sc=document.getElementById('screen-'+id);
+  if(sc)sc.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(function(b){
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').indexOf("'"+id+"'")>-1)b.classList.add('active');
+  });
   document.getElementById('page-title').textContent=titulos[id]||id;
   document.getElementById('page-sub').textContent=subs[id]||'';
-  const loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:()=>{renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:cargarExpediciones,noconformidades:cargarNoConformidades,fichaje:cargarFichaje,trazabilidad:()=>{},productos:renderProductos};
+  localStorage.setItem('activePage',id);
+  var loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:function(){renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:cargarExpediciones,fichaje:cargarFichaje,trazabilidad:function(){},productos:renderProductos,noconformidades:cargarNC};
   if(loaders[id])loaders[id]();
 }
 
-function toast(msg,ok=true){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;document.getElementById('toast-icon').className=ok?'ti ti-check':'ti ti-x';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+function toast(msg,ok){
+  if(ok===undefined)ok=true;
+  var t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  document.getElementById('toast-icon').className=ok?'ti ti-check':'ti ti-x';
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3500);
+}
+
 function abrirModal(id){document.getElementById(id).classList.add('open');}
 function cerrarModal(id){document.getElementById(id).classList.remove('open');}
 
-// LOTE
-function getSem(d){const f=new Date(d);const i=new Date(f.getFullYear(),0,1);return Math.ceil(((f-i)/86400000+i.getDay()+1)/7);}
+function getSem(d){var f=new Date(d);var i=new Date(f.getFullYear(),0,1);return Math.ceil(((f-i)/86400000+i.getDay()+1)/7);}
 function getDia(d){return [7,1,2,3,4,5,6][new Date(d).getDay()];}
-const diasN=['','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+var diasN=['','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+var colores={blanco:'⚪',rojo:'🔴',azul:'🔵',verde:'🟢',amarillo:'🟡',morado:'🟣',verdiblanco:'🟢⚪',rojiblanco:'🔴⚪',rojiamarillo:'🔴🟡',malla:'🟫'};
 
 function genLote(){
-  const pVal=document.getElementById('el-prod').value;
-  const prov=document.getElementById('el-prov').value;
-  const fecha=document.getElementById('el-fecha').value;
-  const exp=document.getElementById('el-exp').value;
-  if(!pVal||!prov||!exp||!fecha){document.getElementById('el-lote').textContent='—';document.getElementById('el-lote-sub').textContent='Selecciona producto, proveedor, tipo y fecha';return;}
-  const p=pVal.split('|');
-  const sem=String(getSem(fecha)).padStart(2,'0');
-  const dia=getDia(fecha);
-  const anio=String(new Date(fecha).getFullYear()).slice(-2);
-  const lote=exp+p[0]+'-'+prov+dia+sem+anio;
+  var pv=document.getElementById('el-prod').value;
+  var prov=document.getElementById('el-prov').value;
+  var fecha=document.getElementById('el-fecha').value;
+  var exp=document.getElementById('el-exp').value;
+  if(!pv||!fecha||!prov||!exp){document.getElementById('el-lote').textContent='—';return;}
+  var p=pv.split('|');
+  var sem=String(getSem(fecha)).padStart(2,'0');
+  var dia=getDia(fecha);
+  var anio=String(new Date(fecha).getFullYear()).slice(-2);
+  var lote=exp+p[0]+'-'+prov+dia+sem+anio;
   document.getElementById('el-lote').textContent=lote;
   document.getElementById('el-lote-sub').textContent=p[1]+' · Prov. '+prov+' · '+diasN[dia]+' · Sem. '+sem+' · 20'+anio;
   document.getElementById('el-mad').value=p[2]==='cecina'?90:30;
-  if(p[4]){const cs=document.getElementById('el-color');for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===p[4]){cs.selectedIndex=i;break;}}}
+  var cs=document.getElementById('el-color');
+  var cv=p[4]||'';
+  for(var i=0;i<cs.options.length;i++){if(cs.options[i].value===cv){cs.selectedIndex=i;break;}}
 }
 
-const carnesOpts=['Redondo de ternera','Pierna de cordero','Pierna de pavo','Carne de ternera','Carne de pavo','Grasa de pavo'];
-const especiasOpts=['Especia cecina 40g/kg','Especia salchichón halal 75g/kg','Especia chorizo halal 80g/kg','Especia chorizo picante halal 80g/kg','Especia sobrasada picante halal 100g/kg','Humo en polvo 5g/kg'];
-const auxiliarOpts=['Grapas','Tripas','Malla'];
+var carnesOpts=['Redondo de ternera','Pierna de cordero','Pierna de pavo','Carne de ternera','Carne de pavo','Grasa de pavo'];
+var especiasOpts=['Especia cecina 40g/kg','Especia salchichón halal 75g/kg','Especia chorizo halal 80g/kg','Especia chorizo picante halal 80g/kg','Especia sobrasada picante halal 100g/kg','Humo en polvo 5g/kg'];
+var auxiliarOpts=['Grapas','Tripas','Malla'];
 
 function addIng(tipo){
-  const c=document.getElementById('ing-'+tipo);
-  const d=document.createElement('div');
+  var c=document.getElementById('ing-'+tipo);
+  var d=document.createElement('div');
+  var opts=tipo==='carnes'?carnesOpts:tipo==='especias'?especiasOpts:auxiliarOpts;
+  var sel='<select><option value="">Seleccionar...</option>';
+  opts.forEach(function(o){sel+='<option>'+o+'</option>';});
+  sel+='</select>';
   if(tipo==='auxiliar'){
     d.className='ing-row-aux';
-    d.innerHTML='<select><option value="">— Seleccionar —</option>'+auxiliarOpts.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
+    d.innerHTML=sel+'<input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   } else {
     d.className='ing-row';
-    const opts=tipo==='carnes'?carnesOpts:especiasOpts;
-    d.innerHTML='<select><option value="">— Seleccionar —</option>'+opts.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select><input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="'+(tipo==='carnes'?'kg':'g/kg')+'"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
+    var unit=tipo==='carnes'?'kg':'g/kg';
+    d.innerHTML=sel+'<input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="'+unit+'"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   }
   c.appendChild(d);
 }
 
+['carnes','especias','auxiliar'].forEach(function(t){addIng(t);});
+
 async function guardarElab(){
-  const lote=document.getElementById('el-lote').textContent;
-  const p=document.getElementById('el-prod').value.split('|');
-  const fecha=document.getElementById('el-fecha').value;
-  const color=document.getElementById('el-color').value;
-  if(!lote||lote==='—'){toast('Selecciona producto y fecha',false);return;}
-  const {error}=await db.from('elaboraciones').insert({lote,producto:p[1],codigo:p[0],proveedor:document.getElementById('el-prov').value,fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,estado:'secadero',color});
-  if(error){toast('Error: '+error.message,false);return;}
-  toast('✓ Elaboración guardada · '+lote);
+  var lote=document.getElementById('el-lote').textContent;
+  var pv=document.getElementById('el-prod').value;
+  var fecha=document.getElementById('el-fecha').value;
+  var color=document.getElementById('el-color').value;
+  if(!lote||lote==='—'){toast('Selecciona producto, proveedor, fecha y exportación',false);return;}
+  var p=pv.split('|');
+  var res=await db.from('elaboraciones').insert({lote:lote,producto:p[1],codigo:p[0],proveedor:document.getElementById('el-prov').value,fecha:fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,estado:'secadero',color:color});
+  if(res.error){toast('Error: '+res.error.message,false);return;}
+  toast('Elaboración guardada · '+lote);
   cargarElaboraciones();
 }
 
-const colores={blanco:'⚪',rojo:'🔴',azul:'🔵',verde:'🟢',amarillo:'🟡',morado:'🟣',verdiblanco:'🟢⚪',rojiblanco:'🔴⚪',rojiamarillo:'🔴🟡',malla:'🟫'};
-
 async function cargarElaboraciones(){
-  const {data}=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(50);
-  const t=document.getElementById('tabla-elabs');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin elaboraciones</td></tr>';return;}
-  document.getElementById('d-elab').textContent=data.length;
-  t.innerHTML=data.map(function(e){
-    return '<tr>' +
-      '<td style="font-family:monospace;font-size:11px;font-weight:700;color:var(--dorado3)">' + e.lote + '</td>' +
-      '<td>' + e.producto + '</td>' +
-      '<td style="font-size:16px">' + (colores[e.color]||'—') + '</td>' +
-      '<td>' + (e.fecha||'—') + '</td><td>' + (e.unidades||'—') + '</td>' +
-      '<td>' + (e.peso_final?e.peso_final+' kg':'—') + '</td>' +
-      '<td><span class="badge b-purple">' + (e.estado||'secadero') + '</span></td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-sec btn-sm" onclick=\'abrirEtiqueta(' + JSON.stringify(e) + ')\'><i class="ti ti-tag"></i></button>' +
-        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalEditarElab(' + JSON.stringify(e) + ')\'><i class="ti ti-edit"></i></button>' +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(\'elaboraciones\',\'' + e.id + '\',cargarElaboraciones)"><i class="ti ti-trash"></i></button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
-  const db2=document.getElementById('dash-elabs');
-  if(db2)db2.innerHTML=data.slice(0,3).map(function(e){
-    return '<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">' + e.lote + '</td><td>' + e.producto + '</td><td><span class="badge b-purple">' + e.estado + '</span></td></tr>';
-  }).join('');
+  var res=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(50);
+  var t=document.getElementById('tabla-elabs');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin elaboraciones</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(e){
+    var c=colores[e.color]||'—';
+    html+='<tr>';
+    html+='<td style="font-family:monospace;font-size:11px;font-weight:700;color:var(--dorado3)">'+e.lote+'</td>';
+    html+='<td>'+e.producto+'</td>';
+    html+='<td style="font-size:16px">'+c+'</td>';
+    html+='<td>'+(e.fecha||'—')+'</td>';
+    html+='<td>'+(e.unidades||'—')+'</td>';
+    html+='<td>'+(e.peso_final?e.peso_final+' kg':'—')+'</td>';
+    html+='<td><span class="badge b-purple">'+(e.estado||'secadero')+'</span></td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta('+JSON.stringify(e)+')"><i class="ti ti-tag"></i></button>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'elaboraciones\',\''+e.id+'\',cargarElaboraciones)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td>';
+    html+='</tr>';
+  });
+  t.innerHTML=html;
 }
 
-// TEMPERATURAS
+function verEtiqueta(e){
+  var html='<div style="font-family:sans-serif;padding:10px">';
+  html+='<div style="background:#141414;padding:10px 14px;border-radius:6px 6px 0 0;display:flex;justify-content:space-between;align-items:center">';
+  html+='<span style="font-size:13px;font-weight:700;color:#fff;letter-spacing:.1em">SABOR <span style="color:#C9A84C">NAZARÍ</span></span>';
+  html+='<span style="font-size:9px;color:#C9A84C;border:1px solid rgba(201,168,76,.4);padding:2px 6px;border-radius:3px">HALAL</span>';
+  html+='</div>';
+  html+='<div style="padding:10px 14px;border:1px solid #eee;border-top:none">';
+  html+='<div style="font-size:14px;font-weight:700">'+e.producto+'</div>';
+  html+='<div style="font-size:10px;color:#888">Ref. '+e.codigo+'</div>';
+  html+='</div>';
+  html+='<div style="background:rgba(201,168,76,.08);padding:8px 14px;border:1px solid rgba(201,168,76,.2);border-top:none">';
+  html+='<div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div>';
+  html+='<div style="font-size:16px;font-weight:700;color:#8a6a1e;font-family:monospace">'+e.lote+'</div>';
+  html+='</div>';
+  html+='<div style="padding:8px 14px;border:1px solid #eee;border-top:none;font-size:10px">';
+  html+='<div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">'+(e.fecha||'—')+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">'+(e.peso_final||'—')+' kg</span></div>';
+  html+='<div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">'+(e.unidades||'—')+' uds</span></div>';
+  html+='<div style="display:flex;justify-content:space-between"><span style="color:#888">Maduración</span><span style="font-weight:600">'+(e.maduracion||'—')+' días</span></div>';
+  html+='</div>';
+  html+='<div style="padding:5px 14px;border:1px solid #eee;border-top:none;font-size:9px;color:#888">Sabor Nazarí S.L. · Huéscar, Granada</div>';
+  html+='</div>';
+  document.getElementById('etiqueta-contenido').innerHTML=html;
+  abrirModal('modal-etiqueta');
+}
+
 function evalTemp(zona,val,tipo,min,max){
-  const b=document.getElementById('tb-'+zona);
-  if(!val||val===''){b.className='badge b-gray';b.textContent='—';return;}
-  const v=parseFloat(val);
-  if(tipo==='max'){
-    b.className='badge '+(v<min?'b-ok':'b-alert');
-    b.textContent=v<min?'✓ OK':'⚠ Alerta';
-  } else if(tipo==='rango'){
-    b.className='badge '+(v>=min&&v<=max?'b-ok':'b-alert');
-    b.textContent=v>=min&&v<=max?'✓ OK':'⚠ Alerta';
-  } else if(tipo==='max_warn'){
-    if(v<min){b.className='badge b-ok';b.textContent='✓ OK';}
-    else if(v<=max){b.className='badge b-warn';b.textContent='⚠ Cuidado';}
-    else{b.className='badge b-alert';b.textContent='🚨 Alerta';}
-  }
+  var b=document.getElementById('tb-'+zona);
+  if(!val){b.className='badge b-gray';b.textContent='—';return;}
+  var v=parseFloat(val);
+  if(tipo==='max'){b.className='badge '+(v<min?'b-ok':'b-alert');b.textContent=v<min?'OK':'Alerta';}
+  else if(tipo==='rango'){b.className='badge '+(v>=min&&v<=max?'b-ok':'b-alert');b.textContent=v>=min&&v<=max?'OK':'Alerta';}
+  else if(tipo==='warn'){if(v<min){b.className='badge b-ok';b.textContent='OK';}else if(v<=max){b.className='badge b-warn';b.textContent='Cuidado';}else{b.className='badge b-alert';b.textContent='Alerta';}}
 }
 
 async function guardarTemp(){
-  const fecha=document.getElementById('tp-fecha').value;
-  const resp=document.getElementById('tp-resp').value||'—';
-  const c2=parseFloat(document.getElementById('tp-c2').value)||null;
-  const c5=parseFloat(document.getElementById('tp-c5').value)||null;
-  const c5h=parseFloat(document.getElementById('tp-c5h').value)||null;
-  const c6=parseFloat(document.getElementById('tp-c6').value)||null;
-  const c6h=parseFloat(document.getElementById('tp-c6h').value)||null;
-  const ob=parseFloat(document.getElementById('tp-ob').value)||null;
-  const en=parseFloat(document.getElementById('tp-en').value)||null;
+  var fecha=document.getElementById('tp-fecha').value;
+  var resp=document.getElementById('tp-resp').value||'—';
+  var c2=parseFloat(document.getElementById('tp-c2').value)||null;
+  var c5=parseFloat(document.getElementById('tp-c5').value)||null;
+  var c5h=parseFloat(document.getElementById('tp-c5h').value)||null;
+  var c6=parseFloat(document.getElementById('tp-c6').value)||null;
+  var c6h=parseFloat(document.getElementById('tp-c6h').value)||null;
+  var ob=parseFloat(document.getElementById('tp-ob').value)||null;
+  var en=parseFloat(document.getElementById('tp-en').value)||null;
   if(!c2&&!c5&&!c6&&!ob&&!en){toast('Introduce al menos una temperatura',false);return;}
-  const alerta=(c2&&c2>=4)||(c5&&(c5<0||c5>5))||(c6&&(c6<13||c6>16))||(ob&&ob>23)||(en&&en>23);
-  const warn=(ob&&ob>=20&&ob<=23)||(en&&en>=20&&en<=23);
-  const estado=alerta?'alerta':warn?'cuidado':'ok';
-  const {error}=await db.from('temperaturas').insert({fecha,responsable:resp,cam2:c2,cam5:c5,cam5_hum:c5h,cam6:c6,cam6_hum:c6h,obrador:ob,envasado:en,estado});
-  if(error){toast('Error: '+error.message,false);return;}
-  toast('✓ Temperaturas guardadas · '+fecha);
+  var alerta=(c2&&c2>=4)||(c5&&(c5<0||c5>5))||(c6&&(c6<13||c6>16))||(ob&&ob>23)||(en&&en>23);
+  var warn=(ob&&ob>=20&&ob<=23)||(en&&en>=20&&en<=23);
+  var estado=alerta?'alerta':warn?'cuidado':'ok';
+  var res=await db.from('temperaturas').insert({fecha:fecha,responsable:resp,cam2:c2,cam5:c5,cam5_hum:c5h,cam6:c6,cam6_hum:c6h,obrador:ob,envasado:en,estado:estado});
+  if(res.error){toast('Error: '+res.error.message,false);return;}
+  toast('Temperaturas guardadas · '+fecha);
   cargarTemperaturas();
 }
 
 async function cargarTemperaturas(){
-  const {data}=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(30);
-  const t=document.getElementById('tabla-temps');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="9" class="empty-state">Sin registros</td></tr>';return;}
-  document.getElementById('d-temp').textContent=data.length;
-  const r=data[0];
-  if(r.cam2!=null)document.getElementById('dt-c2').textContent=r.cam2+'°C';
-  if(r.cam5!=null)document.getElementById('dt-c5').textContent=r.cam5+'°C';
-  if(r.cam6!=null)document.getElementById('dt-c6').textContent=r.cam6+'°C';
-  if(r.obrador!=null)document.getElementById('dt-ob').textContent=r.obrador+'°C';
-  t.innerHTML=data.map(function(r){
-    return '<tr>' +
-      '<td>' + r.fecha + '</td>' +
-      '<td style="' + (r.cam2!=null&&r.cam2>=4?'color:var(--red-text);font-weight:700':'') + '">' + (r.cam2!=null?r.cam2+'°C':'—') + '</td>' +
-      '<td>' + (r.cam5!=null?r.cam5+'°/'+(r.cam5_hum!=null?r.cam5_hum:'—')+'%':'—') + '</td>' +
-      '<td>' + (r.cam6!=null?r.cam6+'°/'+(r.cam6_hum!=null?r.cam6_hum:'—')+'%':'—') + '</td>' +
-      '<td style="' + (r.obrador!=null&&r.obrador>23?'color:var(--red-text);font-weight:700':r.obrador!=null&&r.obrador>=20?'color:var(--orange-text);font-weight:600':'') + '">' + (r.obrador!=null?r.obrador+'°C':'—') + '</td>' +
-      '<td style="' + (r.envasado!=null&&r.envasado>23?'color:var(--red-text);font-weight:700':r.envasado!=null&&r.envasado>=20?'color:var(--orange-text);font-weight:600':'') + '">' + (r.envasado!=null?r.envasado+'°C':'—') + '</td>' +
-      '<td>' + (r.responsable||'—') + '</td>' +
-      '<td><span class="badge ' + (r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok') + '">' + (r.estado==='alerta'?'⚠ Alerta':r.estado==='cuidado'?'⚠ Cuidado':'✓ OK') + '</span></td>' +
-      '<td><button class="btn btn-danger btn-sm" onclick="borrar(\'temperaturas\',\'' + r.id + '\',cargarTemperaturas)"><i class="ti ti-trash"></i></button></td>' +
-    '</tr>';
-  }).join('');
+  var res=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(30);
+  var t=document.getElementById('tabla-temps');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="9" class="empty-state">Sin registros</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(r){
+    var estClass=r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok';
+    var estText=r.estado==='alerta'?'Alerta':r.estado==='cuidado'?'Cuidado':'OK';
+    html+='<tr>';
+    html+='<td>'+r.fecha+'</td>';
+    html+='<td>'+(r.cam2!==null?r.cam2+'°C':'—')+'</td>';
+    html+='<td>'+(r.cam5!==null?r.cam5+'°/'+(r.cam5_hum||'—')+'%':'—')+'</td>';
+    html+='<td>'+(r.cam6!==null?r.cam6+'°/'+(r.cam6_hum||'—')+'%':'—')+'</td>';
+    html+='<td>'+(r.obrador!==null?r.obrador+'°C':'—')+'</td>';
+    html+='<td>'+(r.envasado!==null?r.envasado+'°C':'—')+'</td>';
+    html+='<td>'+(r.responsable||'—')+'</td>';
+    html+='<td><span class="badge '+estClass+'">'+estText+'</span></td>';
+    html+='<td><button class="btn btn-danger btn-sm" onclick="borrar(\'temperaturas\',\''+r.id+'\',cargarTemperaturas)"><i class="ti ti-trash"></i></button></td>';
+    html+='</tr>';
+  });
+  t.innerHTML=html;
 }
 
-// TRAZABILIDAD
 async function buscarTrazabilidad(){
-  const lote=document.getElementById('tr-lote').value.trim().toUpperCase();
-  const prod=document.getElementById('tr-producto').value;
-  const fecha=document.getElementById('tr-fecha').value;
-  let q=db.from('elaboraciones').select('*');
+  var lote=document.getElementById('tr-lote').value.trim().toUpperCase();
+  var prod=document.getElementById('tr-producto').value;
+  var fecha=document.getElementById('tr-fecha').value;
+  var q=db.from('elaboraciones').select('*');
   if(lote)q=q.eq('lote',lote);
   if(prod)q=q.eq('producto',prod);
   if(fecha)q=q.eq('fecha',fecha);
-  const {data}=await q.order('created_at',{ascending:false});
-  const c=document.getElementById('tr-resultados');
-  if(!data||!data.length){c.innerHTML='<div class="card"><div class="empty-state">Sin resultados para los criterios de búsqueda</div></div>';return;}
-  c.innerHTML=data.map(function(e){
-    return '<div class="card" style="margin-bottom:8px">' +
-      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-        '<div class="lote-cod" style="font-size:16px">' + e.lote + '</div>' +
-        '<span class="badge b-purple">' + e.estado + '</span>' +
-        '<span style="font-size:16px">' + (colores[e.color]||'') + '</span>' +
-      '</div>' +
-      '<table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>' +
-        [['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',e.fecha],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso final',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']].map(function(row){return '<tr><td style="color:var(--text2);font-size:11px">'+row[0]+'</td><td style="font-weight:500">'+(row[1]||'—')+'</td></tr>';}).join('') +
-      '</tbody></table>' +
-      '<button class="btn btn-gold btn-sm" style="margin-top:8px" onclick=\'abrirEtiqueta(' + JSON.stringify(e) + ')\'><i class="ti ti-tag"></i> Ver etiqueta</button>' +
-    '</div>';
-  }).join('');
+  var res=await q.order('created_at',{ascending:false});
+  var c=document.getElementById('tr-resultados');
+  if(!res.data||!res.data.length){c.innerHTML='<div class="card"><div class="empty-state">Sin resultados</div></div>';return;}
+  var html='';
+  res.data.forEach(function(e){
+    html+='<div class="card" style="margin-bottom:8px">';
+    html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
+    html+='<div class="lote-cod" style="font-size:16px">'+e.lote+'</div>';
+    html+='<span class="badge b-purple">'+e.estado+'</span>';
+    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta('+JSON.stringify(e)+')"><i class="ti ti-tag"></i> Etiqueta</button>';
+    html+='</div>';
+    var campos=[['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',e.fecha],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']];
+    html+='<table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>';
+    campos.forEach(function(kv){html+='<tr><td style="color:var(--text2);font-size:11px">'+kv[0]+'</td><td style="font-weight:500">'+(kv[1]||'—')+'</td></tr>';});
+    html+='</tbody></table></div>';
+  });
+  c.innerHTML=html;
 }
 
-// SUBIDA DOCUMENTOS
 async function subirDocumento(input){
-  const file=input.files[0];if(!file)return;
-  const nombre=document.getElementById('doc-nombre').value||file.name;
-  const cat=document.getElementById('doc-cat').value;
-  const path='docs/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+  var file=input.files[0];if(!file)return;
+  var nombre=document.getElementById('doc-nombre').value||file.name;
+  var cat=document.getElementById('doc-cat').value;
+  var path='docs/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   document.getElementById('upload-progress').style.display='block';
-  document.getElementById('upload-status').textContent='Subiendo...';
   document.getElementById('upload-bar').style.width='40%';
-  const {error:upErr}=await db.storage.from('documentos').upload(path,file);
-  if(upErr){toast('Error: '+upErr.message,false);return;}
+  var up=await db.storage.from('documentos').upload(path,file);
+  if(up.error){toast('Error: '+up.error.message,false);return;}
   document.getElementById('upload-bar').style.width='80%';
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre,categoria:cat,url:urlData.publicUrl,descripcion:file.name});
+  var urlData=db.storage.from('documentos').getPublicUrl(path);
+  await db.from('documentos').insert({nombre:nombre,categoria:cat,url:urlData.data.publicUrl,descripcion:file.name});
   document.getElementById('upload-bar').style.width='100%';
-  document.getElementById('upload-status').textContent='✓ Subido';
-  toast('✓ Documento subido: '+nombre);
-  setTimeout(()=>{document.getElementById('upload-progress').style.display='none';document.getElementById('upload-bar').style.width='0%';},2000);
+  document.getElementById('upload-status').textContent='Subido correctamente';
+  toast('Documento subido: '+nombre);
+  setTimeout(function(){document.getElementById('upload-progress').style.display='none';document.getElementById('upload-bar').style.width='0%';},2000);
   document.getElementById('doc-nombre').value='';input.value='';
   cargarDocumentos();
 }
 
 async function cargarDocumentos(){
-  const {data}=await db.from('documentos').select('*').order('created_at',{ascending:false});
-  const t=document.getElementById('tabla-docs');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin documentos</td></tr>';return;}
-  document.getElementById('d-docs').textContent=data.length;
-  t.innerHTML=data.map(function(d){
-    return '<tr>' +
-      '<td><div style="font-weight:600">' + d.nombre + '</div><div style="font-size:10px;color:var(--text3)">' + (d.descripcion||'') + '</div></td>' +
-      '<td><span class="badge b-info">' + (d.categoria||'—') + '</span></td>' +
-      '<td style="font-size:11px;color:var(--text2)">' + (d.created_at?new Date(d.created_at).toLocaleDateString('es-ES'):'—') + '</td>' +
-      '<td><div style="display:flex;gap:6px">' + (d.url?'<a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'') +
-      '<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarDocumentos)"><i class="ti ti-trash"></i></button></div></td>' +
-    '</tr>';
-  }).join('');
+  var res=await db.from('documentos').select('*').order('created_at',{ascending:false});
+  var t=document.getElementById('tabla-docs');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin documentos</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<tr>';
+    html+='<td><div style="font-weight:600">'+d.nombre+'</div><div style="font-size:10px;color:var(--text3)">'+(d.descripcion||'')+'</div></td>';
+    html+='<td><span class="badge b-info">'+(d.categoria||'—')+'</span></td>';
+    html+='<td style="font-size:11px;color:var(--text2)">'+(d.created_at?new Date(d.created_at).toLocaleDateString('es-ES'):'—')+'</td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i> Ver</a>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',cargarDocumentos)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
 }
 
-// HALAL
-async function subirHalal(input,nombre,tipo){
-  for(const file of input.files){
-    const path='halal/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-    await db.storage.from('documentos').upload(path,file);
-    const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre,categoria:'Halal_'+tipo,url:urlData.publicUrl,descripcion:file.name});
+async function subirDocCat(input,categoria){
+  var files=input.files;
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
+    var path='docs/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:file.name,categoria:categoria,url:urlData.data.publicUrl,descripcion:file.name});
+    }
   }
-  toast('✓ Documento Halal subido');
+  toast('Documentos subidos');
   input.value='';
   cargarHalal();
 }
 
-async function subirHalalProv(input,proveedor,tdId){
-  const file=input.files[0];if(!file)return;
-  const path='halal/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre:'Certificado Halal — '+proveedor,categoria:'Halal_Proveedor',url:urlData.publicUrl,descripcion:file.name});
-  document.getElementById(tdId).innerHTML='<a href="'+urlData.publicUrl+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>';
-  toast('✓ Certificado halal subido: '+proveedor);
-  input.value='';
-}
-
 async function cargarHalal(){
-  const [{data:docs},{data:provs}]=await Promise.all([
-    db.from('documentos').select('*').like('categoria','Halal%').order('created_at',{ascending:false}),
-    db.from('proveedores').select('*').order('codigo')
-  ]);
-  if(!docs)return;
-  const propios=docs.filter(d=>d.categoria==='Halal_Certificado propio');
-  const audits=docs.filter(d=>d.categoria==='Halal_Auditoría');
-  const t1=document.getElementById('tabla-halal-propios');
-  t1.innerHTML=propios.length?propios.map(function(d){
-    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td><span class="badge b-info">' + d.categoria + '</span></td><td>' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:6px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>';
-  }).join(''):'<tr><td colspan="4" class="empty-state">Sin documentos propios</td></tr>';
-  const t2=document.getElementById('tabla-halal-audits');
-  t2.innerHTML=audits.length?audits.map(function(d){
-    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td>' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:6px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>';
-  }).join(''):'<tr><td colspan="3" class="empty-state">Sin auditorías</td></tr>';
-  const provList=(provs&&provs.length)?provs:proveedoresDefault;
-  const t3=document.getElementById('tabla-halal-prov');
-  t3.innerHTML=provList.map(function(p){
-    const safeName=p.nombre.replace(/[^a-z0-9]/gi,'').toLowerCase();
-    const doc=docs.find(function(d){return d.categoria==='Halal_Proveedor'&&d.nombre.includes(p.nombre);});
-    const tdId='halal-prov-doc-'+safeName;
-    return '<tr><td>' + p.nombre + '</td><td id="' + tdId + '">' + (doc?'<a href="' + doc.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'—') + '</td><td>—</td><td><span class="badge ' + (doc?'b-ok':'b-pend') + '">' + (doc?'OK':'Pendiente') + '</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById(\'upload-halal-' + safeName + '\').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-' + safeName + '" style="display:none" onchange="subirHalalProv(this,' + JSON.stringify(p.nombre) + ',\'' + tdId + '\')"/></td></tr>';
-  }).join('');
+  var res=await db.from('documentos').select('*').order('created_at',{ascending:false});
+  if(!res.data)return;
+  var propios=res.data.filter(function(d){return d.categoria==='Halal Certificado propio';});
+  var audits=res.data.filter(function(d){return d.categoria==='Halal Auditoría';});
+  var p1=document.getElementById('halal-propios-lista');
+  if(propios.length){
+    var h='';
+    propios.forEach(function(d){
+      h+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1;font-size:12px">'+d.nombre+'</div>';
+      if(d.url)h+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
+      h+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',cargarHalal)"><i class="ti ti-trash"></i></button></div>';
+    });
+    p1.innerHTML=h;
+  } else {p1.innerHTML='';}
+  var p2=document.getElementById('halal-audits-lista');
+  if(audits.length){
+    var h2='';
+    audits.forEach(function(d){
+      h2+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1;font-size:12px">'+d.nombre+'</div>';
+      if(d.url)h2+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
+      h2+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',cargarHalal)"><i class="ti ti-trash"></i></button></div>';
+    });
+    p2.innerHTML=h2;
+  } else {p2.innerHTML='';}
+  cargarHalalProveedores(res.data);
 }
 
-// APPCC
-const carpetasAppcc=[
-  {id:'a',nombre:'A. Aspectos generales del sistema de autocontrol'},
-  {id:'b',nombre:'B. Programas de prerrequisitos'},
-  {id:'c',nombre:'C. Plan APPCC'},
-  {id:'d',nombre:'D. Muestras'},
-];
-const registrosAppcc=['A.2-AN01 ORGANIGRAMA','A.2-AN02 CUADRO DE RESPONSABLES','B.1-R01 CONTROL DE AGUA DE ABASTECIMIENTO','B.2-R01 LIMPIEZA DIARIA PRODUCCION','B.2-R02 LISTA REVISION GENERAL MENSUAL','B.3-R01 REGISTRO SEMESTRAL DE CEBOS','B.4-R01 EJECUCION OPERACION MANTENIMIENTO','B.4-R02 COMPROBACIÓN BÁSCULAS DE DOSIFICACIÓN','B.4-R03 COMPROBACIÓN ANUAL TERMÓMETROS','B.5-R01 REGISTRO DIARIO DE TEMPERATURAS','B.5-R02 TEMPERATURAS CÁMARAS Y SALAS','B.6-AN01 IDENTIFICACION Y CODIFICACION DE LOTES','B.6-R03 SIMULACRO ANUAL TRAZABILIDAD','B.6-R04 REGISTRO DE PRODUCTO ELABORADO','B.6-R05 JUSTIFICANTE RECOGIDA DE MERCANCIA','B.6-R06 CONTROL DE STOCK DEL CONGELADOR','B.8-R01 REGISTRO VISITAS Y CONTROL DE ACCESO','B.10-R01 LISTADO MAESTRO PROVEEDORES HOMOLOGADOS','B.11-R01 REGISTRO NO CONFORMIDADES','B.12-R01 REGISTRO VIGILANCIA SEMESTRAL','C.4-R01 VERIFICACIÓN ANUAL SISTEMA AUTOCONTROL'];
+async function cargarHalalProveedores(docs){
+  var res=await db.from('proveedores').select('*').order('codigo');
+  var lista=document.getElementById('halal-proveedores-lista');
+  var provs=res.data||[];
+  if(!provs.length){lista.innerHTML='<div class="empty-state">Sin proveedores registrados</div>';return;}
+  var html='<table><thead><tr><th>Proveedor</th><th>Documento</th><th>Estado</th><th>Subir</th></tr></thead><tbody>';
+  provs.forEach(function(p){
+    var docProv=docs?docs.filter(function(d){return d.categoria==='Halal Proveedor '+p.nombre;}):[];
+    html+='<tr><td style="font-weight:500">'+p.nombre+'</td>';
+    html+='<td>';
+    if(docProv.length){docProv.forEach(function(d){if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-sec btn-sm" style="margin-right:4px"><i class="ti ti-external-link"></i></a>';});}
+    else{html+='—';}
+    html+='</td>';
+    html+='<td><span class="badge '+(docProv.length?'b-ok':'b-pend')+'">'+(docProv.length?'OK':'Pendiente')+'</span></td>';
+    html+='<td><button class="btn btn-sec btn-sm" onclick="subirHalalProv(\''+p.nombre+'\')"><i class="ti ti-upload"></i></button></td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  lista.innerHTML=html;
+}
+
+function subirHalalProv(nombre){
+  var input=document.createElement('input');
+  input.type='file';
+  input.onchange=async function(){
+    var file=this.files[0];if(!file)return;
+    var path='halal/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:'Halal '+nombre,categoria:'Halal Proveedor '+nombre,url:urlData.data.publicUrl,descripcion:file.name});
+      toast('Certificado subido: '+nombre);
+      cargarHalal();
+    }
+  };
+  input.click();
+}
+
+var registrosAppcc=['A.2-AN01 ORGANIGRAMA','A.2-AN02 CUADRO DE RESPONSABLES','B.1-R01 CONTROL DE AGUA DE ABASTECIMIENTO','B.2-R01 LIMPIEZA DIARIA PRODUCCION','B.2-R02 LISTA REVISION GENERAL MENSUAL','B.3-R01 REGISTRO SEMESTRAL DE CEBOS','B.4-R01 EJECUCION OPERACION MANTENIMIENTO','B.4-R02 COMPROBACIÓN BÁSCULAS','B.4-R03 COMPROBACIÓN TERMÓMETROS','B.5-R01 REGISTRO DIARIO TEMPERATURAS','B.5-R02 TEMPERATURAS CÁMARAS','B.6-AN01 CODIFICACION DE LOTES','B.6-R03 SIMULACRO TRAZABILIDAD','B.6-R04 REGISTRO PRODUCTO ELABORADO','B.6-R05 JUSTIFICANTE RECOGIDA MERCANCIA','B.6-R06 CONTROL STOCK CONGELADOR','B.8-R01 REGISTRO VISITAS','B.10-R01 LISTADO PROVEEDORES','B.11-R01 NO CONFORMIDADES','B.12-R01 VIGILANCIA SEMESTRAL','C.4-R01 VERIFICACIÓN ANUAL'];
+var carpetasAppcc=[{id:'a',nombre:'A. Aspectos generales'},{id:'b',nombre:'B. Programas de prerrequisitos'},{id:'c',nombre:'C. Plan APPCC'},{id:'d',nombre:'D. Muestras'}];
 
 function renderAppcc(){
-  const c=document.getElementById('appcc-carpetas');
-  c.innerHTML=carpetasAppcc.map(function(f){
-    return '<div class="folder" id="folder-' + f.id + '">' +
-      '<div class="folder-header" onclick="toggleFolder(\'' + f.id + '\')">' +
-        '<i class="ti ti-folder" style="color:var(--dorado);font-size:18px"></i>' +
-        '<div class="folder-title">' + f.nombre + '</div>' +
-        '<i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-' + f.id + '"></i>' +
-      '</div>' +
-      '<div class="folder-body" id="body-folder-' + f.id + '">' +
-        '<div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById(\'upload-appcc-' + f.id + '\').click()">' +
-          '<input type="file" id="upload-appcc-' + f.id + '" multiple onchange="subirAppccCarpeta(this,\'' + f.nombre + '\',\'appcc-docs-' + f.id + '\')"/>' +
-          '<i class="ti ti-cloud-upload" style="font-size:20px"></i>' +
-          '<p><strong style="color:var(--dorado)">Subir documentos</strong> · Múltiples archivos permitidos</p>' +
-        '</div>' +
-        '<div id="appcc-docs-' + f.id + '"></div>' +
-      '</div>' +
-    '</div>';
-  }).join('') +
-  '<div class="folder" id="folder-reg">' +
-    '<div class="folder-header" onclick="toggleFolder(\'reg\')">' +
-      '<i class="ti ti-folder-open" style="color:var(--dorado);font-size:18px"></i>' +
-      '<div class="folder-title">D. Registros</div>' +
-      '<i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-reg"></i>' +
-    '</div>' +
-    '<div class="folder-body" id="body-folder-reg">' +
-      '<div id="appcc-registros-lista"></div>' +
-    '</div>' +
-  '</div>';
+  var c=document.getElementById('appcc-carpetas');
+  var html='';
+  carpetasAppcc.forEach(function(f){
+    html+='<div class="folder"><div class="folder-header" onclick="toggleFolder(\''+f.id+'\')">';
+    html+='<i class="ti ti-folder" style="color:var(--dorado);font-size:18px"></i>';
+    html+='<div class="folder-title">'+f.nombre+'</div>';
+    html+='<i class="ti ti-chevron-right" style="color:var(--text3)" id="icon-folder-'+f.id+'"></i></div>';
+    html+='<div class="folder-body" id="body-folder-'+f.id+'">';
+    html+='<div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById(\'upload-appcc-'+f.id+'\').click()">';
+    html+='<input type="file" id="upload-appcc-'+f.id+'" multiple onchange="subirAppccCarpeta(this,\''+f.nombre+'\')">';
+    html+='<i class="ti ti-cloud-upload" style="font-size:20px"></i><p><strong style="color:var(--dorado)">Subir documentos</strong></p></div>';
+    html+='<div id="appcc-docs-'+f.id+'"></div></div></div>';
+  });
+  html+='<div class="folder"><div class="folder-header" onclick="toggleFolder(\'reg\')">';
+  html+='<i class="ti ti-folder-open" style="color:var(--dorado);font-size:18px"></i>';
+  html+='<div class="folder-title">D. Registros</div>';
+  html+='<i class="ti ti-chevron-right" style="color:var(--text3)" id="icon-folder-reg"></i></div>';
+  html+='<div class="folder-body" id="body-folder-reg"><div id="appcc-registros-lista"></div></div></div>';
+  c.innerHTML=html;
   cargarDocsAppcc();
 }
 
-async function subirAppccCarpeta(input,categoria,targetId){
-  for(const file of input.files){
-    const path='appcc/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-    await db.storage.from('documentos').upload(path,file);
-    const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:file.name,categoria:'APPCC_'+categoria,url:urlData.publicUrl,descripcion:file.name});
+async function subirAppccCarpeta(input,categoria){
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='appcc/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:file.name,categoria:'APPCC_'+categoria,url:urlData.data.publicUrl,descripcion:file.name});
+    }
   }
-  toast('✓ Documentos subidos');
-  input.value='';
-  cargarDocsAppcc();
+  toast('Documentos subidos');input.value='';cargarDocsAppcc();
 }
 
 async function subirRegistroAppcc(input,nombreReg){
-  const mesRef=prompt('¿A qué mes corresponde? (YYYY-MM)',new Date().toISOString().slice(0,7))||new Date().toISOString().slice(0,7);
-  for(const file of input.files){
-    const path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-    await db.storage.from('documentos').upload(path,file);
-    const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.publicUrl,descripcion:'['+mesRef+'] '+file.name});
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.data.publicUrl,descripcion:file.name});
+    }
   }
-  toast('✓ Registro subido: '+nombreReg);
-  input.value='';
-  cargarDocsAppcc();
+  toast('Registro subido');input.value='';cargarDocsAppcc();
 }
 
 async function cargarDocsAppcc(){
-  const {data}=await db.from('documentos').select('*').like('categoria','APPCC%').order('created_at',{ascending:false});
-  if(!data)return;
-  carpetasAppcc.forEach(f=>{
-    const el=document.getElementById('appcc-docs-'+f.id);
+  var res=await db.from('documentos').select('*').order('created_at',{ascending:false});
+  if(!res.data)return;
+  carpetasAppcc.forEach(function(f){
+    var el=document.getElementById('appcc-docs-'+f.id);
     if(!el)return;
-    const docs=data.filter(d=>d.categoria==='APPCC_'+f.nombre);
-    el.innerHTML=docs.length?docs.map(function(d){return '<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div><div style="font-size:10px;color:var(--text3)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</div></div><a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(\"documentos\",\"'+d.id+'\",renderAppcc)"><i class="ti ti-trash"></i></button></div>';}).join(''):'<div style="font-size:11px;color:var(--text3);padding:8px">Sin documentos subidos</div>';
+    var docs=res.data.filter(function(d){return d.categoria==='APPCC_'+f.nombre;});
+    if(!docs.length){el.innerHTML='<div style="font-size:11px;color:var(--text3);padding:8px">Sin documentos</div>';return;}
+    var h='';
+    docs.forEach(function(d){
+      h+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
+      h+='<div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div>';
+      h+='<div style="font-size:10px;color:var(--text3)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</div></div>';
+      if(d.url)h+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
+      h+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button></div>';
+    });
+    el.innerHTML=h;
   });
-  const regsEl=document.getElementById('appcc-registros-lista');
+  var regsEl=document.getElementById('appcc-registros-lista');
   if(!regsEl)return;
-  const regsData=data.filter(d=>d.categoria==='APPCC_D.Registros');
-  regsEl.innerHTML=registrosAppcc.map(function(r,i){
-    const subidos=regsData.filter(function(d){return d.nombre===r;});
-    const sortedSubidos=[...subidos].sort(function(a,b){const ma=(a.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mb=(b.descripcion||'').match(/\[(\d{4}-\d{2})\]/);return (mb?mb[1]:'')>(ma?ma[1]:'')?1:-1;});
-    const docRows=sortedSubidos.map(function(d){
-      const mRef=(d.descripcion||'').match(/\[(\d{4}-\d{2})\]/);
-      const mes=mRef?mRef[1]:'';
-      const fname=(d.descripcion||d.nombre).replace(/^\[\d{4}-\d{2}\]\s*/,'');
-      return '<div class="doc-row" style="margin-left:20px;padding:6px 10px">' +
-        '<i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>' +
-        (mes?'<span class="badge b-gray" style="font-size:9px;margin-right:4px">'+mes+'</span>':'') +
-        '<div style="flex:1;font-size:11px">'+fname+'</div>' +
-        '<a href="'+d.url+'" target="_blank" class="btn btn-sec btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a>' +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(&quot;documentos&quot;,&quot;'+d.id+'&quot;,function(){renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>' +
-      '</div>';
-    }).join('');
-    return '<div style="margin-bottom:6px">' +
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
-        '<span class="badge ' + (subidos.length?'b-ok':'b-gray') + '">' + (subidos.length?subidos.length+' archivo(s)':'Sin archivos') + '</span>' +
-        '<div style="font-size:11px;font-weight:600;flex:1">' + r + '</div>' +
-        '<button class="btn btn-gold btn-sm" onclick="document.getElementById(\'upload-reg-'+i+'\').click()"><i class="ti ti-upload"></i> Subir</button>' +
-        '<input type="file" id="upload-reg-'+i+'" style="display:none" multiple onchange="subirRegistroAppcc(this,\''+r.replace(/'/g,"\\'")+'\')" />' +
-      '</div>' +
-      docRows +
-    '</div>';
-  }).join('');
+  var regsData=res.data.filter(function(d){return d.categoria==='APPCC_D.Registros';});
+  var html='';
+  registrosAppcc.forEach(function(r,i){
+    var subidos=regsData.filter(function(d){return d.nombre===r;});
+    html+='<div style="margin-bottom:8px;padding:8px;background:var(--bg3);border-radius:var(--radius)">';
+    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">';
+    html+='<span class="badge '+(subidos.length?'b-ok':'b-gray')+'">'+(subidos.length?subidos.length+' archivo(s)':'Sin archivos')+'</span>';
+    html+='<div style="font-size:11px;font-weight:600;flex:1">'+r+'</div>';
+    html+='<button class="btn btn-gold btn-sm" onclick="document.getElementById(\'upload-reg-'+i+'\').click()"><i class="ti ti-upload"></i></button>';
+    html+='<input type="file" id="upload-reg-'+i+'" style="display:none" multiple onchange="subirRegistroAppcc(this,\''+r+'\')">';
+    html+='</div>';
+    subidos.forEach(function(d){
+      html+='<div class="doc-row" style="margin-left:20px;padding:6px 10px">';
+      html+='<i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>';
+      html+='<div style="flex:1;font-size:11px">'+d.descripcion+' · '+new Date(d.created_at).toLocaleDateString('es-ES')+'</div>';
+      if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-sec btn-sm"><i class="ti ti-external-link"></i></a>';
+      html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>';
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  regsEl.innerHTML=html;
 }
 
 function toggleFolder(id){
-  const body=document.getElementById('body-folder-'+id);
-  const icon=document.getElementById('icon-folder-'+id);
+  var body=document.getElementById('body-folder-'+id);
+  var icon=document.getElementById('icon-folder-'+id);
   if(!body)return;
   body.classList.toggle('open');
   if(icon)icon.style.transform=body.classList.contains('open')?'rotate(90deg)':'rotate(0)';
 }
 
 // CLIENTES
-function abrirModalCliente(data=null){
+function abrirModalCliente(data){
   document.getElementById('cli-modal-titulo').textContent=data?'Editar cliente':'Nuevo cliente';
-  document.getElementById('cli-id').value=data?.id||'';
-  ['nombre','cif','dir','tel','email','pais','notas'].forEach(function(f){var el=document.getElementById('cli-'+f);if(!el)return;var key=f==='dir'?'direccion':f;el.value=data?String(data[key]||data[f]||''):'';});
+  document.getElementById('cli-id').value=data?data.id:'';
+  document.getElementById('cli-nombre').value=data?data.nombre||'':'';
+  document.getElementById('cli-cif').value=data?data.cif||'':'';
+  document.getElementById('cli-dir').value=data?data.direccion||'':'';
+  document.getElementById('cli-tel').value=data?data.telefono||'':'';
+  document.getElementById('cli-email').value=data?data.email||'':'';
+  document.getElementById('cli-pais').value=data?data.pais||'':'';
+  document.getElementById('cli-notas').value=data?data.notas||'':'';
   abrirModal('modal-cliente');
 }
 
 async function guardarCliente(){
-  const nombre=document.getElementById('cli-nombre').value;
+  var nombre=document.getElementById('cli-nombre').value;
   if(!nombre){toast('Introduce el nombre',false);return;}
-  const id=document.getElementById('cli-id').value;
-  const datos={nombre,cif:document.getElementById('cli-cif').value,direccion:document.getElementById('cli-dir').value,telefono:document.getElementById('cli-tel').value,email:document.getElementById('cli-email').value,pais:document.getElementById('cli-pais').value,tipo:document.getElementById('cli-tipo').value,notas:document.getElementById('cli-notas').value};
+  var id=document.getElementById('cli-id').value;
+  var datos={nombre:nombre,cif:document.getElementById('cli-cif').value,direccion:document.getElementById('cli-dir').value,telefono:document.getElementById('cli-tel').value,email:document.getElementById('cli-email').value,pais:document.getElementById('cli-pais').value,tipo:document.getElementById('cli-tipo').value,notas:document.getElementById('cli-notas').value};
   if(id){await db.from('clientes').update(datos).eq('id',id);}
   else{await db.from('clientes').insert(datos);}
-  toast('✓ Cliente guardado');
-  cerrarModal('modal-cliente');
-  cargarClientes();
+  toast('Cliente guardado');cerrarModal('modal-cliente');cargarClientes();
 }
 
 async function cargarClientes(){
-  const {data}=await db.from('clientes').select('*').order('nombre');
-  const t=document.getElementById('tabla-clientes');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin clientes</td></tr>';return;}
-  document.getElementById('d-cli').textContent=data.length;
-  t.innerHTML=data.map(function(c){
-    return '<tr>' +
-      '<td style="font-weight:600">' + c.nombre + '</td>' +
-      '<td style="font-family:monospace;font-size:11px">' + (c.cif||'—') + '</td>' +
-      '<td>' + (c.pais||'—') + '</td>' +
-      '<td><span class="badge b-info">' + (c.tipo||'—') + '</span></td>' +
-      '<td>' + (c.telefono||'—') + '</td>' +
-      '<td style="font-size:11px">' + (c.email||'—') + '</td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalCliente(' + JSON.stringify(c).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(\'clientes\',\'' + c.id + '\',cargarClientes)"><i class="ti ti-trash"></i></button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
+  var res=await db.from('clientes').select('*').order('nombre');
+  var t=document.getElementById('tabla-clientes');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin clientes</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(c){
+    var dataStr=JSON.stringify(c).replace(/"/g,'&quot;');
+    html+='<tr><td style="font-weight:600">'+c.nombre+'</td>';
+    html+='<td style="font-family:monospace;font-size:11px">'+(c.cif||'—')+'</td>';
+    html+='<td>'+(c.pais||'—')+'</td>';
+    html+='<td><span class="badge b-info">'+(c.tipo||'—')+'</span></td>';
+    html+='<td>'+(c.telefono||'—')+'</td>';
+    html+='<td style="font-size:11px">'+(c.email||'—')+'</td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirModalCliente(JSON.parse(this.getAttribute(\'data-obj\'))))" data-obj="'+dataStr+'"><i class="ti ti-edit"></i></button>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'clientes\',\''+c.id+'\',cargarClientes)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
 }
 
 // PROVEEDORES
-const proveedoresDefault=[
-  {codigo:'01',nombre:'Sabor Nazarí',pais:'🇪🇸 ES',actividad:'Producción propia',registro:'Sala 10.01428/GR',sae:'na',estado:'homologado'},
-  {codigo:'02',nombre:'Cosegur',pais:'🇪🇸 ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'03',nombre:'La Comarca',pais:'🇪🇸 ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'04',nombre:'Al-Hambra',pais:'🇪🇸 ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'05',nombre:'Matadero del Sur',pais:'🇪🇸 ES',actividad:'Matadero',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'06',nombre:'Ganados Cartagena',pais:'🇪🇸 ES',actividad:'Ganadería',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'07',nombre:'Covap',pais:'🇪🇸 ES',actividad:'Cooperativa',registro:'—',sae:'na',estado:'homologado'},
-  {codigo:'08',nombre:'Linex Handelsgesellschaft MbH',pais:'🇩🇪 DE',actividad:'Sala de despiece',registro:'DE NI 10234 EG',sae:'sin_sae',estado:'pendiente'},
-];
-
-function abrirModalProveedor(data=null){
+function abrirModalProveedor(data){
   document.getElementById('prov-modal-titulo').textContent=data?'Editar proveedor':'Nuevo proveedor';
-  document.getElementById('prov-id').value=data?.id||'';
-  ['codigo','nombre','pais','actividad','registro','tel','email','notas'].forEach(function(f){var el=document.getElementById('prov-'+f);if(el)el.value=data?String(data[f]||''):'';});
-  if(data?.sae){document.getElementById('prov-sae').value=data.sae;}
-  if(data?.estado){document.getElementById('prov-estado').value=data.estado;}
+  document.getElementById('prov-id').value=data?data.id:'';
+  document.getElementById('prov-codigo').value=data?data.codigo||'':'';
+  document.getElementById('prov-nombre').value=data?data.nombre||'':'';
+  document.getElementById('prov-pais').value=data?data.pais||'':'';
+  document.getElementById('prov-actividad').value=data?data.actividad||'':'';
+  document.getElementById('prov-registro').value=data?data.registro||'':'';
+  document.getElementById('prov-tel').value=data?data.telefono||'':'';
+  document.getElementById('prov-email').value=data?data.email||'':'';
+  document.getElementById('prov-notas').value=data?data.notas||'':'';
+  if(data&&data.sae)document.getElementById('prov-sae').value=data.sae;
+  if(data&&data.estado)document.getElementById('prov-estado').value=data.estado;
   abrirModal('modal-proveedor');
 }
 
 async function guardarProveedor(){
-  const nombre=document.getElementById('prov-nombre').value;
+  var nombre=document.getElementById('prov-nombre').value;
   if(!nombre){toast('Introduce el nombre',false);return;}
-  const id=document.getElementById('prov-id').value;
-  const datos={codigo:document.getElementById('prov-codigo').value,nombre,pais:document.getElementById('prov-pais').value,actividad:document.getElementById('prov-actividad').value,registro:document.getElementById('prov-registro').value,telefono:document.getElementById('prov-tel').value,email:document.getElementById('prov-email').value,sae:document.getElementById('prov-sae').value,estado:document.getElementById('prov-estado').value,notas:document.getElementById('prov-notas').value};
+  var id=document.getElementById('prov-id').value;
+  var datos={codigo:document.getElementById('prov-codigo').value,nombre:nombre,pais:document.getElementById('prov-pais').value,actividad:document.getElementById('prov-actividad').value,registro:document.getElementById('prov-registro').value,telefono:document.getElementById('prov-tel').value,email:document.getElementById('prov-email').value,sae:document.getElementById('prov-sae').value,estado:document.getElementById('prov-estado').value,notas:document.getElementById('prov-notas').value};
   if(id){await db.from('proveedores').update(datos).eq('id',id);}
   else{await db.from('proveedores').insert(datos);}
-  toast('✓ Proveedor guardado');
-  cerrarModal('modal-proveedor');
-  cargarProveedores();
+  toast('Proveedor guardado');cerrarModal('modal-proveedor');cargarProveedores();
 }
 
 async function cargarProveedores(){
-  const {data}=await db.from('proveedores').select('*').order('codigo');
-  const t=document.getElementById('tabla-proveedores');
-  const lista=data&&data.length?data:proveedoresDefault;
-  const saeBadge={na:'<span class="badge b-gray">N/A</span>',sin_sae:'<span class="badge b-pend">Sin SAE</span>',nivel1:'<span class="badge b-ok">Nivel 1</span>',nivel2:'<span class="badge b-ok">Nivel 2</span>'};
-  const estBadge={homologado:'<span class="badge b-ok">Homologado</span>',pendiente:'<span class="badge b-alert">Pendiente</span>',suspendido:'<span class="badge b-alert">Suspendido</span>'};
-  t.innerHTML=lista.map(function(p){
-    return '<tr>' +
-      '<td style="font-weight:700;color:var(--dorado3)">' + (p.codigo||'—') + '</td>' +
-      '<td style="font-weight:500">' + p.nombre + '</td>' +
-      '<td>' + (p.pais||'—') + '</td>' +
-      '<td>' + (p.actividad||'—') + '</td>' +
-      '<td style="font-family:monospace;font-size:11px">' + (p.registro||'—') + '</td>' +
-      '<td>' + (saeBadge[p.sae]||saeBadge.na) + '</td>' +
-      '<td>' + (estBadge[p.estado]||estBadge.homologado) + '</td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalProveedor(' + JSON.stringify(p).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
-        (p.id?'<button class="btn btn-danger btn-sm" onclick="borrar(\'proveedores\',\''+p.id+'\',cargarProveedores)"><i class="ti ti-trash"></i></button>':'') +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
+  var res=await db.from('proveedores').select('*').order('codigo');
+  var t=document.getElementById('tabla-proveedores');
+  var lista=res.data&&res.data.length?res.data:[
+    {codigo:'01',nombre:'Sabor Nazarí',pais:'ES',actividad:'Producción propia',registro:'Sala 10.01428/GR',sae:'na',estado:'homologado'},
+    {codigo:'02',nombre:'Cosegur',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'03',nombre:'La Comarca',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'04',nombre:'Al-Hambra',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'05',nombre:'Matadero del Sur',pais:'ES',actividad:'Matadero',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'06',nombre:'Ganados Cartagena',pais:'ES',actividad:'Ganadería',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'07',nombre:'Covap',pais:'ES',actividad:'Cooperativa',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'08',nombre:'Linex Handelsgesellschaft MbH',pais:'DE',actividad:'Sala de despiece',registro:'DE NI 10234 EG',sae:'sin_sae',estado:'pendiente'}
+  ];
+  var saeBadge={na:'<span class="badge b-gray">N/A</span>',sin_sae:'<span class="badge b-pend">Sin SAE</span>',nivel1:'<span class="badge b-ok">Nivel 1</span>',nivel2:'<span class="badge b-ok">Nivel 2</span>'};
+  var estBadge={homologado:'<span class="badge b-ok">Homologado</span>',pendiente:'<span class="badge b-alert">Pendiente</span>',suspendido:'<span class="badge b-alert">Suspendido</span>'};
+  var html='';
+  lista.forEach(function(p){
+    html+='<tr><td style="font-weight:700;color:var(--dorado3)">'+(p.codigo||'—')+'</td>';
+    html+='<td style="font-weight:500">'+p.nombre+'</td>';
+    html+='<td>'+(p.pais||'—')+'</td>';
+    html+='<td>'+(p.actividad||'—')+'</td>';
+    html+='<td style="font-family:monospace;font-size:11px">'+(p.registro||'—')+'</td>';
+    html+='<td>'+(saeBadge[p.sae]||saeBadge.na)+'</td>';
+    html+='<td>'+(estBadge[p.estado]||estBadge.homologado)+'</td>';
+    html+='<td><button class="btn btn-edit btn-sm" onclick="abrirModalProveedor('+JSON.stringify(p).replace(/"/g,"'").replace(/'/g,'&#39;')+')"><i class="ti ti-edit"></i></button></td>';
+    html+='</tr>';
+  });
+  t.innerHTML=html;
 }
 
 // TRABAJADORES
-function abrirModalTrabajador(data=null){
+function abrirModalTrabajador(data){
   document.getElementById('trab-modal-titulo').textContent=data?'Editar trabajador':'Nuevo trabajador';
-  document.getElementById('trab-id').value=data?.id||'';
-  ['nombre','dni','cargo','tel','email','ss','obs'].forEach(function(f){var el=document.getElementById('trab-'+f);if(!el)return;if(f==='tel')el.value=data?(data.telefono||''):'';else if(f==='ss')el.value=data?(data.num_ss||''):'';else if(f==='obs')el.value=data?(data.observaciones||''):'';else el.value=data?(data[f]||''):'';});
-  if(data?.fecha_alta){document.getElementById('trab-alta').value=data.fecha_alta;}
-  if(data?.estado){document.getElementById('trab-estado').value=data.estado;}
+  document.getElementById('trab-id').value=data?data.id:'';
+  document.getElementById('trab-nombre').value=data?data.nombre||'':'';
+  document.getElementById('trab-dni').value=data?data.dni||'':'';
+  document.getElementById('trab-cargo').value=data?data.cargo||'':'';
+  document.getElementById('trab-tel').value=data?data.telefono||'':'';
+  document.getElementById('trab-email').value=data?data.email||'':'';
+  document.getElementById('trab-alta').value=data?data.fecha_alta||'':'';
+  document.getElementById('trab-ss').value=data?data.num_ss||'':'';
+  document.getElementById('trab-obs').value=data?data.observaciones||'':'';
+  if(data&&data.estado)document.getElementById('trab-estado').value=data.estado;
   abrirModal('modal-trabajador');
 }
 
 async function guardarTrabajador(){
-  const nombre=document.getElementById('trab-nombre').value;
+  var nombre=document.getElementById('trab-nombre').value;
   if(!nombre){toast('Introduce el nombre',false);return;}
-  const id=document.getElementById('trab-id').value;
-  const datos={nombre,dni:document.getElementById('trab-dni').value,cargo:document.getElementById('trab-cargo').value,telefono:document.getElementById('trab-tel').value,email:document.getElementById('trab-email').value,fecha_alta:document.getElementById('trab-alta').value||null,num_ss:document.getElementById('trab-ss').value,estado:document.getElementById('trab-estado').value,observaciones:document.getElementById('trab-obs').value};
+  var id=document.getElementById('trab-id').value;
+  var datos={nombre:nombre,dni:document.getElementById('trab-dni').value,cargo:document.getElementById('trab-cargo').value,telefono:document.getElementById('trab-tel').value,email:document.getElementById('trab-email').value,fecha_alta:document.getElementById('trab-alta').value||null,num_ss:document.getElementById('trab-ss').value,estado:document.getElementById('trab-estado').value,observaciones:document.getElementById('trab-obs').value};
   if(id){await db.from('trabajadores').update(datos).eq('id',id);}
   else{await db.from('trabajadores').insert(datos);}
-  toast('✓ Trabajador guardado');
-  cerrarModal('modal-trabajador');
-  cargarTrabajadores();
+  toast('Trabajador guardado');cerrarModal('modal-trabajador');cargarTrabajadores();
 }
 
 async function cargarTrabajadores(){
-  const {data}=await db.from('trabajadores').select('*').order('nombre');
-  const t=document.getElementById('tabla-trabajadores');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin trabajadores</td></tr>';return;}
-  t.innerHTML=data.map(function(w){
-    return '<tr>' +
-      '<td style="font-weight:600">' + w.nombre + '</td>' +
-      '<td style="font-family:monospace;font-size:11px">' + (w.dni||'—') + '</td>' +
-      '<td>' + (w.cargo||'—') + '</td>' +
-      '<td>' + (w.telefono||'—') + '</td>' +
-      '<td>' + (w.fecha_alta||'—') + '</td>' +
-      '<td><span class="badge ' + (w.estado==='activo'?'b-ok':w.estado==='baja'?'b-warn':'b-gray') + '">' + (w.estado||'activo') + '</span></td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-sec btn-sm" onclick=\'verPerfilTrabajador(' + JSON.stringify(w.id) + ',' + JSON.stringify(w.nombre) + ')\'><i class="ti ti-user"></i> Perfil</button>' +
-        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalTrabajador(' + JSON.stringify(w).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(\'trabajadores\',\'' + w.id + '\',cargarTrabajadores)"><i class="ti ti-trash"></i></button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
-}
-
-async function verPerfilTrabajador(id,nombre){
-  document.getElementById('perfil-trab-nombre').textContent=nombre;
-  const {data:trab}=await db.from('trabajadores').select('*').eq('id',id).single();
-  const {data:docs}=await db.from('documentos').select('*').like('categoria','Trabajador_%'+nombre+'%').order('created_at',{ascending:false});
-  const el=document.getElementById('perfil-trab-contenido');
-  el.innerHTML=
-    '<div class="perfil-header">' +
-      '<div class="perfil-nombre">' + trab.nombre + '</div>' +
-      '<div class="perfil-cargo">' + (trab.cargo||'—') + ' · ' + (trab.estado||'activo') + '</div>' +
-    '</div>' +
-    '<div class="grid2" style="margin-bottom:14px">' +
-      '<div><label>DNI / NIE</label><div style="font-size:13px;font-weight:500">' + (trab.dni||'—') + '</div></div>' +
-      '<div><label>Nº Seguridad Social</label><div style="font-size:13px;font-weight:500">' + (trab.num_ss||'—') + '</div></div>' +
-      '<div><label>Teléfono</label><div style="font-size:13px">' + (trab.telefono||'—') + '</div></div>' +
-      '<div><label>Email</label><div style="font-size:13px">' + (trab.email||'—') + '</div></div>' +
-      '<div><label>Fecha de alta</label><div style="font-size:13px">' + (trab.fecha_alta||'—') + '</div></div>' +
-    '</div>' +
-    '<div class="sep"></div>' +
-    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Documentos del trabajador</div>' +
-    '<div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById(\'upload-trab-doc\').click()">' +
-      '<input type="file" id="upload-trab-doc" multiple onchange="subirDocTrabajador(this,' + JSON.stringify(nombre) + ',' + JSON.stringify(id) + ')"/>' +
-      '<i class="ti ti-upload" style="font-size:20px"></i>' +
-      '<p><strong style="color:var(--dorado)">Subir documentos</strong> · Contrato, DNI, formación, carnet manipulador...</p>' +
-    '</div>' +
-    '<div id="docs-trabajador-' + id + '">' +
-      (docs&&docs.length?docs.map(function(d){
-        return '<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div><div style="font-size:10px;color:var(--text3)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</div></div><a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){verPerfilTrabajador('+JSON.stringify(id)+','+JSON.stringify(nombre)+')})"><i class="ti ti-trash"></i></button></div>';
-      }).join(''):'<div class="empty-state">Sin documentos subidos</div>') +
-    '</div>';
-  abrirModal('modal-perfil-trabajador');
-}
-
-async function subirDocTrabajador(input,nombre,id){
-  for(const file of input.files){
-    const path='trabajadores/'+id+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-    await db.storage.from('documentos').upload(path,file);
-    const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:file.name,categoria:'Trabajador_'+nombre,url:urlData.publicUrl,descripcion:file.name});
-  }
-  toast('✓ Documentos subidos');
-  input.value='';
-  verPerfilTrabajador(id,nombre);
+  var res=await db.from('trabajadores').select('*').order('nombre');
+  var t=document.getElementById('tabla-trabajadores');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin trabajadores</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(w){
+    html+='<tr><td style="font-weight:600">'+w.nombre+'</td>';
+    html+='<td style="font-family:monospace;font-size:11px">'+(w.dni||'—')+'</td>';
+    html+='<td>'+(w.cargo||'—')+'</td>';
+    html+='<td>'+(w.telefono||'—')+'</td>';
+    html+='<td>'+(w.fecha_alta||'—')+'</td>';
+    html+='<td><span class="badge '+(w.estado==='activo'?'b-ok':w.estado==='baja'?'b-warn':'b-gray')+'">'+(w.estado||'activo')+'</span></td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirModalTrabajador('+JSON.stringify(w).replace(/"/g,'&#34;')+')"><i class="ti ti-edit"></i></button>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'trabajadores\',\''+w.id+'\',cargarTrabajadores)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
 }
 
 // FICHAJE
 async function subirFichaje(input){
-  const file=input.files[0];if(!file)return;
-  const mes=document.getElementById('fich-mes').value;
-  const path='fichaje/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre:'Fichaje '+mes,categoria:'Fichaje',url:urlData.publicUrl,descripcion:file.name});
-  toast('✓ Fichaje subido');input.value='';cargarFichaje();
-}
-
-async function cargarFichaje(){
-  const {data}=await db.from('documentos').select('*').eq('categoria','Fichaje').order('created_at',{ascending:false});
-  const t=document.getElementById('tabla-fichaje');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin archivos</td></tr>';return;}
-  t.innerHTML=data.map(function(d){
-    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td style="font-size:11px">' + d.descripcion + '</td><td style="font-size:11px;color:var(--text2)">' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:4px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-download"></i></a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarFichaje)"><i class="ti ti-trash"></i></button></div></td></tr>';
-  }).join('');
-}
-
-// SAE EXPEDICIONES
-async function subirPlantillaSAE(input){
-  const file=input.files[0];if(!file)return;
-  const path='sae/plantillas/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre:file.name,categoria:'SAE_Plantilla',url:urlData.publicUrl,descripcion:file.name});
-  toast('✓ Plantilla SAE subida');input.value='';
-}
-
-let expedicionActivaId=null;
-let expedicionActivaNum='';
-
-async function cargarExpediciones(){
-  const {data}=await db.from('expediciones').select('*').order('created_at',{ascending:false});
-  const t=document.getElementById('tabla-expediciones-new');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin expediciones</td></tr>';return;}
-  const estBadge={activo:'<span class="badge b-pend">En curso</span>',finalizada:'<span class="badge b-ok">Finalizada</span>'};
-  const tipoBadge={real:'<span class="badge b-blue">Real</span>',simulacro:'<span class="badge b-gray">Simulacro</span>'};
-  t.innerHTML=data.map(function(e,i){
-    const num='EXP-'+new Date(e.created_at).getFullYear()+'-'+String(i+1).padStart(3,'0');
-    return '<tr>' +
-      '<td style="font-weight:700;color:var(--dorado3)">' + num + '</td>' +
-      '<td>' + tipoBadge[e.tipo||'real'] + '</td>' +
-      '<td style="font-family:monospace;font-size:11px">' + (e.lote||'—') + '</td>' +
-      '<td>' + (e.cliente||'—') + '</td>' +
-      '<td><span class="badge b-info">' + (e.pais||'—').split('—')[0].trim() + '</span></td>' +
-      '<td>' + (e.fecha_salida||'—') + '</td>' +
-      '<td>' + estBadge[e.estado||'activo'] + '</td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-gold btn-sm" onclick="abrirExpedicion(\'' + e.id + '\',\'' + num + '\')"><i class="ti ti-folder-open"></i></button>' +
-        (e.estado!=='finalizada'?'<button class="btn btn-sec btn-sm" onclick="finalizarExpedicion(\''+e.id+'\')" title="Finalizar"><i class="ti ti-check"></i></button>':'') +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(\'expediciones\',\'' + e.id + '\',cargarExpediciones)"><i class="ti ti-trash"></i></button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
-  const activas=data.filter(e=>e.estado!=='finalizada');
-  const notif=document.getElementById('exp-notif');
-  if(notif&&activas.length){notif.style.display='flex';document.getElementById('exp-notif-msg').textContent=activas.length+' expedición(es) activa(s): '+activas.map(e=>e.lote||e.cliente).join(', ');}
-  else if(notif){notif.style.display='none';}
-}
-
-async function abrirExpedicion(id,num){
-  expedicionActivaId=id;expedicionActivaNum=num;
-  document.getElementById('expedicion-detalle-new').style.display='block';
-  document.getElementById('exp-detalle-titulo').innerHTML='<i class="ti ti-files"></i> Documentos — ' + num;
-  const {data}=await db.from('documentos').select('*').eq('categoria','SAE_Exp_'+id).order('created_at',{ascending:false});
-  const t=document.getElementById('tabla-exp-docs');
-  t.innerHTML=data&&data.length?data.map(function(d){
-    return '<tr>' +
-      '<td style="font-weight:500">' + d.nombre + '</td>' +
-      '<td style="font-size:11px;color:var(--text2)">' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td>' +
-      '<td><div style="display:flex;gap:4px">' + (d.url?'<a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'') + '<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',function(){abrirExpedicion(\'' + id + '\',\'' + num + '\')})"><i class="ti ti-trash"></i></button></div></td>' +
-    '</tr>';
-  }).join(''):'<tr><td colspan="3" class="empty-state">Sin documentos adjuntos</td></tr>';
-  document.getElementById('expedicion-detalle-new').scrollIntoView({behavior:'smooth'});
-}
-
-async function subirDocExpedicion(input){
-  const file=input.files[0];if(!file||!expedicionActivaId)return;
-  const nombre=prompt('Nombre del documento:',file.name)||file.name;
-  const path='sae/expediciones/'+expedicionActivaId+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre,categoria:'SAE_Exp_'+expedicionActivaId,url:urlData.publicUrl,descripcion:file.name});
-  toast('✓ Documento subido');input.value='';
-  abrirExpedicion(expedicionActivaId,expedicionActivaNum);
-}
-
-async function finalizarExpedicion(id){
-  if(!confirm('¿Marcar como finalizada?'))return;
-  await db.from('expediciones').update({estado:'finalizada'}).eq('id',id);
-  toast('✓ Expedición finalizada');cargarExpediciones();
-}
-
-async function crearExpedicion(){
-  const lote=document.getElementById('exp-lote').value;
-  const cliente=document.getElementById('exp-cliente').value;
-  if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
-  const {error}=await db.from('expediciones').insert({lote,cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,certificado_ase:document.getElementById('exp-ase').value,tipo:document.getElementById('exp-tipo')?.value||'real',notas:document.getElementById('exp-notas')?.value||'',estado:'activo'});
-  if(error){toast('Error: '+error.message,false);return;}
-  toast('✓ Expedición creada: '+lote);cerrarModal('modal-nueva-expedicion');cargarExpediciones();
-}
-
-// CALENDARIO
-let calFecha=new Date();
-
-async function guardarEvento(){
-  const fecha=document.getElementById('ev-fecha').value;
-  const tipo=document.getElementById('ev-tipo').value;
-  const descripcion=document.getElementById('ev-desc').value;
-  const id=document.getElementById('ev-id').value;
-  if(!fecha||!descripcion){toast('Completa fecha y descripción',false);return;}
-  if(id){await db.from('eventos_calendario').update({fecha,tipo,descripcion}).eq('id',id);toast('✓ Evento actualizado');}
-  else{await db.from('eventos_calendario').insert({fecha,tipo,descripcion});toast('✓ Evento guardado');}
-  cerrarModal('modal-cal');
-  cargarEventos();
-}
-
-async function cargarEventos(){
-  const {data}=await db.from('eventos_calendario').select('*').order('fecha');
-  if(!data)return;
-  renderCalendario(data);
-  const t=document.getElementById('tabla-eventos');
-  const tipoLabel={produccion:'Producción',auditoria:'Auditoría',inspeccion:'Inspección',recepcion:'Recepción MP',envio:'Envío',otro:'Otro'};
-  t.innerHTML=data.length?data.map(function(e){
-    return '<tr>' +
-      '<td>' + e.fecha + '</td>' +
-      '<td><span class="cal-event ev-' + e.tipo + '" style="display:inline-block">' + (tipoLabel[e.tipo]||e.tipo) + '</span></td>' +
-      '<td>' + e.descripcion + '</td>' +
-      '<td><button class="btn btn-danger btn-sm" onclick="borrar(\'eventos_calendario\',\'' + e.id + '\',cargarEventos)"><i class="ti ti-trash"></i></button></td>' +
-    '</tr>';
-  }).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>';
-}
-
-function renderCalendario(eventos=[]){
-  const anio=calFecha.getFullYear();
-  const mes=calFecha.getMonth();
-  const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  document.getElementById('cal-titulo').textContent=meses[mes]+' '+anio;
-  const grid=document.getElementById('cal-grid');
-  grid.innerHTML='';
-  const primero=new Date(anio,mes,1);
-  const ultimo=new Date(anio,mes+1,0);
-  let diaSemana=primero.getDay();if(diaSemana===0)diaSemana=7;
-  for(let i=1;i<diaSemana;i++){const d=document.createElement('div');d.className='cal-day other-month';d.innerHTML='<div class="cal-day-num">'+new Date(anio,mes,1-diaSemana+i).getDate()+'</div>';grid.appendChild(d);}
-  for(let dia=1;dia<=ultimo.getDate();dia++){
-    const d=document.createElement('div');
-    const esHoy=dia===today.getDate()&&mes===today.getMonth()&&anio===today.getFullYear();
-    d.className='cal-day'+(esHoy?' today':'');
-    const fechaStr=anio+'-'+String(mes+1).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
-    const evsDia=eventos.filter(function(e){return e.fecha===fechaStr;});
-    d.innerHTML='<div class="cal-day-num">'+dia+'</div>'+evsDia.map(function(e){return '<div class="cal-event ev-'+e.tipo+'" onclick="event.stopPropagation();editarEvento('+JSON.stringify(e)+')">'+e.descripcion.substring(0,15)+'</div>';}).join('');
-    d.onclick=function(){document.getElementById('ev-fecha').value=fechaStr;abrirModal('modal-cal');};
-    grid.appendChild(d);
+  var file=input.files[0];if(!file)return;
+  var mes=document.getElementById('fich-mes').value;
+  var path='fichaje/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+  var up=await db.storage.from('documentos').upload(path,file);
+  if(!up.error){
+    var urlData=db.storage.from('documentos').getPublicUrl(path);
+    await db.from('documentos').insert({nombre:'Fichaje '+mes,categoria:'Fichaje',url:urlData.data.publicUrl,descripcion:file.name});
+    toast('Fichaje subido');input.value='';cargarFichaje();
   }
 }
 
-function cambiarMes(dir){calFecha=new Date(calFecha.getFullYear(),calFecha.getMonth()+dir,1);cargarEventos();}
-function abrirModalCal(){
-  document.getElementById('ev-id').value='';
-  document.getElementById('ev-fecha').value=today.toISOString().split('T')[0];
-  document.getElementById('ev-desc').value='';
-  document.getElementById('btn-eliminar-evento').style.display='none';
+async function cargarFichaje(){
+  var res=await db.from('documentos').select('*').eq('categoria','Fichaje').order('created_at',{ascending:false});
+  var t=document.getElementById('tabla-fichaje');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin archivos</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<tr><td style="font-weight:500">'+d.nombre+'</td>';
+    html+='<td style="font-size:11px">'+d.descripcion+'</td>';
+    html+='<td style="font-size:11px;color:var(--text2)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-download"></i></a>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',cargarFichaje)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
+}
+
+// EXPEDICIONES SAE
+async function crearExpedicion(){
+  var lote=document.getElementById('exp-lote').value;
+  var cliente=document.getElementById('exp-cliente').value;
+  if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
+  var res=await db.from('expediciones').insert({lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,tipo:document.getElementById('exp-tipo').value,notas:document.getElementById('exp-notas').value,estado:'activo'});
+  if(res.error){toast('Error: '+res.error.message,false);return;}
+  toast('Expedición creada');cerrarModal('modal-expedicion');cargarExpediciones();
+}
+
+async function cargarExpediciones(){
+  var res=await db.from('expediciones').select('*').order('created_at',{ascending:false});
+  var t=document.getElementById('tabla-expediciones');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="5" class="empty-state">Sin expediciones</td></tr>';return;}
+  var html='';
+  res.data.forEach(function(e,i){
+    html+='<tr style="cursor:pointer" onclick="verExpedicion('+JSON.stringify(e).replace(/"/g,'&#34;')+')">';
+    html+='<td style="font-weight:700;color:var(--dorado3)">EXP-2026-'+(i+1).toString().padStart(3,'0')+'</td>';
+    html+='<td><span class="badge '+(e.tipo==='simulacro'?'b-blue':'b-info')+'">'+(e.tipo==='simulacro'?'Simulacro':'Real')+'</span></td>';
+    html+='<td style="font-family:monospace;font-size:11px">'+e.lote+'</td>';
+    html+='<td>'+e.cliente+'</td>';
+    html+='<td><span class="badge '+(e.estado==='finalizada'?'b-ok':'b-pend')+'">'+(e.estado||'activo')+'</span></td>';
+    html+='</tr>';
+  });
+  t.innerHTML=html;
+  cargarPlantillasSAE();
+}
+
+async function verExpedicion(e){
+  expActual=e;
+  var det=document.getElementById('exp-detalle');
+  det.style.display='block';
+  document.getElementById('exp-detalle-titulo').innerHTML='<i class="ti ti-files"></i> '+e.lote+' — '+e.cliente;
+  var res=await db.from('documentos').select('*').eq('categoria','SAE_EXP_'+e.id).order('created_at',{ascending:false});
+  var c=document.getElementById('exp-detalle-docs');
+  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin documentos en esta expedición. Sube el primero.</div>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
+    html+='<div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div>';
+    html+='<div style="font-size:10px;color:var(--text3)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</div></div>';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i> Ver</a>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){verExpedicion(expActual);})"><i class="ti ti-trash"></i></button>';
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+async function subirDocExpedicion(input){
+  if(!expActual){toast('Selecciona una expedición primero',false);return;}
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='sae/'+expActual.id+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:file.name,categoria:'SAE_EXP_'+expActual.id,url:urlData.data.publicUrl,descripcion:file.name});
+    }
+  }
+  toast('Documento SAE subido');input.value='';verExpedicion(expActual);
+}
+
+async function cargarPlantillasSAE(){
+  var res=await db.from('documentos').select('*').eq('categoria','SAE Plantilla').order('created_at',{ascending:false});
+  var c=document.getElementById('sae-plantillas-lista');
+  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin plantillas. Sube la primera.</div>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
+    html+='<div style="flex:1;font-size:12px;font-weight:500">'+d.nombre+'</div>';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-download"></i></a>';
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+// CALENDARIO
+function abrirModalCal(evento){
+  document.getElementById('ev-id').value=evento?evento.id:'';
+  document.getElementById('ev-fecha').value=evento?evento.fecha:today.toISOString().split('T')[0];
+  document.getElementById('ev-tipo').value=evento?evento.tipo:'produccion';
+  document.getElementById('ev-desc').value=evento?evento.descripcion:'';
+  document.getElementById('btn-borrar-ev').style.display=evento?'inline-flex':'none';
   abrirModal('modal-cal');
 }
-function editarEvento(e){
-  document.getElementById('ev-id').value=e.id;
-  document.getElementById('ev-fecha').value=e.fecha;
-  document.getElementById('ev-tipo').value=e.tipo;
-  document.getElementById('ev-desc').value=e.descripcion;
-  document.getElementById('btn-eliminar-evento').style.display='inline-flex';
-  abrirModal('modal-cal');
+
+async function guardarEvento(){
+  var fecha=document.getElementById('ev-fecha').value;
+  var tipo=document.getElementById('ev-tipo').value;
+  var desc=document.getElementById('ev-desc').value;
+  if(!fecha||!desc){toast('Completa fecha y descripción',false);return;}
+  var id=document.getElementById('ev-id').value;
+  if(id){await db.from('eventos_calendario').update({fecha:fecha,tipo:tipo,descripcion:desc}).eq('id',id);}
+  else{await db.from('eventos_calendario').insert({fecha:fecha,tipo:tipo,descripcion:desc});}
+  toast('Evento guardado');cerrarModal('modal-cal');cargarEventos();
 }
-async function eliminarEvento(){
-  const id=document.getElementById('ev-id').value;if(!id)return;
+
+async function borrarEvento(){
+  var id=document.getElementById('ev-id').value;
+  if(!id)return;
   if(!confirm('¿Eliminar este evento?'))return;
   await db.from('eventos_calendario').delete().eq('id',id);
   toast('Evento eliminado');cerrarModal('modal-cal');cargarEventos();
 }
 
-// PRODUCTOS
-const catalogoProductos=[
-  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',halal:true,desc:'Cecina elaborada con redondo de ternera, salada y curada en secadero natural.'},
-  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'',halal:true,desc:'Pierna de cordero curada en secadero natural.'},
-  {cod:'103',nombre:'Pierna de oveja',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'verde',halal:true,desc:'Pierna de oveja curada.'},
-  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',halal:true,desc:'Pierna de pavo curada. Apta para exportación UAE.'},
-  {cod:'201',nombre:'Salchichón natural',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'blanco',halal:true,desc:'Salchichón halal elaborado con carne de ternera y pavo.'},
-  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verdiblanco',halal:true,desc:'Salchichón con pistacho.'},
-  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',halal:true,desc:'Salchichón con almendra.'},
-  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'verde',halal:true,desc:'Salchichón ahumado con humo en polvo.'},
-  {cod:'205',nombre:'Salchichón higos',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',halal:true,desc:'Salchichón con higos.'},
-  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'morado',halal:true,desc:'Salchichón con nueces.'},
-  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'azul',halal:true,desc:'Chorizo halal dulce.'},
-  {cod:'302',nombre:'Chorizo picante',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'rojo',halal:true,desc:'Chorizo halal picante. Apto exportación UAE.'},
-  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojiamarillo',halal:true,desc:'Sobrasada halal picante.'},
-  {cod:'501',nombre:'Fuet',familia:'Fuet',proceso:'Embutido',maduracion:'30 días',color:'blanco',halal:true,desc:'Fuet halal.'},
-];
-
-function renderProductos(){
-  const c=document.getElementById('lista-productos');
-  c.innerHTML=catalogoProductos.map(function(p){
-    return '<div class="card" style="cursor:pointer;margin-bottom:8px" onclick="verDetalleProducto(\'' + p.cod + '\')">' +
-      '<div style="display:flex;align-items:center;gap:10px">' +
-        '<div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:8px 12px;font-family:monospace;font-size:14px;font-weight:700;color:var(--dorado3)">' + p.cod + '</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:13px;font-weight:600">' + p.nombre + '</div>' +
-          '<div style="font-size:11px;color:var(--text3)">' + p.familia + ' · ' + p.proceso + ' · ' + p.maduracion + '</div>' +
-        '</div>' +
-        '<div style="font-size:18px">' + (colores[p.color]||'—') + '</div>' +
-        (p.halal?'<span class="badge b-ok">Halal</span>':'') +
-      '</div>' +
-    '</div>';
-  }).join('');
+async function cargarEventos(){
+  var res=await db.from('eventos_calendario').select('*').order('fecha');
+  eventosList=res.data||[];
+  renderCalendario();
+  var t=document.getElementById('tabla-eventos');
+  var tipoLabel={produccion:'Producción',auditoria:'Auditoría',inspeccion:'Inspección',recepcion:'Recepción MP',envio:'Envío',otro:'Otro'};
+  if(!eventosList.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>';return;}
+  var html='';
+  eventosList.forEach(function(e){
+    html+='<tr><td>'+e.fecha+'</td>';
+    html+='<td><span class="cal-event ev-'+e.tipo+'" style="display:inline-block">'+(tipoLabel[e.tipo]||e.tipo)+'</span></td>';
+    html+='<td>'+e.descripcion+'</td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirModalCal('+JSON.stringify(e).replace(/"/g,'&#34;')+')"><i class="ti ti-edit"></i></button>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'eventos_calendario\',\''+e.id+'\',cargarEventos)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
 }
 
-async function verDetalleProducto(cod){
-  const prod=catalogoProductos.find(p=>p.cod===cod);
-  if(!prod)return;
-  const {data:elabs}=await db.from('elaboraciones').select('*').eq('codigo',cod).order('created_at',{ascending:false}).limit(5);
-  const {data:docs}=await db.from('documentos').select('*').like('nombre','%'+prod.nombre+'%').limit(5);
-  const det=document.getElementById('detalle-producto');
-  const card=document.getElementById('detalle-prod-card');
-  det.style.display='block';
-  card.innerHTML=
-    '<div class="card-title"><i class="ti ti-meat"></i> ' + prod.nombre + '</div>' +
-    '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">' +
-      '<span class="badge b-info">' + prod.familia + '</span>' +
-      '<span class="badge b-ok">Halal</span>' +
-      '<span style="font-size:18px">' + colores[prod.color] + '</span>' +
-      '<span style="font-size:11px;color:var(--text2)">Color: ' + prod.color + '</span>' +
-    '</div>' +
-    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">' + prod.desc + '</div>' +
-    '<div class="grid2" style="margin-bottom:12px">' +
-      '<div><label>Proceso</label><div style="font-size:12px">' + prod.proceso + '</div></div>' +
-      '<div><label>Maduración</label><div style="font-size:12px">' + prod.maduracion + '</div></div>' +
-    '</div>' +
-    '<div class="sep"></div>' +
-    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Últimas elaboraciones</div>' +
-    (elabs&&elabs.length?'<table><thead><tr><th>Lote</th><th>Fecha</th><th>Uds</th></tr></thead><tbody>'+elabs.map(function(e){return '<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">'+e.lote+'</td><td>'+e.fecha+'</td><td>'+e.unidades+'</td></tr>';}).join('')+'</tbody></table>':'<div class="empty-state">Sin elaboraciones registradas</div>') +
-    '<div class="sep"></div>' +
-    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Fichas técnicas</div>' +
-    '<div class="upload-area" style="padding:14px" onclick="document.getElementById(\'upload-ficha-' + cod + '\').click()">' +
-      '<input type="file" id="upload-ficha-' + cod + '" multiple onchange="subirFichaTecnica(this,\'' + prod.nombre + '\')"/>' +
-      '<i class="ti ti-upload" style="font-size:20px"></i>' +
-      '<p><strong style="color:var(--dorado)">Subir ficha técnica</strong></p>' +
-    '</div>' +
-    (docs&&docs.length?docs.map(function(d){return '<div class="doc-row" style="margin-top:6px"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1;font-size:12px;font-weight:500">'+d.nombre+'</div><a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a></div>';}).join(''):'');
-}
-
-async function subirFichaTecnica(input,nombreProd){
-  for(const file of input.files){
-    const path='fichas/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
-    await db.storage.from('documentos').upload(path,file);
-    const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:'Ficha técnica — '+nombreProd,categoria:'Fichas técnicas',url:urlData.publicUrl,descripcion:file.name});
+function renderCalendario(){
+  var anio=calFecha.getFullYear();
+  var mes=calFecha.getMonth();
+  var meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('cal-titulo').textContent=meses[mes]+' '+anio;
+  var grid=document.getElementById('cal-grid');
+  grid.innerHTML='';
+  var primero=new Date(anio,mes,1);
+  var ultimo=new Date(anio,mes+1,0);
+  var diaSemana=primero.getDay();if(diaSemana===0)diaSemana=7;
+  for(var i=1;i<diaSemana;i++){
+    var dEl=document.createElement('div');
+    dEl.className='cal-day other-month';
+    dEl.innerHTML='<div class="cal-day-num">'+new Date(anio,mes,1-diaSemana+i).getDate()+'</div>';
+    grid.appendChild(dEl);
   }
-  toast('✓ Ficha técnica subida: '+nombreProd);
-  input.value='';
+  for(var dia=1;dia<=ultimo.getDate();dia++){
+    var dEl2=document.createElement('div');
+    var esHoy=dia===today.getDate()&&mes===today.getMonth()&&anio===today.getFullYear();
+    dEl2.className='cal-day'+(esHoy?' today':'');
+    var fechaStr=anio+'-'+String(mes+1).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
+    var evsDia=eventosList.filter(function(e){return e.fecha===fechaStr;});
+    var inner='<div class="cal-day-num">'+dia+'</div>';
+    evsDia.forEach(function(e){inner+='<div class="cal-event ev-'+e.tipo+'">'+e.descripcion.substring(0,15)+'</div>';});
+    dEl2.innerHTML=inner;
+    (function(f,evs){
+      dEl2.onclick=function(){
+        if(evs.length>0){abrirModalCal(evs[0]);}
+        else{document.getElementById('ev-fecha').value=f;abrirModalCal(null);document.getElementById('ev-fecha').value=f;}
+      };
+    })(fechaStr,evsDia);
+    grid.appendChild(dEl2);
+  }
+}
+
+function cambiarMes(dir){
+  calFecha=new Date(calFecha.getFullYear(),calFecha.getMonth()+dir,1);
+  cargarEventos();
 }
 
 // NO CONFORMIDADES
-function abrirModalNC(data=null){
+function abrirModalNC(data){
   document.getElementById('nc-modal-titulo').textContent=data?'Editar no conformidad':'Nueva no conformidad';
-  document.getElementById('nc-id').value=data?.id||'';
-  document.getElementById('nc-fecha').value=data?.fecha||new Date().toISOString().split('T')[0];
-  document.getElementById('nc-area').value=data?.area||'produccion';
-  document.getElementById('nc-descripcion').value=data?.descripcion||'';
-  document.getElementById('nc-gravedad').value=data?.gravedad||'leve';
-  document.getElementById('nc-responsable').value=data?.responsable||'';
-  document.getElementById('nc-fecha-limite').value=data?.fecha_limite||'';
-  document.getElementById('nc-accion').value=data?.accion_correctiva||'';
-  document.getElementById('nc-estado').value=data?.estado||'abierta';
+  document.getElementById('nc-id').value=data?data.id:'';
+  document.getElementById('nc-fecha').value=data?data.fecha:today.toISOString().split('T')[0];
+  document.getElementById('nc-area').value=data?data.area:'';
+  document.getElementById('nc-desc').value=data?data.descripcion||'':'';
+  document.getElementById('nc-gravedad').value=data?data.gravedad:'';
+  document.getElementById('nc-resp').value=data?data.responsable||'':'';
+  document.getElementById('nc-accion').value=data?data.accion_correctiva||'':'';
+  document.getElementById('nc-limite').value=data?data.fecha_limite||'':'';
+  document.getElementById('nc-estado').value=data?data.estado:'abierta';
   abrirModal('modal-nc');
 }
+
 async function guardarNC(){
-  const descripcion=document.getElementById('nc-descripcion').value;
-  if(!descripcion){toast('Introduce la descripción',false);return;}
-  const id=document.getElementById('nc-id').value;
-  const datos={fecha:document.getElementById('nc-fecha').value,descripcion,area:document.getElementById('nc-area').value,gravedad:document.getElementById('nc-gravedad').value,responsable:document.getElementById('nc-responsable').value,accion_correctiva:document.getElementById('nc-accion').value,fecha_limite:document.getElementById('nc-fecha-limite').value||null,estado:document.getElementById('nc-estado').value};
+  var desc=document.getElementById('nc-desc').value;
+  if(!desc){toast('Introduce la descripción',false);return;}
+  var id=document.getElementById('nc-id').value;
+  var datos={fecha:document.getElementById('nc-fecha').value,area:document.getElementById('nc-area').value,descripcion:desc,gravedad:document.getElementById('nc-gravedad').value,responsable:document.getElementById('nc-resp').value,accion_correctiva:document.getElementById('nc-accion').value,fecha_limite:document.getElementById('nc-limite').value||null,estado:document.getElementById('nc-estado').value};
   if(id){await db.from('no_conformidades').update(datos).eq('id',id);}
   else{await db.from('no_conformidades').insert(datos);}
-  toast('✓ No conformidad guardada');cerrarModal('modal-nc');cargarNoConformidades();
-}
-async function cargarNoConformidades(){
-  const {data}=await db.from('no_conformidades').select('*').order('created_at',{ascending:false});
-  const t=document.getElementById('tabla-nc');
-  if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin no conformidades</td></tr>';return;}
-  const gravBadge={leve:'<span class="badge b-ok">Leve</span>',grave:'<span class="badge b-warn">Grave</span>',critica:'<span class="badge b-alert">Crítica</span>'};
-  const estBadge={abierta:'<span class="badge b-alert">Abierta</span>',en_proceso:'<span class="badge b-pend">En proceso</span>',cerrada:'<span class="badge b-ok">Cerrada</span>'};
-  t.innerHTML=data.map(function(nc){
-    return '<tr>' +
-      '<td style="font-weight:700;color:var(--dorado3)">' + (nc.numero||'—') + '</td>' +
-      '<td>' + (nc.fecha||'—') + '</td>' +
-      '<td><span class="badge b-gray">' + nc.area + '</span></td>' +
-      '<td style="max-width:200px;font-size:11px">' + nc.descripcion + '</td>' +
-      '<td>' + (gravBadge[nc.gravedad]||nc.gravedad) + '</td>' +
-      '<td>' + (nc.responsable||'—') + '</td>' +
-      '<td>' + (estBadge[nc.estado]||nc.estado) + '</td>' +
-      '<td><div style="display:flex;gap:4px">' +
-        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalNC(' + JSON.stringify(nc).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
-        '<button class="btn btn-danger btn-sm" onclick="borrar(\'no_conformidades\',\'' + nc.id + '\',cargarNoConformidades)"><i class="ti ti-trash"></i></button>' +
-      '</div></td>' +
-    '</tr>';
-  }).join('');
+  toast('No conformidad guardada');cerrarModal('modal-nc');cargarNC();
 }
 
-// EDITAR ELABORACIONES
-function abrirModalEditarElab(e){
-  document.getElementById('edit-elab-id').value=e.id;
-  document.getElementById('edit-elab-lote').value=e.lote;
-  document.getElementById('edit-elab-estado').value=e.estado||'secadero';
-  document.getElementById('edit-elab-uds').value=e.unidades||'';
-  document.getElementById('edit-elab-peso').value=e.peso_final||'';
-  document.getElementById('edit-elab-mad').value=e.maduracion||'';
-  const cs=document.getElementById('edit-elab-color');
-  for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===e.color){cs.selectedIndex=i;break;}}
-  const ps=document.getElementById('edit-elab-proceso');
-  for(let i=0;i<ps.options.length;i++){if(ps.options[i].textContent===e.proceso){ps.selectedIndex=i;break;}}
-  abrirModal('modal-editar-elab');
-}
-async function guardarEditarElab(){
-  const id=document.getElementById('edit-elab-id').value;
-  const datos={estado:document.getElementById('edit-elab-estado').value,unidades:parseInt(document.getElementById('edit-elab-uds').value)||0,peso_final:parseFloat(document.getElementById('edit-elab-peso').value)||0,maduracion:parseInt(document.getElementById('edit-elab-mad').value)||30,color:document.getElementById('edit-elab-color').value,proceso:document.getElementById('edit-elab-proceso').value};
-  const {error}=await db.from('elaboraciones').update(datos).eq('id',id);
-  if(error){toast('Error: '+error.message,false);return;}
-  toast('✓ Elaboración actualizada');cerrarModal('modal-editar-elab');cargarElaboraciones();
-}
-
-// ETIQUETAS
-function abrirEtiqueta(e){
-  const hoy=new Date().toLocaleDateString('es-ES');
-  const mad=e.maduracion?(e.maduracion>=60?Math.round(e.maduracion/30)+' meses':e.maduracion+' días'):'30 días';
-  const html=
-    '<div style="background:#fff;border:1px dashed #ccc;border-radius:6px;overflow:hidden;font-family:sans-serif">' +
-    '<div style="background:#141414;padding:8px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700;color:#fff;letter-spacing:.1em">SABOR <span style="color:#C9A84C">NAZARÍ</span></span><span style="font-size:8px;color:#C9A84C;border:1px solid rgba(201,168,76,.4);padding:1px 6px;border-radius:3px">HALAL</span></div>' +
-    '<div style="padding:8px 12px 5px;border-bottom:1px solid #eee"><div style="font-size:13px;font-weight:700">' + (e.producto||'') + '</div><div style="font-size:9px;color:#888">Ref. ' + (e.codigo||'') + ' · ' + (colores[e.color]||'') + ' ' + (e.color||'') + '</div></div>' +
-    '<div style="background:rgba(201,168,76,.08);padding:7px 12px;border-bottom:1px solid rgba(201,168,76,.2)"><div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div><div style="font-size:14px;font-weight:700;color:#8a6a1e;font-family:monospace">' + e.lote + '</div></div>' +
-    '<div style="padding:6px 12px;border-bottom:1px solid #eee;font-size:9px">' +
-      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">' + (e.fecha||hoy) + '</span></div>' +
-      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">' + (e.peso_final||0) + ' kg</span></div>' +
-      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">' + (e.unidades||0) + ' uds</span></div>' +
-      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Maduración</span><span style="font-weight:600">' + mad + '</span></div>' +
-    '</div>' +
-    '<div style="padding:5px 12px;font-size:8px;color:#888">Sabor Nazarí · Huéscar, Granada · APPCC B.6-AN01</div>' +
-    '</div>';
-  ['modal-et-1','modal-et-2','modal-et-3','modal-et-4'].forEach(id=>document.getElementById(id).innerHTML=html);
-  abrirModal('modal-etiqueta');
+async function cargarNC(){
+  var res=await db.from('no_conformidades').select('*').order('created_at',{ascending:false});
+  var t=document.getElementById('tabla-nc');
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin no conformidades registradas</td></tr>';return;}
+  var gravBadge={leve:'b-pend',grave:'b-alert',critica:'b-alert'};
+  var estBadge={abierta:'b-alert',en_proceso:'b-pend',cerrada:'b-ok'};
+  var html='';
+  res.data.forEach(function(nc,i){
+    html+='<tr><td style="font-weight:700;color:var(--dorado3)">'+(i+1).toString().padStart(3,'0')+'</td>';
+    html+='<td>'+nc.fecha+'</td>';
+    html+='<td>'+(nc.area||'—')+'</td>';
+    html+='<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">'+nc.descripcion+'</td>';
+    html+='<td><span class="badge '+(gravBadge[nc.gravedad]||'b-gray')+'">'+(nc.gravedad||'—')+'</span></td>';
+    html+='<td><span class="badge '+(estBadge[nc.estado]||'b-gray')+'">'+(nc.estado||'—')+'</span></td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirModalNC('+JSON.stringify(nc).replace(/"/g,'&#34;')+')"><i class="ti ti-edit"></i></button>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'no_conformidades\',\''+nc.id+'\',cargarNC)"><i class="ti ti-trash"></i></button>';
+    html+='</div></td></tr>';
+  });
+  t.innerHTML=html;
 }
 
-// SUBIDA INTELIGENTE
-function actualizarSubcat(){
-  const cat=document.getElementById('sdoc-cat').value;
-  const extra=document.getElementById('sdoc-extra');
-  if(cat==='SAE / Exportación'){extra.style.display='block';extra.innerHTML='<label>Expedición (opcional)</label><input type="text" id="sdoc-exp" placeholder="Ej: EXP-2026-001"/>';}
-  else if(cat==='Halal'){extra.style.display='block';extra.innerHTML='<label>Tipo</label><select id="sdoc-halal-tipo"><option value="Certificado propio">Certificado propio</option><option value="Auditoría">Auditoría</option><option value="Proveedor">Proveedor</option></select>';}
-  else{extra.style.display='none';}
-}
-async function subirDocumentoInteligente(input){
-  const file=input.files[0];if(!file)return;
-  const nombre=document.getElementById('sdoc-nombre').value||file.name;
-  const cat=document.getElementById('sdoc-cat').value;
-  let path='docs/';
-  if(cat==='APPCC')path='appcc/';else if(cat==='SAE / Exportación')path='sae/';else if(cat==='Fichas técnicas')path='fichas/';else if(cat==='Halal')path='halal/';else if(cat==='Fichaje')path='fichaje/';else if(cat==='Proveedores')path='proveedores/';
-  path+=Date.now()+'_'+file.name.replace(/\s+/g,'_');
-  cerrarModal('modal-subir-doc');
-  await db.storage.from('documentos').upload(path,file);
-  const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre,categoria:cat,url:urlData.publicUrl,descripcion:file.name});
-  toast('✓ Documento subido: '+nombre);input.value='';document.getElementById('sdoc-nombre').value='';
-  cargarDocumentos();
-}
+// PRODUCTOS
+var catalogoProductos=[
+  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',desc:'Cecina elaborada con redondo de ternera.'},
+  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',desc:'Pierna de cordero curada.'},
+  {cod:'103',nombre:'Pierna de oveja',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'verde',desc:'Pierna de oveja curada.'},
+  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'morado',desc:'Pierna de pavo curada. Apta exportación UAE.'},
+  {cod:'201',nombre:'Salchichón natural',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'blanco',desc:'Salchichón halal natural.'},
+  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verde',desc:'Con pistacho.'},
+  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',desc:'Con almendra.'},
+  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'morado',desc:'Con humo en polvo.'},
+  {cod:'205',nombre:'Salchichón higos',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',desc:'Con higos.'},
+  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',desc:'Con nueces.'},
+  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'verde',desc:'Chorizo halal dulce.'},
+  {cod:'302',nombre:'Chorizo picante',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'rojo',desc:'Chorizo halal picante.'},
+  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojo',desc:'Sobrasada halal picante.'},
+  {cod:'501',nombre:'Fuet',familia:'Fuet',proceso:'Embutido',maduracion:'30 días',color:'blanco',desc:'Fuet halal.'}
+];
 
-// BORRAR GENÉRICO
-async function borrar(tabla,id,callback){
-  if(!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.'))return;
-  const {error}=await db.from(tabla).delete().eq('id',id);
-  if(error){toast('Error al eliminar: '+error.message,false);return;}
-  toast('Registro eliminado');
-  if(callback)callback();
+function renderProductos(){
+  var c=document.getElementById('lista-productos');
+  var html='';
+  catalogoProductos.forEach(function(p){
+    html+='<div class="card" style="margin-bottom:8px">';
+    html+='<div style="display:flex;align-items:center;gap:10px">';
+    html+='<div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:8px 12px;font-family:monospace;font-size:14px;font-weight:700;color:var(--dorado3)">'+p.cod+'</div>';
+    html+='<div style="flex:1"><div style="font-size:13px;font-weight:600">'+p.nombre+'</div>';
+    html+='<div style="font-size:11px;color:var(--text3)">'+p.familia+' · '+p.proceso+' · '+p.maduracion+'</div></div>';
+    html+='<span style="font-size:18px">'+(colores[p.color]||'—')+'</span>';
+    html+='<span class="badge b-ok">Halal</span></div></div>';
+  });
+  c.innerHTML=html;
 }
 
 // DASHBOARD
 async function cargarDashboard(){
-  const {data:expsPend}=await db.from('expediciones').select('lote,cliente,estado').neq('estado','finalizada').catch(()=>({data:null}));
-  const notif=document.getElementById('dash-notif');
-  if(expsPend&&expsPend.length){
-    notif.style.display='flex';
-    document.getElementById('dash-notif-msg').textContent=expsPend.length+' expedición(es) activa(s): '+expsPend.map(x=>x.lote||x.cliente).join(' · ');
-  } else {
-    notif.style.display='none';
+  var res1=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(5);
+  var res2=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(3);
+  if(res1.data){
+    var t=document.getElementById('dash-elabs');
+    var html='';
+    res1.data.forEach(function(e){
+      html+='<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">'+e.lote+'</td>';
+      html+='<td>'+e.producto+'</td>';
+      html+='<td><span class="badge b-purple">'+(e.estado||'secadero')+'</span></td></tr>';
+    });
+    t.innerHTML=html||'<tr><td colspan="3" class="empty-state">Sin elaboraciones</td></tr>';
+  }
+  if(res2.data){
+    var t2=document.getElementById('dash-temps');
+    var h2='';
+    res2.data.forEach(function(r){
+      var estClass=r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok';
+      h2+='<tr><td>'+r.fecha+'</td>';
+      h2+='<td>'+(r.cam2!==null?r.cam2+'°C':'—')+'</td>';
+      h2+='<td>'+(r.obrador!==null?r.obrador+'°C':'—')+'</td>';
+      h2+='<td><span class="badge '+estClass+'">'+(r.estado||'ok')+'</span></td></tr>';
+    });
+    t2.innerHTML=h2||'<tr><td colspan="4" class="empty-state">Sin registros</td></tr>';
   }
 }
 
-// INIT
+async function borrar(tabla,id,callback){
+  if(!confirm('¿Eliminar este registro?'))return;
+  await db.from(tabla).delete().eq('id',id);
+  toast('Eliminado');
+  if(callback)callback();
+}
+
 async function init(){
-  await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(()=>{});
-  genLote();
-  const savedSection=localStorage.getItem('sn-seccion');
-  if(savedSection&&document.getElementById('screen-'+savedSection)){
-    navBtn(savedSection);
-  } else {
-    cargarDashboard();
-  }
-  renderCalendario();
+  await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
+  var page=localStorage.getItem('activePage')||'dashboard';
+  nav(page);
 }
 
 init();
