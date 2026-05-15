@@ -1268,7 +1268,7 @@ const proveedoresDefault=[
 function abrirModalProveedor(data=null){
   document.getElementById('prov-modal-titulo').textContent=data?'Editar proveedor':'Nuevo proveedor';
   document.getElementById('prov-id').value=data?.id||'';
-  ['codigo','nombre','pais','actividad','registro','tel','email','notas'].forEach(f=>{const el=document.getElementById('prov-'+f);if(el)el.value=data?(data[f]||''):'';});
+  ['codigo','nombre','pais','actividad','registro','tel','email','notas'].forEach(function(f){var el=document.getElementById('prov-'+f);if(el)el.value=data?String(data[f]||''):'';});
   if(data?.sae){document.getElementById('prov-sae').value=data.sae;}
   if(data?.estado){document.getElementById('prov-estado').value=data.estado;}
   abrirModal('modal-proveedor');
