@@ -880,9 +880,9 @@ function genLote(){
   const sem=String(getSem(fecha)).padStart(2,'0');
   const dia=getDia(fecha);
   const anio=String(new Date(fecha).getFullYear()).slice(-2);
-  const lote=`${exp}${p[0]}-${prov}${dia}${sem}${anio}`;
+  const lote=exp+p[0]+'-'+prov+dia+sem+anio;
   document.getElementById('el-lote').textContent=lote;
-  document.getElementById('el-lote-sub').textContent=`${p[1]} · Prov. ${prov} · ${diasN[dia]} · Sem. ${sem} · 20${anio}`;
+  document.getElementById('el-lote-sub').textContent=p[1]+' · Prov. '+prov+' · '+diasN[dia]+' · Sem. '+sem+' · 20'+anio;
   document.getElementById('el-mad').value=p[2]==='cecina'?90:30;
   if(p[4]){const cs=document.getElementById('el-color');for(let i=0;i<cs.options.length;i++){if(cs.options[i].value===p[4]){cs.selectedIndex=i;break;}}}
 }
@@ -896,11 +896,11 @@ function addIng(tipo){
   const d=document.createElement('div');
   if(tipo==='auxiliar'){
     d.className='ing-row-aux';
-    d.innerHTML=`<select><option value="">— Seleccionar —</option>${auxiliarOpts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
+    d.innerHTML='<select><option value="">— Seleccionar —</option>'+auxiliarOpts.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   } else {
     d.className='ing-row';
     const opts=tipo==='carnes'?carnesOpts:especiasOpts;
-    d.innerHTML=`<select><option value="">— Seleccionar —</option>${opts.map(o=>`<option>${o}</option>`).join('')}</select><input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="${tipo==='carnes'?'kg':'g/kg'}"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>`;
+    d.innerHTML='<select><option value="">— Seleccionar —</option>'+opts.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select><input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="'+(tipo==='carnes'?'kg':'g/kg')+'"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   }
   c.appendChild(d);
 }
@@ -924,21 +924,25 @@ async function cargarElaboraciones(){
   const t=document.getElementById('tabla-elabs');
   if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin elaboraciones</td></tr>';return;}
   document.getElementById('d-elab').textContent=data.length;
-  t.innerHTML=data.map(e=>`<tr>
-    <td style="font-family:monospace;font-size:11px;font-weight:700;color:var(--dorado3)">${e.lote}</td>
-    <td>${e.producto}</td>
-    <td style="font-size:16px">${colores[e.color]||'—'}</td>
-    <td>${e.fecha||'—'}</td><td>${e.unidades||'—'}</td>
-    <td>${e.peso_final?e.peso_final+' kg':'—'}</td>
-    <td><span class="badge b-purple">${e.estado||'secadero'}</span></td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-sec btn-sm" onclick='abrirEtiqueta(${JSON.stringify(e)})'><i class="ti ti-tag"></i></button>
-      <button class="btn btn-edit btn-sm" onclick='abrirModalEditarElab(${JSON.stringify(e)})'><i class="ti ti-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="borrar('elaboraciones','${e.id}',cargarElaboraciones)"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(e){
+    return '<tr>' +
+      '<td style="font-family:monospace;font-size:11px;font-weight:700;color:var(--dorado3)">' + e.lote + '</td>' +
+      '<td>' + e.producto + '</td>' +
+      '<td style="font-size:16px">' + (colores[e.color]||'—') + '</td>' +
+      '<td>' + (e.fecha||'—') + '</td><td>' + (e.unidades||'—') + '</td>' +
+      '<td>' + (e.peso_final?e.peso_final+' kg':'—') + '</td>' +
+      '<td><span class="badge b-purple">' + (e.estado||'secadero') + '</span></td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-sec btn-sm" onclick=\'abrirEtiqueta(' + JSON.stringify(e) + ')\'><i class="ti ti-tag"></i></button>' +
+        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalEditarElab(' + JSON.stringify(e) + ')\'><i class="ti ti-edit"></i></button>' +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(\'elaboraciones\',\'' + e.id + '\',cargarElaboraciones)"><i class="ti ti-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
   const db2=document.getElementById('dash-elabs');
-  if(db2)db2.innerHTML=data.slice(0,3).map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.producto}</td><td><span class="badge b-purple">${e.estado}</span></td></tr>`).join('');
+  if(db2)db2.innerHTML=data.slice(0,3).map(function(e){
+    return '<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">' + e.lote + '</td><td>' + e.producto + '</td><td><span class="badge b-purple">' + e.estado + '</span></td></tr>';
+  }).join('');
 }
 
 // TEMPERATURAS
@@ -989,17 +993,19 @@ async function cargarTemperaturas(){
   if(r.cam5!=null)document.getElementById('dt-c5').textContent=r.cam5+'°C';
   if(r.cam6!=null)document.getElementById('dt-c6').textContent=r.cam6+'°C';
   if(r.obrador!=null)document.getElementById('dt-ob').textContent=r.obrador+'°C';
-  t.innerHTML=data.map(r=>`<tr>
-    <td>${r.fecha}</td>
-    <td style="${r.cam2!=null&&r.cam2>=4?'color:var(--red-text);font-weight:700':''}">${r.cam2!=null?r.cam2+'°C':'—'}</td>
-    <td>${r.cam5!=null?r.cam5+'°/'+(r.cam5_hum!=null?r.cam5_hum:'—')+'%':'—'}</td>
-    <td>${r.cam6!=null?r.cam6+'°/'+(r.cam6_hum!=null?r.cam6_hum:'—')+'%':'—'}</td>
-    <td style="${r.obrador!=null&&r.obrador>23?'color:var(--red-text);font-weight:700':r.obrador!=null&&r.obrador>=20?'color:var(--orange-text);font-weight:600':''}">${r.obrador!=null?r.obrador+'°C':'—'}</td>
-    <td style="${r.envasado!=null&&r.envasado>23?'color:var(--red-text);font-weight:700':r.envasado!=null&&r.envasado>=20?'color:var(--orange-text);font-weight:600':''}">${r.envasado!=null?r.envasado+'°C':'—'}</td>
-    <td>${r.responsable||'—'}</td>
-    <td><span class="badge ${r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok'}">${r.estado==='alerta'?'⚠ Alerta':r.estado==='cuidado'?'⚠ Cuidado':'✓ OK'}</span></td>
-    <td><button class="btn btn-danger btn-sm" onclick="borrar('temperaturas','${r.id}',cargarTemperaturas)"><i class="ti ti-trash"></i></button></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(r){
+    return '<tr>' +
+      '<td>' + r.fecha + '</td>' +
+      '<td style="' + (r.cam2!=null&&r.cam2>=4?'color:var(--red-text);font-weight:700':'') + '">' + (r.cam2!=null?r.cam2+'°C':'—') + '</td>' +
+      '<td>' + (r.cam5!=null?r.cam5+'°/'+(r.cam5_hum!=null?r.cam5_hum:'—')+'%':'—') + '</td>' +
+      '<td>' + (r.cam6!=null?r.cam6+'°/'+(r.cam6_hum!=null?r.cam6_hum:'—')+'%':'—') + '</td>' +
+      '<td style="' + (r.obrador!=null&&r.obrador>23?'color:var(--red-text);font-weight:700':r.obrador!=null&&r.obrador>=20?'color:var(--orange-text);font-weight:600':'') + '">' + (r.obrador!=null?r.obrador+'°C':'—') + '</td>' +
+      '<td style="' + (r.envasado!=null&&r.envasado>23?'color:var(--red-text);font-weight:700':r.envasado!=null&&r.envasado>=20?'color:var(--orange-text);font-weight:600':'') + '">' + (r.envasado!=null?r.envasado+'°C':'—') + '</td>' +
+      '<td>' + (r.responsable||'—') + '</td>' +
+      '<td><span class="badge ' + (r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok') + '">' + (r.estado==='alerta'?'⚠ Alerta':r.estado==='cuidado'?'⚠ Cuidado':'✓ OK') + '</span></td>' +
+      '<td><button class="btn btn-danger btn-sm" onclick="borrar(\'temperaturas\',\'' + r.id + '\',cargarTemperaturas)"><i class="ti ti-trash"></i></button></td>' +
+    '</tr>';
+  }).join('');
 }
 
 // TRAZABILIDAD
@@ -1014,17 +1020,19 @@ async function buscarTrazabilidad(){
   const {data}=await q.order('created_at',{ascending:false});
   const c=document.getElementById('tr-resultados');
   if(!data||!data.length){c.innerHTML='<div class="card"><div class="empty-state">Sin resultados para los criterios de búsqueda</div></div>';return;}
-  c.innerHTML=data.map(e=>`<div class="card" style="margin-bottom:8px">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-      <div class="lote-cod" style="font-size:16px">${e.lote}</div>
-      <span class="badge b-purple">${e.estado}</span>
-      <span style="font-size:16px">${colores[e.color]||''}</span>
-    </div>
-    <table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>
-      ${[['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',e.fecha],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso final',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']].map(([k,v])=>`<tr><td style="color:var(--text2);font-size:11px">${k}</td><td style="font-weight:500">${v||'—'}</td></tr>`).join('')}
-    </tbody></table>
-    <button class="btn btn-gold btn-sm" style="margin-top:8px" onclick='abrirEtiqueta(${JSON.stringify(e)})'><i class="ti ti-tag"></i> Ver etiqueta</button>
-  </div>`).join('');
+  c.innerHTML=data.map(function(e){
+    return '<div class="card" style="margin-bottom:8px">' +
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
+        '<div class="lote-cod" style="font-size:16px">' + e.lote + '</div>' +
+        '<span class="badge b-purple">' + e.estado + '</span>' +
+        '<span style="font-size:16px">' + (colores[e.color]||'') + '</span>' +
+      '</div>' +
+      '<table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>' +
+        [['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',e.fecha],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso final',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']].map(function(row){return '<tr><td style="color:var(--text2);font-size:11px">'+row[0]+'</td><td style="font-weight:500">'+(row[1]||'—')+'</td></tr>';}).join('') +
+      '</tbody></table>' +
+      '<button class="btn btn-gold btn-sm" style="margin-top:8px" onclick=\'abrirEtiqueta(' + JSON.stringify(e) + ')\'><i class="ti ti-tag"></i> Ver etiqueta</button>' +
+    '</div>';
+  }).join('');
 }
 
 // SUBIDA DOCUMENTOS
@@ -1032,7 +1040,7 @@ async function subirDocumento(input){
   const file=input.files[0];if(!file)return;
   const nombre=document.getElementById('doc-nombre').value||file.name;
   const cat=document.getElementById('doc-cat').value;
-  const path=`docs/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  const path='docs/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   document.getElementById('upload-progress').style.display='block';
   document.getElementById('upload-status').textContent='Subiendo...';
   document.getElementById('upload-bar').style.width='40%';
@@ -1054,19 +1062,21 @@ async function cargarDocumentos(){
   const t=document.getElementById('tabla-docs');
   if(!data||!data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin documentos</td></tr>';return;}
   document.getElementById('d-docs').textContent=data.length;
-  t.innerHTML=data.map(d=>`<tr>
-    <td><div style="font-weight:600">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${d.descripcion||''}</div></td>
-    <td><span class="badge b-info">${d.categoria||'—'}</span></td>
-    <td style="font-size:11px;color:var(--text2)">${d.created_at?new Date(d.created_at).toLocaleDateString('es-ES'):'—'}</td>
-    <td><div style="display:flex;gap:6px">${d.url?`<a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`:''}
-    <button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarDocumentos)"><i class="ti ti-trash"></i></button></div></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(d){
+    return '<tr>' +
+      '<td><div style="font-weight:600">' + d.nombre + '</div><div style="font-size:10px;color:var(--text3)">' + (d.descripcion||'') + '</div></td>' +
+      '<td><span class="badge b-info">' + (d.categoria||'—') + '</span></td>' +
+      '<td style="font-size:11px;color:var(--text2)">' + (d.created_at?new Date(d.created_at).toLocaleDateString('es-ES'):'—') + '</td>' +
+      '<td><div style="display:flex;gap:6px">' + (d.url?'<a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'') +
+      '<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarDocumentos)"><i class="ti ti-trash"></i></button></div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 // HALAL
 async function subirHalal(input,nombre,tipo){
   for(const file of input.files){
-    const path=`halal/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+    const path='halal/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
     await db.from('documentos').insert({nombre,categoria:'Halal_'+tipo,url:urlData.publicUrl,descripcion:file.name});
@@ -1078,11 +1088,11 @@ async function subirHalal(input,nombre,tipo){
 
 async function subirHalalProv(input,proveedor,tdId){
   const file=input.files[0];if(!file)return;
-  const path=`halal/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  const path='halal/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   await db.storage.from('documentos').upload(path,file);
   const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
   await db.from('documentos').insert({nombre:'Certificado Halal — '+proveedor,categoria:'Halal_Proveedor',url:urlData.publicUrl,descripcion:file.name});
-  document.getElementById(tdId).innerHTML=`<a href="${urlData.publicUrl}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`;
+  document.getElementById(tdId).innerHTML='<a href="'+urlData.publicUrl+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>';
   toast('✓ Certificado halal subido: '+proveedor);
   input.value='';
 }
@@ -1096,16 +1106,20 @@ async function cargarHalal(){
   const propios=docs.filter(d=>d.categoria==='Halal_Certificado propio');
   const audits=docs.filter(d=>d.categoria==='Halal_Auditoría');
   const t1=document.getElementById('tabla-halal-propios');
-  t1.innerHTML=propios.length?propios.map(d=>`<tr><td style="font-weight:500">${d.nombre}</td><td><span class="badge b-info">${d.categoria}</span></td><td>${new Date(d.created_at).toLocaleDateString('es-ES')}</td><td><div style="display:flex;gap:6px"><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin documentos propios</td></tr>';
+  t1.innerHTML=propios.length?propios.map(function(d){
+    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td><span class="badge b-info">' + d.categoria + '</span></td><td>' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:6px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>';
+  }).join(''):'<tr><td colspan="4" class="empty-state">Sin documentos propios</td></tr>';
   const t2=document.getElementById('tabla-halal-audits');
-  t2.innerHTML=audits.length?audits.map(d=>`<tr><td style="font-weight:500">${d.nombre}</td><td>${new Date(d.created_at).toLocaleDateString('es-ES')}</td><td><div style="display:flex;gap:6px"><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin auditorías</td></tr>';
+  t2.innerHTML=audits.length?audits.map(function(d){
+    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td>' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:6px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarHalal)"><i class="ti ti-trash"></i></button></div></td></tr>';
+  }).join(''):'<tr><td colspan="3" class="empty-state">Sin auditorías</td></tr>';
   const provList=(provs&&provs.length)?provs:proveedoresDefault;
   const t3=document.getElementById('tabla-halal-prov');
-  t3.innerHTML=provList.map(p=>{
+  t3.innerHTML=provList.map(function(p){
     const safeName=p.nombre.replace(/[^a-z0-9]/gi,'').toLowerCase();
-    const doc=docs.find(d=>d.categoria==='Halal_Proveedor'&&d.nombre.includes(p.nombre));
-    const tdId=`halal-prov-doc-${safeName}`;
-    return `<tr><td>${p.nombre}</td><td id="${tdId}">${doc?`<a href="${doc.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`:'—'}</td><td>—</td><td><span class="badge ${doc?'b-ok':'b-pend'}">${doc?'OK':'Pendiente'}</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById('upload-halal-${safeName}').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-${safeName}" style="display:none" onchange="subirHalalProv(this,${JSON.stringify(p.nombre)},'${tdId}')"/></td></tr>`;
+    const doc=docs.find(function(d){return d.categoria==='Halal_Proveedor'&&d.nombre.includes(p.nombre);});
+    const tdId='halal-prov-doc-'+safeName;
+    return '<tr><td>' + p.nombre + '</td><td id="' + tdId + '">' + (doc?'<a href="' + doc.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'—') + '</td><td>—</td><td><span class="badge ' + (doc?'b-ok':'b-pend') + '">' + (doc?'OK':'Pendiente') + '</span></td><td><button class="btn btn-sec btn-sm" onclick="document.getElementById(\'upload-halal-' + safeName + '\').click()"><i class="ti ti-upload"></i></button><input type="file" id="upload-halal-' + safeName + '" style="display:none" onchange="subirHalalProv(this,' + JSON.stringify(p.nombre) + ',\'' + tdId + '\')"/></td></tr>';
   }).join('');
 }
 
@@ -1120,38 +1134,39 @@ const registrosAppcc=['A.2-AN01 ORGANIGRAMA','A.2-AN02 CUADRO DE RESPONSABLES','
 
 function renderAppcc(){
   const c=document.getElementById('appcc-carpetas');
-  c.innerHTML=carpetasAppcc.map(f=>`
-    <div class="folder" id="folder-${f.id}">
-      <div class="folder-header" onclick="toggleFolder('${f.id}')">
-        <i class="ti ti-folder" style="color:var(--dorado);font-size:18px"></i>
-        <div class="folder-title">${f.nombre}</div>
-        <i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-${f.id}"></i>
-      </div>
-      <div class="folder-body" id="body-folder-${f.id}">
-        <div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById('upload-appcc-${f.id}').click()">
-          <input type="file" id="upload-appcc-${f.id}" multiple onchange="subirAppccCarpeta(this,'${f.nombre}','appcc-docs-${f.id}')"/>
-          <i class="ti ti-cloud-upload" style="font-size:20px"></i>
-          <p><strong style="color:var(--dorado)">Subir documentos</strong> · Múltiples archivos permitidos</p>
-        </div>
-        <div id="appcc-docs-${f.id}"></div>
-      </div>
-    </div>`).join('')+`
-    <div class="folder" id="folder-reg">
-      <div class="folder-header" onclick="toggleFolder('reg')">
-        <i class="ti ti-folder-open" style="color:var(--dorado);font-size:18px"></i>
-        <div class="folder-title">D. Registros</div>
-        <i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-reg"></i>
-      </div>
-      <div class="folder-body" id="body-folder-reg">
-        <div id="appcc-registros-lista"></div>
-      </div>
-    </div>`;
+  c.innerHTML=carpetasAppcc.map(function(f){
+    return '<div class="folder" id="folder-' + f.id + '">' +
+      '<div class="folder-header" onclick="toggleFolder(\'' + f.id + '\')">' +
+        '<i class="ti ti-folder" style="color:var(--dorado);font-size:18px"></i>' +
+        '<div class="folder-title">' + f.nombre + '</div>' +
+        '<i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-' + f.id + '"></i>' +
+      '</div>' +
+      '<div class="folder-body" id="body-folder-' + f.id + '">' +
+        '<div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById(\'upload-appcc-' + f.id + '\').click()">' +
+          '<input type="file" id="upload-appcc-' + f.id + '" multiple onchange="subirAppccCarpeta(this,\'' + f.nombre + '\',\'appcc-docs-' + f.id + '\')"/>' +
+          '<i class="ti ti-cloud-upload" style="font-size:20px"></i>' +
+          '<p><strong style="color:var(--dorado)">Subir documentos</strong> · Múltiples archivos permitidos</p>' +
+        '</div>' +
+        '<div id="appcc-docs-' + f.id + '"></div>' +
+      '</div>' +
+    '</div>';
+  }).join('') +
+  '<div class="folder" id="folder-reg">' +
+    '<div class="folder-header" onclick="toggleFolder(\'reg\')">' +
+      '<i class="ti ti-folder-open" style="color:var(--dorado);font-size:18px"></i>' +
+      '<div class="folder-title">D. Registros</div>' +
+      '<i class="ti ti-chevron-right" style="color:var(--text3);transition:transform .2s" id="icon-folder-reg"></i>' +
+    '</div>' +
+    '<div class="folder-body" id="body-folder-reg">' +
+      '<div id="appcc-registros-lista"></div>' +
+    '</div>' +
+  '</div>';
   cargarDocsAppcc();
 }
 
 async function subirAppccCarpeta(input,categoria,targetId){
   for(const file of input.files){
-    const path=`appcc/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+    const path='appcc/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
     await db.from('documentos').insert({nombre:file.name,categoria:'APPCC_'+categoria,url:urlData.publicUrl,descripcion:file.name});
@@ -1164,10 +1179,10 @@ async function subirAppccCarpeta(input,categoria,targetId){
 async function subirRegistroAppcc(input,nombreReg){
   const mesRef=prompt('¿A qué mes corresponde? (YYYY-MM)',new Date().toISOString().slice(0,7))||new Date().toISOString().slice(0,7);
   for(const file of input.files){
-    const path=`appcc/registros/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+    const path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.publicUrl,descripcion:`[${mesRef}] ${file.name}`});
+    await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.publicUrl,descripcion:'['+mesRef+'] '+file.name});
   }
   toast('✓ Registro subido: '+nombreReg);
   input.value='';
@@ -1186,23 +1201,30 @@ async function cargarDocsAppcc(){
   const regsEl=document.getElementById('appcc-registros-lista');
   if(!regsEl)return;
   const regsData=data.filter(d=>d.categoria==='APPCC_D.Registros');
-  regsEl.innerHTML=registrosAppcc.map((r,i)=>{
-    const subidos=regsData.filter(d=>d.nombre===r);
-    return `<div style="margin-bottom:6px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <span class="badge ${subidos.length?'b-ok':'b-gray'}">${subidos.length?subidos.length+' archivo(s)':'Sin archivos'}</span>
-        <div style="font-size:11px;font-weight:600;flex:1">${r}</div>
-        <button class="btn btn-gold btn-sm" onclick="document.getElementById('upload-reg-${i}').click()"><i class="ti ti-upload"></i> Subir</button>
-        <input type="file" id="upload-reg-${i}" style="display:none" multiple onchange="subirRegistroAppcc(this,'${r}')"/>
-      </div>
-      ${[...subidos].sort((a,b)=>{const ma=(a.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mb=(b.descripcion||'').match(/\[(\d{4}-\d{2})\]/);return (mb?mb[1]:'')>(ma?ma[1]:'')?1:-1;}).map(d=>{const mRef=(d.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mes=mRef?mRef[1]:'';const fname=(d.descripcion||d.nombre).replace(/^\[\d{4}-\d{2}\]\s*/,'');return`<div class="doc-row" style="margin-left:20px;padding:6px 10px">
-        <i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>
-        ${mes?`<span class="badge b-gray" style="font-size:9px;margin-right:4px">${mes}</span>`:''}
-        <div style="flex:1;font-size:11px">${fname}</div>
-        <a href="${d.url}" target="_blank" class="btn btn-sec btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a>
-        <button class="btn btn-danger btn-sm" onclick="borrar(&quot;documentos&quot;,&quot;${d.id}&quot;,()=>{renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>
-      </div>`;}).join('')}
-    </div>`;
+  regsEl.innerHTML=registrosAppcc.map(function(r,i){
+    const subidos=regsData.filter(function(d){return d.nombre===r;});
+    const sortedSubidos=[...subidos].sort(function(a,b){const ma=(a.descripcion||'').match(/\[(\d{4}-\d{2})\]/);const mb=(b.descripcion||'').match(/\[(\d{4}-\d{2})\]/);return (mb?mb[1]:'')>(ma?ma[1]:'')?1:-1;});
+    const docRows=sortedSubidos.map(function(d){
+      const mRef=(d.descripcion||'').match(/\[(\d{4}-\d{2})\]/);
+      const mes=mRef?mRef[1]:'';
+      const fname=(d.descripcion||d.nombre).replace(/^\[\d{4}-\d{2}\]\s*/,'');
+      return '<div class="doc-row" style="margin-left:20px;padding:6px 10px">' +
+        '<i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>' +
+        (mes?'<span class="badge b-gray" style="font-size:9px;margin-right:4px">'+mes+'</span>':'') +
+        '<div style="flex:1;font-size:11px">'+fname+'</div>' +
+        '<a href="'+d.url+'" target="_blank" class="btn btn-sec btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a>' +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(&quot;documentos&quot;,&quot;'+d.id+'&quot;,function(){renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>' +
+      '</div>';
+    }).join('');
+    return '<div style="margin-bottom:6px">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+        '<span class="badge ' + (subidos.length?'b-ok':'b-gray') + '">' + (subidos.length?subidos.length+' archivo(s)':'Sin archivos') + '</span>' +
+        '<div style="font-size:11px;font-weight:600;flex:1">' + r + '</div>' +
+        '<button class="btn btn-gold btn-sm" onclick="document.getElementById(\'upload-reg-'+i+'\').click()"><i class="ti ti-upload"></i> Subir</button>' +
+        '<input type="file" id="upload-reg-'+i+'" style="display:none" multiple onchange="subirRegistroAppcc(this,\''+r.replace(/'/g,"\\'")+'\')" />' +
+      '</div>' +
+      docRows +
+    '</div>';
   }).join('');
 }
 
@@ -1239,18 +1261,20 @@ async function cargarClientes(){
   const t=document.getElementById('tabla-clientes');
   if(!data||!data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin clientes</td></tr>';return;}
   document.getElementById('d-cli').textContent=data.length;
-  t.innerHTML=data.map(c=>`<tr>
-    <td style="font-weight:600">${c.nombre}</td>
-    <td style="font-family:monospace;font-size:11px">${c.cif||'—'}</td>
-    <td>${c.pais||'—'}</td>
-    <td><span class="badge b-info">${c.tipo||'—'}</span></td>
-    <td>${c.telefono||'—'}</td>
-    <td style="font-size:11px">${c.email||'—'}</td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-edit btn-sm" onclick='abrirModalCliente(${JSON.stringify(c).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="borrar('clientes','${c.id}',cargarClientes)"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(c){
+    return '<tr>' +
+      '<td style="font-weight:600">' + c.nombre + '</td>' +
+      '<td style="font-family:monospace;font-size:11px">' + (c.cif||'—') + '</td>' +
+      '<td>' + (c.pais||'—') + '</td>' +
+      '<td><span class="badge b-info">' + (c.tipo||'—') + '</span></td>' +
+      '<td>' + (c.telefono||'—') + '</td>' +
+      '<td style="font-size:11px">' + (c.email||'—') + '</td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalCliente(' + JSON.stringify(c).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(\'clientes\',\'' + c.id + '\',cargarClientes)"><i class="ti ti-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 // PROVEEDORES
@@ -1292,19 +1316,21 @@ async function cargarProveedores(){
   const lista=data&&data.length?data:proveedoresDefault;
   const saeBadge={na:'<span class="badge b-gray">N/A</span>',sin_sae:'<span class="badge b-pend">Sin SAE</span>',nivel1:'<span class="badge b-ok">Nivel 1</span>',nivel2:'<span class="badge b-ok">Nivel 2</span>'};
   const estBadge={homologado:'<span class="badge b-ok">Homologado</span>',pendiente:'<span class="badge b-alert">Pendiente</span>',suspendido:'<span class="badge b-alert">Suspendido</span>'};
-  t.innerHTML=lista.map(p=>`<tr>
-    <td style="font-weight:700;color:var(--dorado3)">${p.codigo||'—'}</td>
-    <td style="font-weight:500">${p.nombre}</td>
-    <td>${p.pais||'—'}</td>
-    <td>${p.actividad||'—'}</td>
-    <td style="font-family:monospace;font-size:11px">${p.registro||'—'}</td>
-    <td>${saeBadge[p.sae]||saeBadge.na}</td>
-    <td>${estBadge[p.estado]||estBadge.homologado}</td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-edit btn-sm" onclick='abrirModalProveedor(${JSON.stringify(p).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
-      ${p.id?`<button class="btn btn-danger btn-sm" onclick="borrar('proveedores','${p.id}',cargarProveedores)"><i class="ti ti-trash"></i></button>`:''}
-    </div></td>
-  </tr>`).join('');
+  t.innerHTML=lista.map(function(p){
+    return '<tr>' +
+      '<td style="font-weight:700;color:var(--dorado3)">' + (p.codigo||'—') + '</td>' +
+      '<td style="font-weight:500">' + p.nombre + '</td>' +
+      '<td>' + (p.pais||'—') + '</td>' +
+      '<td>' + (p.actividad||'—') + '</td>' +
+      '<td style="font-family:monospace;font-size:11px">' + (p.registro||'—') + '</td>' +
+      '<td>' + (saeBadge[p.sae]||saeBadge.na) + '</td>' +
+      '<td>' + (estBadge[p.estado]||estBadge.homologado) + '</td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalProveedor(' + JSON.stringify(p).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
+        (p.id?'<button class="btn btn-danger btn-sm" onclick="borrar(\'proveedores\',\''+p.id+'\',cargarProveedores)"><i class="ti ti-trash"></i></button>':'') +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 // TRABAJADORES
@@ -1333,19 +1359,21 @@ async function cargarTrabajadores(){
   const {data}=await db.from('trabajadores').select('*').order('nombre');
   const t=document.getElementById('tabla-trabajadores');
   if(!data||!data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin trabajadores</td></tr>';return;}
-  t.innerHTML=data.map(w=>`<tr>
-    <td style="font-weight:600">${w.nombre}</td>
-    <td style="font-family:monospace;font-size:11px">${w.dni||'—'}</td>
-    <td>${w.cargo||'—'}</td>
-    <td>${w.telefono||'—'}</td>
-    <td>${w.fecha_alta||'—'}</td>
-    <td><span class="badge ${w.estado==='activo'?'b-ok':w.estado==='baja'?'b-warn':'b-gray'}">${w.estado||'activo'}</span></td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-sec btn-sm" onclick='verPerfilTrabajador(${JSON.stringify(w.id)},${JSON.stringify(w.nombre)})'><i class="ti ti-user"></i> Perfil</button>
-      <button class="btn btn-edit btn-sm" onclick='abrirModalTrabajador(${JSON.stringify(w).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="borrar('trabajadores','${w.id}',cargarTrabajadores)"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(w){
+    return '<tr>' +
+      '<td style="font-weight:600">' + w.nombre + '</td>' +
+      '<td style="font-family:monospace;font-size:11px">' + (w.dni||'—') + '</td>' +
+      '<td>' + (w.cargo||'—') + '</td>' +
+      '<td>' + (w.telefono||'—') + '</td>' +
+      '<td>' + (w.fecha_alta||'—') + '</td>' +
+      '<td><span class="badge ' + (w.estado==='activo'?'b-ok':w.estado==='baja'?'b-warn':'b-gray') + '">' + (w.estado||'activo') + '</span></td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-sec btn-sm" onclick=\'verPerfilTrabajador(' + JSON.stringify(w.id) + ',' + JSON.stringify(w.nombre) + ')\'><i class="ti ti-user"></i> Perfil</button>' +
+        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalTrabajador(' + JSON.stringify(w).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(\'trabajadores\',\'' + w.id + '\',cargarTrabajadores)"><i class="ti ti-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 async function verPerfilTrabajador(id,nombre){
@@ -1353,34 +1381,36 @@ async function verPerfilTrabajador(id,nombre){
   const {data:trab}=await db.from('trabajadores').select('*').eq('id',id).single();
   const {data:docs}=await db.from('documentos').select('*').like('categoria','Trabajador_%'+nombre+'%').order('created_at',{ascending:false});
   const el=document.getElementById('perfil-trab-contenido');
-  el.innerHTML=`
-    <div class="perfil-header">
-      <div class="perfil-nombre">${trab.nombre}</div>
-      <div class="perfil-cargo">${trab.cargo||'—'} · ${trab.estado||'activo'}</div>
-    </div>
-    <div class="grid2" style="margin-bottom:14px">
-      <div><label>DNI / NIE</label><div style="font-size:13px;font-weight:500">${trab.dni||'—'}</div></div>
-      <div><label>Nº Seguridad Social</label><div style="font-size:13px;font-weight:500">${trab.num_ss||'—'}</div></div>
-      <div><label>Teléfono</label><div style="font-size:13px">${trab.telefono||'—'}</div></div>
-      <div><label>Email</label><div style="font-size:13px">${trab.email||'—'}</div></div>
-      <div><label>Fecha de alta</label><div style="font-size:13px">${trab.fecha_alta||'—'}</div></div>
-    </div>
-    <div class="sep"></div>
-    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Documentos del trabajador</div>
-    <div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById('upload-trab-doc').click()">
-      <input type="file" id="upload-trab-doc" multiple onchange="subirDocTrabajador(this,${JSON.stringify(nombre)},${JSON.stringify(id)})"/>
-      <i class="ti ti-upload" style="font-size:20px"></i>
-      <p><strong style="color:var(--dorado)">Subir documentos</strong> · Contrato, DNI, formación, carnet manipulador...</p>
-    </div>
-    <div id="docs-trabajador-${id}">
-      ${docs&&docs.length?docs.map(d=>`<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">${d.nombre}</div><div style="font-size:10px;color:var(--text3)">${new Date(d.created_at).toLocaleDateString('es-ES')}</div></div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>verPerfilTrabajador(${JSON.stringify(id)},${JSON.stringify(nombre)}))"><i class="ti ti-trash"></i></button></div>`).join(''):'<div class="empty-state">Sin documentos subidos</div>'}
-    </div>`;
+  el.innerHTML=
+    '<div class="perfil-header">' +
+      '<div class="perfil-nombre">' + trab.nombre + '</div>' +
+      '<div class="perfil-cargo">' + (trab.cargo||'—') + ' · ' + (trab.estado||'activo') + '</div>' +
+    '</div>' +
+    '<div class="grid2" style="margin-bottom:14px">' +
+      '<div><label>DNI / NIE</label><div style="font-size:13px;font-weight:500">' + (trab.dni||'—') + '</div></div>' +
+      '<div><label>Nº Seguridad Social</label><div style="font-size:13px;font-weight:500">' + (trab.num_ss||'—') + '</div></div>' +
+      '<div><label>Teléfono</label><div style="font-size:13px">' + (trab.telefono||'—') + '</div></div>' +
+      '<div><label>Email</label><div style="font-size:13px">' + (trab.email||'—') + '</div></div>' +
+      '<div><label>Fecha de alta</label><div style="font-size:13px">' + (trab.fecha_alta||'—') + '</div></div>' +
+    '</div>' +
+    '<div class="sep"></div>' +
+    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Documentos del trabajador</div>' +
+    '<div class="upload-area" style="margin-bottom:10px" onclick="document.getElementById(\'upload-trab-doc\').click()">' +
+      '<input type="file" id="upload-trab-doc" multiple onchange="subirDocTrabajador(this,' + JSON.stringify(nombre) + ',' + JSON.stringify(id) + ')"/>' +
+      '<i class="ti ti-upload" style="font-size:20px"></i>' +
+      '<p><strong style="color:var(--dorado)">Subir documentos</strong> · Contrato, DNI, formación, carnet manipulador...</p>' +
+    '</div>' +
+    '<div id="docs-trabajador-' + id + '">' +
+      (docs&&docs.length?docs.map(function(d){
+        return '<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div><div style="font-size:10px;color:var(--text3)">'+new Date(d.created_at).toLocaleDateString('es-ES')+'</div></div><a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i></a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){verPerfilTrabajador('+JSON.stringify(id)+','+JSON.stringify(nombre)+')})"><i class="ti ti-trash"></i></button></div>';
+      }).join(''):'<div class="empty-state">Sin documentos subidos</div>') +
+    '</div>';
   abrirModal('modal-perfil-trabajador');
 }
 
 async function subirDocTrabajador(input,nombre,id){
   for(const file of input.files){
-    const path=`trabajadores/${id}/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+    const path='trabajadores/'+id+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
     await db.from('documentos').insert({nombre:file.name,categoria:'Trabajador_'+nombre,url:urlData.publicUrl,descripcion:file.name});
@@ -1394,10 +1424,10 @@ async function subirDocTrabajador(input,nombre,id){
 async function subirFichaje(input){
   const file=input.files[0];if(!file)return;
   const mes=document.getElementById('fich-mes').value;
-  const path=`fichaje/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  const path='fichaje/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   await db.storage.from('documentos').upload(path,file);
   const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
-  await db.from('documentos').insert({nombre:`Fichaje ${mes}`,categoria:'Fichaje',url:urlData.publicUrl,descripcion:file.name});
+  await db.from('documentos').insert({nombre:'Fichaje '+mes,categoria:'Fichaje',url:urlData.publicUrl,descripcion:file.name});
   toast('✓ Fichaje subido');input.value='';cargarFichaje();
 }
 
@@ -1405,13 +1435,15 @@ async function cargarFichaje(){
   const {data}=await db.from('documentos').select('*').eq('categoria','Fichaje').order('created_at',{ascending:false});
   const t=document.getElementById('tabla-fichaje');
   if(!data||!data.length){t.innerHTML='<tr><td colspan="4" class="empty-state">Sin archivos</td></tr>';return;}
-  t.innerHTML=data.map(d=>`<tr><td style="font-weight:500">${d.nombre}</td><td style="font-size:11px">${d.descripcion}</td><td style="font-size:11px;color:var(--text2)">${new Date(d.created_at).toLocaleDateString('es-ES')}</td><td><div style="display:flex;gap:4px"><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-download"></i></a><button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',cargarFichaje)"><i class="ti ti-trash"></i></button></div></td></tr>`).join('');
+  t.innerHTML=data.map(function(d){
+    return '<tr><td style="font-weight:500">' + d.nombre + '</td><td style="font-size:11px">' + d.descripcion + '</td><td style="font-size:11px;color:var(--text2)">' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td><td><div style="display:flex;gap:4px"><a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-download"></i></a><button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',cargarFichaje)"><i class="ti ti-trash"></i></button></div></td></tr>';
+  }).join('');
 }
 
 // SAE EXPEDICIONES
 async function subirPlantillaSAE(input){
   const file=input.files[0];if(!file)return;
-  const path=`sae/plantillas/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  const path='sae/plantillas/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   await db.storage.from('documentos').upload(path,file);
   const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
   await db.from('documentos').insert({nombre:file.name,categoria:'SAE_Plantilla',url:urlData.publicUrl,descripcion:file.name});
@@ -1427,22 +1459,22 @@ async function cargarExpediciones(){
   if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin expediciones</td></tr>';return;}
   const estBadge={activo:'<span class="badge b-pend">En curso</span>',finalizada:'<span class="badge b-ok">Finalizada</span>'};
   const tipoBadge={real:'<span class="badge b-blue">Real</span>',simulacro:'<span class="badge b-gray">Simulacro</span>'};
-  t.innerHTML=data.map((e,i)=>{
+  t.innerHTML=data.map(function(e,i){
     const num='EXP-'+new Date(e.created_at).getFullYear()+'-'+String(i+1).padStart(3,'0');
-    return `<tr>
-      <td style="font-weight:700;color:var(--dorado3)">${num}</td>
-      <td>${tipoBadge[e.tipo||'real']}</td>
-      <td style="font-family:monospace;font-size:11px">${e.lote||'—'}</td>
-      <td>${e.cliente||'—'}</td>
-      <td><span class="badge b-info">${(e.pais||'—').split('—')[0].trim()}</span></td>
-      <td>${e.fecha_salida||'—'}</td>
-      <td>${estBadge[e.estado||'activo']}</td>
-      <td><div style="display:flex;gap:4px">
-        <button class="btn btn-gold btn-sm" onclick="abrirExpedicion('${e.id}','${num}')"><i class="ti ti-folder-open"></i></button>
-        ${e.estado!=='finalizada'?`<button class="btn btn-sec btn-sm" onclick="finalizarExpedicion('${e.id}')" title="Finalizar"><i class="ti ti-check"></i></button>`:''}
-        <button class="btn btn-danger btn-sm" onclick="borrar('expediciones','${e.id}',cargarExpediciones)"><i class="ti ti-trash"></i></button>
-      </div></td>
-    </tr>`;
+    return '<tr>' +
+      '<td style="font-weight:700;color:var(--dorado3)">' + num + '</td>' +
+      '<td>' + tipoBadge[e.tipo||'real'] + '</td>' +
+      '<td style="font-family:monospace;font-size:11px">' + (e.lote||'—') + '</td>' +
+      '<td>' + (e.cliente||'—') + '</td>' +
+      '<td><span class="badge b-info">' + (e.pais||'—').split('—')[0].trim() + '</span></td>' +
+      '<td>' + (e.fecha_salida||'—') + '</td>' +
+      '<td>' + estBadge[e.estado||'activo'] + '</td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-gold btn-sm" onclick="abrirExpedicion(\'' + e.id + '\',\'' + num + '\')"><i class="ti ti-folder-open"></i></button>' +
+        (e.estado!=='finalizada'?'<button class="btn btn-sec btn-sm" onclick="finalizarExpedicion(\''+e.id+'\')" title="Finalizar"><i class="ti ti-check"></i></button>':'') +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(\'expediciones\',\'' + e.id + '\',cargarExpediciones)"><i class="ti ti-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
   }).join('');
   const activas=data.filter(e=>e.estado!=='finalizada');
   const notif=document.getElementById('exp-notif');
@@ -1453,21 +1485,23 @@ async function cargarExpediciones(){
 async function abrirExpedicion(id,num){
   expedicionActivaId=id;expedicionActivaNum=num;
   document.getElementById('expedicion-detalle-new').style.display='block';
-  document.getElementById('exp-detalle-titulo').innerHTML=`<i class="ti ti-files"></i> Documentos — ${num}`;
+  document.getElementById('exp-detalle-titulo').innerHTML='<i class="ti ti-files"></i> Documentos — ' + num;
   const {data}=await db.from('documentos').select('*').eq('categoria','SAE_Exp_'+id).order('created_at',{ascending:false});
   const t=document.getElementById('tabla-exp-docs');
-  t.innerHTML=data&&data.length?data.map(d=>`<tr>
-    <td style="font-weight:500">${d.nombre}</td>
-    <td style="font-size:11px;color:var(--text2)">${new Date(d.created_at).toLocaleDateString('es-ES')}</td>
-    <td><div style="display:flex;gap:4px">${d.url?`<a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>`:''}<button class="btn btn-danger btn-sm" onclick="borrar('documentos','${d.id}',()=>abrirExpedicion('${id}','${num}'))"><i class="ti ti-trash"></i></button></div></td>
-  </tr>`).join(''):'<tr><td colspan="3" class="empty-state">Sin documentos adjuntos</td></tr>';
+  t.innerHTML=data&&data.length?data.map(function(d){
+    return '<tr>' +
+      '<td style="font-weight:500">' + d.nombre + '</td>' +
+      '<td style="font-size:11px;color:var(--text2)">' + new Date(d.created_at).toLocaleDateString('es-ES') + '</td>' +
+      '<td><div style="display:flex;gap:4px">' + (d.url?'<a href="' + d.url + '" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a>':'') + '<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\'' + d.id + '\',function(){abrirExpedicion(\'' + id + '\',\'' + num + '\')})"><i class="ti ti-trash"></i></button></div></td>' +
+    '</tr>';
+  }).join(''):'<tr><td colspan="3" class="empty-state">Sin documentos adjuntos</td></tr>';
   document.getElementById('expedicion-detalle-new').scrollIntoView({behavior:'smooth'});
 }
 
 async function subirDocExpedicion(input){
   const file=input.files[0];if(!file||!expedicionActivaId)return;
   const nombre=prompt('Nombre del documento:',file.name)||file.name;
-  const path=`sae/expediciones/${expedicionActivaId}/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+  const path='sae/expediciones/'+expedicionActivaId+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
   await db.storage.from('documentos').upload(path,file);
   const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
   await db.from('documentos').insert({nombre,categoria:'SAE_Exp_'+expedicionActivaId,url:urlData.publicUrl,descripcion:file.name});
@@ -1511,12 +1545,14 @@ async function cargarEventos(){
   renderCalendario(data);
   const t=document.getElementById('tabla-eventos');
   const tipoLabel={produccion:'Producción',auditoria:'Auditoría',inspeccion:'Inspección',recepcion:'Recepción MP',envio:'Envío',otro:'Otro'};
-  t.innerHTML=data.length?data.map(e=>`<tr>
-    <td>${e.fecha}</td>
-    <td><span class="cal-event ev-${e.tipo}" style="display:inline-block">${tipoLabel[e.tipo]||e.tipo}</span></td>
-    <td>${e.descripcion}</td>
-    <td><button class="btn btn-danger btn-sm" onclick="borrar('eventos_calendario','${e.id}',cargarEventos)"><i class="ti ti-trash"></i></button></td>
-  </tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>';
+  t.innerHTML=data.length?data.map(function(e){
+    return '<tr>' +
+      '<td>' + e.fecha + '</td>' +
+      '<td><span class="cal-event ev-' + e.tipo + '" style="display:inline-block">' + (tipoLabel[e.tipo]||e.tipo) + '</span></td>' +
+      '<td>' + e.descripcion + '</td>' +
+      '<td><button class="btn btn-danger btn-sm" onclick="borrar(\'eventos_calendario\',\'' + e.id + '\',cargarEventos)"><i class="ti ti-trash"></i></button></td>' +
+    '</tr>';
+  }).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>';
 }
 
 function renderCalendario(eventos=[]){
@@ -1529,15 +1565,15 @@ function renderCalendario(eventos=[]){
   const primero=new Date(anio,mes,1);
   const ultimo=new Date(anio,mes+1,0);
   let diaSemana=primero.getDay();if(diaSemana===0)diaSemana=7;
-  for(let i=1;i<diaSemana;i++){const d=document.createElement('div');d.className='cal-day other-month';d.innerHTML=`<div class="cal-day-num">${new Date(anio,mes,1-diaSemana+i).getDate()}</div>`;grid.appendChild(d);}
+  for(let i=1;i<diaSemana;i++){const d=document.createElement('div');d.className='cal-day other-month';d.innerHTML='<div class="cal-day-num">'+new Date(anio,mes,1-diaSemana+i).getDate()+'</div>';grid.appendChild(d);}
   for(let dia=1;dia<=ultimo.getDate();dia++){
     const d=document.createElement('div');
     const esHoy=dia===today.getDate()&&mes===today.getMonth()&&anio===today.getFullYear();
     d.className='cal-day'+(esHoy?' today':'');
-    const fechaStr=`${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-    const evsDia=eventos.filter(e=>e.fecha===fechaStr);
-    d.innerHTML=`<div class="cal-day-num">${dia}</div>${evsDia.map(e=>`<div class="cal-event ev-${e.tipo}" onclick="event.stopPropagation();editarEvento(${JSON.stringify(e)})">${e.descripcion.substring(0,15)}</div>`).join('')}`;
-    d.onclick=()=>{document.getElementById('ev-fecha').value=fechaStr;abrirModal('modal-cal');};
+    const fechaStr=anio+'-'+String(mes+1).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
+    const evsDia=eventos.filter(function(e){return e.fecha===fechaStr;});
+    d.innerHTML='<div class="cal-day-num">'+dia+'</div>'+evsDia.map(function(e){return '<div class="cal-event ev-'+e.tipo+'" onclick="event.stopPropagation();editarEvento('+JSON.stringify(e)+')">'+e.descripcion.substring(0,15)+'</div>';}).join('');
+    d.onclick=function(){document.getElementById('ev-fecha').value=fechaStr;abrirModal('modal-cal');};
     grid.appendChild(d);
   }
 }
@@ -1585,18 +1621,19 @@ const catalogoProductos=[
 
 function renderProductos(){
   const c=document.getElementById('lista-productos');
-  c.innerHTML=catalogoProductos.map(p=>`
-    <div class="card" style="cursor:pointer;margin-bottom:8px" onclick="verDetalleProducto('${p.cod}')">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:8px 12px;font-family:monospace;font-size:14px;font-weight:700;color:var(--dorado3)">${p.cod}</div>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:600">${p.nombre}</div>
-          <div style="font-size:11px;color:var(--text3)">${p.familia} · ${p.proceso} · ${p.maduracion}</div>
-        </div>
-        <div style="font-size:18px">${colores[p.color]||'—'}</div>
-        ${p.halal?'<span class="badge b-ok">Halal</span>':''}
-      </div>
-    </div>`).join('');
+  c.innerHTML=catalogoProductos.map(function(p){
+    return '<div class="card" style="cursor:pointer;margin-bottom:8px" onclick="verDetalleProducto(\'' + p.cod + '\')">' +
+      '<div style="display:flex;align-items:center;gap:10px">' +
+        '<div style="background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:8px 12px;font-family:monospace;font-size:14px;font-weight:700;color:var(--dorado3)">' + p.cod + '</div>' +
+        '<div style="flex:1">' +
+          '<div style="font-size:13px;font-weight:600">' + p.nombre + '</div>' +
+          '<div style="font-size:11px;color:var(--text3)">' + p.familia + ' · ' + p.proceso + ' · ' + p.maduracion + '</div>' +
+        '</div>' +
+        '<div style="font-size:18px">' + (colores[p.color]||'—') + '</div>' +
+        (p.halal?'<span class="badge b-ok">Halal</span>':'') +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 async function verDetalleProducto(cod){
@@ -1607,35 +1644,35 @@ async function verDetalleProducto(cod){
   const det=document.getElementById('detalle-producto');
   const card=document.getElementById('detalle-prod-card');
   det.style.display='block';
-  card.innerHTML=`
-    <div class="card-title"><i class="ti ti-meat"></i> ${prod.nombre}</div>
-    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-      <span class="badge b-info">${prod.familia}</span>
-      <span class="badge b-ok">Halal</span>
-      <span style="font-size:18px">${colores[prod.color]}</span>
-      <span style="font-size:11px;color:var(--text2)">Color: ${prod.color}</span>
-    </div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">${prod.desc}</div>
-    <div class="grid2" style="margin-bottom:12px">
-      <div><label>Proceso</label><div style="font-size:12px">${prod.proceso}</div></div>
-      <div><label>Maduración</label><div style="font-size:12px">${prod.maduracion}</div></div>
-    </div>
-    <div class="sep"></div>
-    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Últimas elaboraciones</div>
-    ${elabs&&elabs.length?`<table><thead><tr><th>Lote</th><th>Fecha</th><th>Uds</th></tr></thead><tbody>${elabs.map(e=>`<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">${e.lote}</td><td>${e.fecha}</td><td>${e.unidades}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">Sin elaboraciones registradas</div>'}
-    <div class="sep"></div>
-    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Fichas técnicas</div>
-    <div class="upload-area" style="padding:14px" onclick="document.getElementById('upload-ficha-${cod}').click()">
-      <input type="file" id="upload-ficha-${cod}" multiple onchange="subirFichaTecnica(this,'${prod.nombre}')"/>
-      <i class="ti ti-upload" style="font-size:20px"></i>
-      <p><strong style="color:var(--dorado)">Subir ficha técnica</strong></p>
-    </div>
-    ${docs&&docs.length?docs.map(d=>`<div class="doc-row" style="margin-top:6px"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1;font-size:12px;font-weight:500">${d.nombre}</div><a href="${d.url}" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a></div>`).join(''):''}`;
+  card.innerHTML=
+    '<div class="card-title"><i class="ti ti-meat"></i> ' + prod.nombre + '</div>' +
+    '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">' +
+      '<span class="badge b-info">' + prod.familia + '</span>' +
+      '<span class="badge b-ok">Halal</span>' +
+      '<span style="font-size:18px">' + colores[prod.color] + '</span>' +
+      '<span style="font-size:11px;color:var(--text2)">Color: ' + prod.color + '</span>' +
+    '</div>' +
+    '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">' + prod.desc + '</div>' +
+    '<div class="grid2" style="margin-bottom:12px">' +
+      '<div><label>Proceso</label><div style="font-size:12px">' + prod.proceso + '</div></div>' +
+      '<div><label>Maduración</label><div style="font-size:12px">' + prod.maduracion + '</div></div>' +
+    '</div>' +
+    '<div class="sep"></div>' +
+    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Últimas elaboraciones</div>' +
+    (elabs&&elabs.length?'<table><thead><tr><th>Lote</th><th>Fecha</th><th>Uds</th></tr></thead><tbody>'+elabs.map(function(e){return '<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">'+e.lote+'</td><td>'+e.fecha+'</td><td>'+e.unidades+'</td></tr>';}).join('')+'</tbody></table>':'<div class="empty-state">Sin elaboraciones registradas</div>') +
+    '<div class="sep"></div>' +
+    '<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase">Fichas técnicas</div>' +
+    '<div class="upload-area" style="padding:14px" onclick="document.getElementById(\'upload-ficha-' + cod + '\').click()">' +
+      '<input type="file" id="upload-ficha-' + cod + '" multiple onchange="subirFichaTecnica(this,\'' + prod.nombre + '\')"/>' +
+      '<i class="ti ti-upload" style="font-size:20px"></i>' +
+      '<p><strong style="color:var(--dorado)">Subir ficha técnica</strong></p>' +
+    '</div>' +
+    (docs&&docs.length?docs.map(function(d){return '<div class="doc-row" style="margin-top:6px"><i class="ti ti-file-text" style="color:var(--dorado)"></i><div style="flex:1;font-size:12px;font-weight:500">'+d.nombre+'</div><a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> Ver</a></div>';}).join(''):'');
 }
 
 async function subirFichaTecnica(input,nombreProd){
   for(const file of input.files){
-    const path=`fichas/${Date.now()}_${file.name.replace(/\s+/g,'_')}`;
+    const path='fichas/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     await db.storage.from('documentos').upload(path,file);
     const {data:urlData}=db.storage.from('documentos').getPublicUrl(path);
     await db.from('documentos').insert({nombre:'Ficha técnica — '+nombreProd,categoria:'Fichas técnicas',url:urlData.publicUrl,descripcion:file.name});
@@ -1673,19 +1710,21 @@ async function cargarNoConformidades(){
   if(!data||!data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin no conformidades</td></tr>';return;}
   const gravBadge={leve:'<span class="badge b-ok">Leve</span>',grave:'<span class="badge b-warn">Grave</span>',critica:'<span class="badge b-alert">Crítica</span>'};
   const estBadge={abierta:'<span class="badge b-alert">Abierta</span>',en_proceso:'<span class="badge b-pend">En proceso</span>',cerrada:'<span class="badge b-ok">Cerrada</span>'};
-  t.innerHTML=data.map(nc=>`<tr>
-    <td style="font-weight:700;color:var(--dorado3)">${nc.numero||'—'}</td>
-    <td>${nc.fecha||'—'}</td>
-    <td><span class="badge b-gray">${nc.area}</span></td>
-    <td style="max-width:200px;font-size:11px">${nc.descripcion}</td>
-    <td>${gravBadge[nc.gravedad]||nc.gravedad}</td>
-    <td>${nc.responsable||'—'}</td>
-    <td>${estBadge[nc.estado]||nc.estado}</td>
-    <td><div style="display:flex;gap:4px">
-      <button class="btn btn-edit btn-sm" onclick='abrirModalNC(${JSON.stringify(nc).replace(/'/g,"&#39;")})'><i class="ti ti-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="borrar('no_conformidades','${nc.id}',cargarNoConformidades)"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
+  t.innerHTML=data.map(function(nc){
+    return '<tr>' +
+      '<td style="font-weight:700;color:var(--dorado3)">' + (nc.numero||'—') + '</td>' +
+      '<td>' + (nc.fecha||'—') + '</td>' +
+      '<td><span class="badge b-gray">' + nc.area + '</span></td>' +
+      '<td style="max-width:200px;font-size:11px">' + nc.descripcion + '</td>' +
+      '<td>' + (gravBadge[nc.gravedad]||nc.gravedad) + '</td>' +
+      '<td>' + (nc.responsable||'—') + '</td>' +
+      '<td>' + (estBadge[nc.estado]||nc.estado) + '</td>' +
+      '<td><div style="display:flex;gap:4px">' +
+        '<button class="btn btn-edit btn-sm" onclick=\'abrirModalNC(' + JSON.stringify(nc).replace(/'/g,"&#39;") + ')\'><i class="ti ti-edit"></i></button>' +
+        '<button class="btn btn-danger btn-sm" onclick="borrar(\'no_conformidades\',\'' + nc.id + '\',cargarNoConformidades)"><i class="ti ti-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
 }
 
 // EDITAR ELABORACIONES
@@ -1714,18 +1753,19 @@ async function guardarEditarElab(){
 function abrirEtiqueta(e){
   const hoy=new Date().toLocaleDateString('es-ES');
   const mad=e.maduracion?(e.maduracion>=60?Math.round(e.maduracion/30)+' meses':e.maduracion+' días'):'30 días';
-  const html=`<div style="background:#fff;border:1px dashed #ccc;border-radius:6px;overflow:hidden;font-family:sans-serif">
-    <div style="background:#141414;padding:8px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700;color:#fff;letter-spacing:.1em">SABOR <span style="color:#C9A84C">NAZARÍ</span></span><span style="font-size:8px;color:#C9A84C;border:1px solid rgba(201,168,76,.4);padding:1px 6px;border-radius:3px">HALAL</span></div>
-    <div style="padding:8px 12px 5px;border-bottom:1px solid #eee"><div style="font-size:13px;font-weight:700">${e.producto||''}</div><div style="font-size:9px;color:#888">Ref. ${e.codigo||''} · ${colores[e.color]||''} ${e.color||''}</div></div>
-    <div style="background:rgba(201,168,76,.08);padding:7px 12px;border-bottom:1px solid rgba(201,168,76,.2)"><div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div><div style="font-size:14px;font-weight:700;color:#8a6a1e;font-family:monospace">${e.lote}</div></div>
-    <div style="padding:6px 12px;border-bottom:1px solid #eee;font-size:9px">
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">${e.fecha||hoy}</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">${e.peso_final||0} kg</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">${e.unidades||0} uds</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:#888">Maduración</span><span style="font-weight:600">${mad}</span></div>
-    </div>
-    <div style="padding:5px 12px;font-size:8px;color:#888">Sabor Nazarí · Huéscar, Granada · APPCC B.6-AN01</div>
-  </div>`;
+  const html=
+    '<div style="background:#fff;border:1px dashed #ccc;border-radius:6px;overflow:hidden;font-family:sans-serif">' +
+    '<div style="background:#141414;padding:8px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700;color:#fff;letter-spacing:.1em">SABOR <span style="color:#C9A84C">NAZARÍ</span></span><span style="font-size:8px;color:#C9A84C;border:1px solid rgba(201,168,76,.4);padding:1px 6px;border-radius:3px">HALAL</span></div>' +
+    '<div style="padding:8px 12px 5px;border-bottom:1px solid #eee"><div style="font-size:13px;font-weight:700">' + (e.producto||'') + '</div><div style="font-size:9px;color:#888">Ref. ' + (e.codigo||'') + ' · ' + (colores[e.color]||'') + ' ' + (e.color||'') + '</div></div>' +
+    '<div style="background:rgba(201,168,76,.08);padding:7px 12px;border-bottom:1px solid rgba(201,168,76,.2)"><div style="font-size:8px;color:#8a6a1e;font-weight:700">LOTE</div><div style="font-size:14px;font-weight:700;color:#8a6a1e;font-family:monospace">' + e.lote + '</div></div>' +
+    '<div style="padding:6px 12px;border-bottom:1px solid #eee;font-size:9px">' +
+      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Elaboración</span><span style="font-weight:600">' + (e.fecha||hoy) + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Peso</span><span style="font-weight:600">' + (e.peso_final||0) + ' kg</span></div>' +
+      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Unidades</span><span style="font-weight:600">' + (e.unidades||0) + ' uds</span></div>' +
+      '<div style="display:flex;justify-content:space-between"><span style="color:#888">Maduración</span><span style="font-weight:600">' + mad + '</span></div>' +
+    '</div>' +
+    '<div style="padding:5px 12px;font-size:8px;color:#888">Sabor Nazarí · Huéscar, Granada · APPCC B.6-AN01</div>' +
+    '</div>';
   ['modal-et-1','modal-et-2','modal-et-3','modal-et-4'].forEach(id=>document.getElementById(id).innerHTML=html);
   abrirModal('modal-etiqueta');
 }
