@@ -1218,7 +1218,7 @@ function toggleFolder(id){
 function abrirModalCliente(data=null){
   document.getElementById('cli-modal-titulo').textContent=data?'Editar cliente':'Nuevo cliente';
   document.getElementById('cli-id').value=data?.id||'';
-  ['nombre','cif','dir','tel','email','pais','notas'].forEach(f=>{const el=document.getElementById('cli-'+f);if(!el)return;const key=f==='dir'?'direccion':f;el.value=data?(data[key]||data[f]||''):'';});
+  ['nombre','cif','dir','tel','email','pais','notas'].forEach(function(f){var el=document.getElementById('cli-'+f);if(!el)return;var key=f==='dir'?'direccion':f;el.value=data?String(data[key]||data[f]||''):'';});
   abrirModal('modal-cliente');
 }
 
@@ -1311,7 +1311,7 @@ async function cargarProveedores(){
 function abrirModalTrabajador(data=null){
   document.getElementById('trab-modal-titulo').textContent=data?'Editar trabajador':'Nuevo trabajador';
   document.getElementById('trab-id').value=data?.id||'';
-  ['nombre','dni','cargo','tel','email','ss','obs'].forEach(f=>{const el=document.getElementById('trab-'+f);if(!el)return;if(f==='tel')el.value=data?(data.telefono||''):'';else if(f==='ss')el.value=data?(data.num_ss||''):'';else if(f==='obs')el.value=data?(data.observaciones||''):'';else el.value=data?(data[f]||''):'';});
+  ['nombre','dni','cargo','tel','email','ss','obs'].forEach(function(f){var el=document.getElementById('trab-'+f);if(!el)return;if(f==='tel')el.value=data?(data.telefono||''):'';else if(f==='ss')el.value=data?(data.num_ss||''):'';else if(f==='obs')el.value=data?(data.observaciones||''):'';else el.value=data?(data[f]||''):'';});
   if(data?.fecha_alta){document.getElementById('trab-alta').value=data.fecha_alta;}
   if(data?.estado){document.getElementById('trab-estado').value=data.estado;}
   abrirModal('modal-trabajador');
