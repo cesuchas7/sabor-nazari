@@ -301,6 +301,38 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-editar-elab">
+  <div class="modal">
+    <div class="modal-title">Editar elaboración <button class="modal-close" onclick="cerrarModal('modal-editar-elab')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="edit-elab-id"/>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Lote</label><input type="text" id="edit-elab-lote" readonly style="background:var(--bg3);color:var(--text3)"/></div>
+      <div><label>Estado</label><select id="edit-elab-estado"><option value="secadero">Secadero</option><option value="expedicion">Expedición</option><option value="vendido">Vendido</option><option value="incidencia">Incidencia</option></select></div>
+    </div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Unidades</label><input type="number" id="edit-elab-uds"/></div>
+      <div><label>Peso final (kg)</label><input type="number" step="0.1" id="edit-elab-peso"/></div>
+      <div><label>Días maduración</label><input type="number" id="edit-elab-mad"/></div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div><label>Color identificación</label>
+        <select id="edit-elab-color">
+          <option value="">Sin color</option>
+          <option value="blanco">Blanco</option><option value="rojo">Rojo</option><option value="azul">Azul</option>
+          <option value="verde">Verde</option><option value="amarillo">Amarillo</option><option value="morado">Morado</option>
+          <option value="verdiblanco">Verdiblanco</option><option value="rojiblanco">Rojiblanco</option>
+          <option value="rojiamarillo">Rojiamarillo</option><option value="malla">Malla plástico</option>
+        </select>
+      </div>
+      <div><label>Proceso</label><select id="edit-elab-proceso"><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-editar-elab')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarEditarElab()"><i class="ti ti-check"></i> Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
 <div class="sidebar">
   <div class="sb-brand">
     <div class="sb-logo">SABOR <span>NAZARÍ</span></div>
@@ -405,19 +437,19 @@ tbody tr:hover td{background:var(--bg3)}
             <select id="el-prod" onchange="genLote()">
               <option value="">Seleccionar producto...</option>
               <option value="302|Chorizo picante|embutido|E|rojo">302 — Chorizo picante</option>
-              <option value="301|Chorizo dulce|embutido|E|verde">301 — Chorizo dulce</option>
+              <option value="301|Chorizo dulce|embutido|E|azul">301 — Chorizo dulce</option>
               <option value="201|Salchichón natural|embutido|E|blanco">201 — Salchichón natural</option>
-              <option value="202|Salchichón pistacho|embutido|E|verde">202 — Salchichón pistacho</option>
-              <option value="203|Salchichón almendra|embutido|E|amarillo">203 — Salchichón almendra</option>
-              <option value="204|Salchichón ahumado|embutido|N|morado">204 — Salchichón ahumado</option>
+              <option value="202|Salchichón pistacho|embutido|E|verdiblanco">202 — Salchichón pistacho</option>
+              <option value="203|Salchichón almendra|embutido|E|rojiblanco">203 — Salchichón almendra</option>
+              <option value="204|Salchichón ahumado|embutido|N|verde">204 — Salchichón ahumado</option>
               <option value="205|Salchichón higos|embutido|E|amarillo">205 — Salchichón higos</option>
-              <option value="206|Salchichón nueces|embutido|E|rojiblanco">206 — Salchichón nueces</option>
-              <option value="401|Sobrasada picante|embutido|E|rojo">401 — Sobrasada picante</option>
+              <option value="206|Salchichón nueces|embutido|E|morado">206 — Salchichón nueces</option>
+              <option value="401|Sobrasada picante|embutido|E|rojiamarillo">401 — Sobrasada picante</option>
               <option value="501|Fuet|embutido|E|blanco">501 — Fuet</option>
-              <option value="101|Cecina de ternera|cecina|N|azul">101 — Cecina de ternera</option>
-              <option value="102|Pierna de cordero|cecina|N|azul">102 — Pierna de cordero</option>
+              <option value="101|Cecina de ternera|cecina|N|malla">101 — Cecina de ternera</option>
+              <option value="102|Pierna de cordero|cecina|N|">102 — Pierna de cordero</option>
               <option value="103|Pierna de oveja|cecina|N|verde">103 — Pierna de oveja</option>
-              <option value="104|Pierna de pavo curada|cecina|E|morado">104 — Pierna de pavo curada</option>
+              <option value="104|Pierna de pavo curada|cecina|E|malla">104 — Pierna de pavo curada</option>
             </select>
           </div>
           <div><label>Proveedor</label>
@@ -792,7 +824,6 @@ function addIng(tipo){
   c.appendChild(d);
 }
 
-['carnes','especias','auxiliar'].forEach(function(t){addIng(t);});
 
 async function guardarElab(){
   var lote=document.getElementById('el-lote').textContent;
@@ -824,11 +855,34 @@ async function cargarElaboraciones(){
     html+='<td><span class="badge b-purple">'+(e.estado||'secadero')+'</span></td>';
     html+='<td><div style="display:flex;gap:4px">';
     html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta('+JSON.stringify(e)+')"><i class="ti ti-tag"></i></button>';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirEditarElab('+JSON.stringify(e)+')"><i class="ti ti-edit"></i></button>';
     html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'elaboraciones\',\''+e.id+'\',cargarElaboraciones)"><i class="ti ti-trash"></i></button>';
     html+='</div></td>';
     html+='</tr>';
   });
   t.innerHTML=html;
+}
+
+function abrirEditarElab(e){
+  document.getElementById('edit-elab-id').value=e.id;
+  document.getElementById('edit-elab-lote').value=e.lote;
+  document.getElementById('edit-elab-estado').value=e.estado||'secadero';
+  document.getElementById('edit-elab-uds').value=e.unidades||'';
+  document.getElementById('edit-elab-peso').value=e.peso_final||'';
+  document.getElementById('edit-elab-mad').value=e.maduracion||'';
+  var cs=document.getElementById('edit-elab-color');
+  for(var i=0;i<cs.options.length;i++){if(cs.options[i].value===(e.color||'')){cs.selectedIndex=i;break;}}
+  var ps=document.getElementById('edit-elab-proceso');
+  for(var i=0;i<ps.options.length;i++){if(ps.options[i].textContent===e.proceso){ps.selectedIndex=i;break;}}
+  abrirModal('modal-editar-elab');
+}
+
+async function guardarEditarElab(){
+  var id=document.getElementById('edit-elab-id').value;
+  var datos={estado:document.getElementById('edit-elab-estado').value,unidades:parseInt(document.getElementById('edit-elab-uds').value)||0,peso_final:parseFloat(document.getElementById('edit-elab-peso').value)||0,maduracion:parseInt(document.getElementById('edit-elab-mad').value)||30,color:document.getElementById('edit-elab-color').value,proceso:document.getElementById('edit-elab-proceso').value};
+  var res=await db.from('elaboraciones').update(datos).eq('id',id);
+  if(res.error){toast('Error: '+res.error.message,false);return;}
+  toast('Elaboración actualizada');cerrarModal('modal-editar-elab');cargarElaboraciones();
 }
 
 function verEtiqueta(e){
@@ -1096,13 +1150,15 @@ async function subirAppccCarpeta(input,categoria){
 }
 
 async function subirRegistroAppcc(input,nombreReg){
+  var mesRef=prompt('¿A qué mes corresponde este registro? (formato YYYY-MM)',new Date().toISOString().slice(0,7));
+  if(!mesRef)mesRef=new Date().toISOString().slice(0,7);
   for(var i=0;i<input.files.length;i++){
     var file=input.files[i];
     var path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
     if(!up.error){
       var urlData=db.storage.from('documentos').getPublicUrl(path);
-      await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.data.publicUrl,descripcion:file.name});
+      await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.data.publicUrl,descripcion:'['+mesRef+'] '+file.name});
     }
   }
   toast('Registro subido');input.value='';cargarDocsAppcc();
@@ -1139,10 +1195,15 @@ async function cargarDocsAppcc(){
     html+='<button class="btn btn-gold btn-sm" onclick="document.getElementById(\'upload-reg-'+i+'\').click()"><i class="ti ti-upload"></i></button>';
     html+='<input type="file" id="upload-reg-'+i+'" style="display:none" multiple onchange="subirRegistroAppcc(this,\''+r+'\')">';
     html+='</div>';
-    subidos.forEach(function(d){
+    var subidosOrden=subidos.slice().sort(function(a,b){var ma=(a.descripcion||'').match(/\[(\d{4}-\d{2})\]/);var mb=(b.descripcion||'').match(/\[(\d{4}-\d{2})\]/);return(mb?mb[1]:'')>(ma?ma[1]:'')?1:-1;});
+    subidosOrden.forEach(function(d){
+      var mRef=(d.descripcion||'').match(/\[(\d{4}-\d{2})\]/);
+      var mes=mRef?mRef[1]:'';
+      var fname=(d.descripcion||d.nombre).replace(/^\[\d{4}-\d{2}\]\s*/,'');
       html+='<div class="doc-row" style="margin-left:20px;padding:6px 10px">';
       html+='<i class="ti ti-file-text" style="color:var(--dorado);font-size:14px"></i>';
-      html+='<div style="flex:1;font-size:11px">'+d.descripcion+' · '+new Date(d.created_at).toLocaleDateString('es-ES')+'</div>';
+      if(mes)html+='<span class="badge b-gray" style="font-size:9px;margin-right:4px">'+mes+'</span>';
+      html+='<div style="flex:1;font-size:11px">'+fname+'</div>';
       if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-sec btn-sm"><i class="ti ti-external-link"></i></a>';
       html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){renderAppcc();cargarDocsAppcc();})"><i class="ti ti-trash"></i></button>';
       html+='</div>';
@@ -1552,19 +1613,19 @@ async function cargarNC(){
 
 // PRODUCTOS
 var catalogoProductos=[
-  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',desc:'Cecina elaborada con redondo de ternera.'},
-  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'azul',desc:'Pierna de cordero curada.'},
+  {cod:'101',nombre:'Cecina de ternera',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',desc:'Cecina elaborada con redondo de ternera.'},
+  {cod:'102',nombre:'Pierna de cordero',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'',desc:'Pierna de cordero curada. Color según elaboración.'},
   {cod:'103',nombre:'Pierna de oveja',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'verde',desc:'Pierna de oveja curada.'},
-  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'morado',desc:'Pierna de pavo curada. Apta exportación UAE.'},
+  {cod:'104',nombre:'Pierna de pavo curada',familia:'Cecinas',proceso:'Salado + adobado',maduracion:'3-4 meses',color:'malla',desc:'Pierna de pavo curada. Apta exportación UAE.'},
   {cod:'201',nombre:'Salchichón natural',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'blanco',desc:'Salchichón halal natural.'},
-  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verde',desc:'Con pistacho.'},
-  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',desc:'Con almendra.'},
-  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'morado',desc:'Con humo en polvo.'},
+  {cod:'202',nombre:'Salchichón pistacho',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'verdiblanco',desc:'Con pistacho.'},
+  {cod:'203',nombre:'Salchichón almendra',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',desc:'Con almendra.'},
+  {cod:'204',nombre:'Salchichón ahumado',familia:'Salchichones',proceso:'Embutido + ahumado',maduracion:'30 días',color:'verde',desc:'Con humo en polvo.'},
   {cod:'205',nombre:'Salchichón higos',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'amarillo',desc:'Con higos.'},
-  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'rojiblanco',desc:'Con nueces.'},
-  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'verde',desc:'Chorizo halal dulce.'},
+  {cod:'206',nombre:'Salchichón nueces',familia:'Salchichones',proceso:'Embutido',maduracion:'30 días',color:'morado',desc:'Con nueces.'},
+  {cod:'301',nombre:'Chorizo dulce',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'azul',desc:'Chorizo halal dulce.'},
   {cod:'302',nombre:'Chorizo picante',familia:'Chorizos',proceso:'Embutido',maduracion:'30 días',color:'rojo',desc:'Chorizo halal picante.'},
-  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojo',desc:'Sobrasada halal picante.'},
+  {cod:'401',nombre:'Sobrasada picante',familia:'Sobrasadas',proceso:'Embutido',maduracion:'30 días',color:'rojiamarillo',desc:'Sobrasada halal picante.'},
   {cod:'501',nombre:'Fuet',familia:'Fuet',proceso:'Embutido',maduracion:'30 días',color:'blanco',desc:'Fuet halal.'}
 ];
 
@@ -1585,6 +1646,14 @@ function renderProductos(){
 
 // DASHBOARD
 async function cargarDashboard(){
+  var resExp=await db.from('expediciones').select('lote,cliente,estado').neq('estado','finalizada').catch(function(){return{data:null};});
+  var alertas=document.getElementById('dash-alertas');
+  if(resExp&&resExp.data&&resExp.data.length){
+    var msg=resExp.data.map(function(x){return(x.lote||x.cliente);}).join(' · ');
+    alertas.innerHTML='<div style="display:flex;align-items:center;gap:10px;background:var(--amber-bg);border:1px solid rgba(201,168,76,0.4);border-radius:var(--radius);padding:11px 16px;font-size:12px;color:var(--amber-text);margin-bottom:14px"><i class="ti ti-alert-triangle"></i> '+resExp.data.length+' expedición(es) activa(s): '+msg+'</div>';
+  } else {
+    alertas.innerHTML='';
+  }
   var res1=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(5);
   var res2=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(3);
   if(res1.data){
