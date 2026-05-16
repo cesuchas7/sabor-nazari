@@ -277,23 +277,112 @@ tbody tr:hover td{background:var(--bg3)}
 </div>
 
 <div class="modal-overlay" id="modal-nc">
-  <div class="modal">
+  <div class="modal" style="max-width:780px">
     <div class="modal-title"><span id="nc-modal-titulo">No conformidad</span><button class="modal-close" onclick="cerrarModal('modal-nc')"><i class="ti ti-x"></i></button></div>
     <input type="hidden" id="nc-id"/>
+    <div id="nc-codigo-row" style="display:none;margin-bottom:12px;background:var(--dorado-bg);border:1px solid var(--dorado-border);border-radius:var(--radius);padding:8px 14px">
+      <span style="font-size:10px;color:var(--dorado3);font-weight:700">CÓDIGO</span>
+      <span id="nc-codigo-display" style="font-family:monospace;font-size:16px;font-weight:700;color:var(--dorado3);margin-left:10px"></span>
+    </div>
+
+    <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">1 · Detección</div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Fecha detección</label><input type="date" id="nc-fecha-det"/></div>
+      <div><label>Responsable detección</label><input type="text" id="nc-resp-det" placeholder="Nombre y apellidos"/></div>
+      <div><label>Fecha incidencia</label><input type="date" id="nc-fecha-inc"/></div>
+    </div>
     <div class="grid2" style="margin-bottom:10px">
-      <div><label>Fecha detección</label><input type="date" id="nc-fecha"/></div>
-      <div><label>Área</label><select id="nc-area"><option value="">Seleccionar...</option><option>Producción</option><option>Almacén</option><option>Expedición</option><option>Limpieza</option><option>Otro</option></select></div>
+      <div><label>Tipo</label>
+        <select id="nc-tipo">
+          <option value="">Seleccionar...</option>
+          <option value="P">P — Proveedor</option>
+          <option value="R">R — Reclamación</option>
+          <option value="I">I — Interna</option>
+          <option value="E">E — Externa</option>
+        </select>
+      </div>
+      <div><label>Ámbito</label>
+        <select id="nc-ambito">
+          <option value="">Seleccionar...</option>
+          <option value="RPHT">RPHT</option>
+          <option value="PC">PC</option>
+          <option value="Producto">Producto</option>
+          <option value="Servicio">Servicio</option>
+          <option value="Auditoría">Auditoría</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
     </div>
-    <div style="margin-bottom:10px"><label>Descripción</label><textarea id="nc-desc" placeholder="Describe la no conformidad..."></textarea></div>
+
+    <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">2 · No conformidad / Desviación</div>
+    <div style="margin-bottom:10px"><label>Descripción de la no conformidad</label><textarea id="nc-desc" placeholder="Describe la no conformidad o desviación detectada..." style="height:90px"></textarea></div>
+    <div style="margin-bottom:10px"><label>Causa raíz</label><textarea id="nc-causa-raiz" placeholder="Describe la causa raíz..." style="height:80px"></textarea></div>
+    <div style="margin-bottom:10px"><label>Tipología de la causa raíz</label>
+      <select id="nc-tipologia">
+        <option value="">Seleccionar...</option>
+        <option value="Organizativa">Organizativa</option>
+        <option value="Humana">Humana</option>
+        <option value="Técnica">Técnica</option>
+        <option value="De proceso">De proceso</option>
+        <option value="De sistema">De sistema</option>
+        <option value="Proveedor">Proveedor</option>
+        <option value="Externa">Externa</option>
+        <option value="Otra">Otra</option>
+      </select>
+    </div>
+
+    <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">3 · Tratamiento inmediato</div>
+    <div style="margin-bottom:10px"><label>Acciones inmediatas</label><textarea id="nc-accion-inm" placeholder="Describe las acciones inmediatas tomadas..." style="height:80px"></textarea></div>
     <div class="grid2" style="margin-bottom:10px">
-      <div><label>Gravedad</label><select id="nc-gravedad"><option value="">Seleccionar...</option><option value="leve">Leve</option><option value="grave">Grave</option><option value="critica">Crítica</option></select></div>
-      <div><label>Responsable</label><input type="text" id="nc-resp" placeholder="Nombre"/></div>
+      <div><label>Plazo</label><input type="text" id="nc-plazo-inm" placeholder="Ej: Inmediato, 1 semana..."/></div>
+      <div><label>Responsable</label><input type="text" id="nc-resp-inm" placeholder="Nombre del responsable"/></div>
     </div>
-    <div style="margin-bottom:10px"><label>Acción correctiva</label><textarea id="nc-accion" placeholder="Acción propuesta..."></textarea></div>
-    <div class="grid2" style="margin-bottom:14px">
-      <div><label>Fecha límite cierre</label><input type="date" id="nc-limite"/></div>
-      <div><label>Estado</label><select id="nc-estado"><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
+    <div style="margin-bottom:10px"><label>Seguimiento</label><textarea id="nc-seguimiento" placeholder="Describe el seguimiento realizado..."></textarea></div>
+
+    <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">4 · Cierre</div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Fecha cierre</label><input type="date" id="nc-fecha-cierre"/></div>
+      <div><label>¿Genera acciones preventivas?</label>
+        <select id="nc-genera-prev" onchange="ncTogglePreventivas()">
+          <option value="no">No</option>
+          <option value="si">Sí</option>
+        </select>
+      </div>
+      <div><label>Estado</label>
+        <select id="nc-estado">
+          <option value="abierta">Abierta</option>
+          <option value="en_proceso">En proceso</option>
+          <option value="cerrada">Cerrada</option>
+        </select>
+      </div>
     </div>
+
+    <div id="nc-section-preventivas" style="display:none">
+      <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">5 · Acciones preventivas</div>
+      <div style="margin-bottom:10px"><label>Acciones preventivas</label><textarea id="nc-acciones-prev" placeholder="Describe las acciones preventivas..." style="height:80px"></textarea></div>
+      <div class="grid2" style="margin-bottom:10px">
+        <div><label>Responsable de las acciones</label><input type="text" id="nc-resp-prev" placeholder="Nombre del responsable"/></div>
+        <div><label>Plazo implantación</label><input type="text" id="nc-plazo-impl" placeholder="Ej: 2 meses"/></div>
+      </div>
+      <div style="margin-bottom:10px"><label>Método y criterio de seguimiento</label><textarea id="nc-metodo-seg" placeholder="Describe el método de seguimiento..."></textarea></div>
+      <div class="grid3" style="margin-bottom:14px">
+        <div><label>Valoración eficacia</label>
+          <select id="nc-valoracion">
+            <option value="">Pendiente evaluación</option>
+            <option value="Eficaz">Eficaz</option>
+            <option value="No eficaz">No eficaz</option>
+          </select>
+        </div>
+        <div><label>Cierre</label><input type="text" id="nc-cierre" placeholder="Ej: SI. 19-02-2026"/></div>
+        <div><label>¿Genera nuevas preventivas?</label>
+          <select id="nc-genera-nuevas">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-sec" onclick="cerrarModal('modal-nc')">Cancelar</button>
       <button class="btn btn-gold" onclick="guardarNC()"><i class="ti ti-check"></i> Guardar</button>
@@ -585,10 +674,24 @@ tbody tr:hover td{background:var(--bg3)}
       <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
         <button class="btn btn-gold" onclick="abrirModalNC()"><i class="ti ti-plus"></i> Nueva no conformidad</button>
       </div>
+      <div class="card" style="margin-bottom:10px">
+        <div class="card-title"><i class="ti ti-filter"></i> Filtros</div>
+        <div class="grid4" style="gap:8px">
+          <div><label>Tipo</label><select id="nc-f-tipo" onchange="cargarNC()"><option value="">Todos</option><option value="P">P — Proveedor</option><option value="R">R — Reclamación</option><option value="I">I — Interna</option><option value="E">E — Externa</option></select></div>
+          <div><label>Tipología causa</label><select id="nc-f-tipologia" onchange="cargarNC()"><option value="">Todas</option><option>Organizativa</option><option>Humana</option><option>Técnica</option><option>De proceso</option><option>De sistema</option><option>Proveedor</option><option>Externa</option><option>Otra</option></select></div>
+          <div><label>Estado</label><select id="nc-f-estado" onchange="cargarNC()"><option value="">Todos</option><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
+          <div><label>Responsable</label><input type="text" id="nc-f-resp" placeholder="Nombre..." oninput="cargarNC()"/></div>
+        </div>
+      </div>
       <div class="card">
         <div class="card-title"><i class="ti ti-alert-triangle"></i> Registro de no conformidades</div>
-        <table><thead><tr><th>Nº</th><th>Fecha</th><th>Área</th><th>Descripción</th><th>Gravedad</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-nc"><tr><td colspan="7" class="empty-state">Cargando...</td></tr></tbody></table>
+        <div style="overflow-x:auto">
+        <table style="min-width:900px"><thead><tr>
+          <th>Nº</th><th>Fecha det.</th><th>Resp. detección</th><th>Tipo</th><th>Ámbito</th>
+          <th>No conformidad</th><th>Tipología</th><th>Estado</th><th>Acciones</th>
+        </tr></thead>
+        <tbody id="tabla-nc"><tr><td colspan="9" class="empty-state">Cargando...</td></tr></tbody></table>
+        </div>
       </div>
     </div>
 
@@ -1565,43 +1668,127 @@ function cambiarMes(dir){
 }
 
 // NO CONFORMIDADES
+function ncTogglePreventivas(){
+  var val=document.getElementById('nc-genera-prev').value;
+  document.getElementById('nc-section-preventivas').style.display=(val==='si')?'block':'none';
+}
+
+function ncGenerarCodigo(fechaDet,numero){
+  if(!fechaDet)return '';
+  var d=new Date(fechaDet);
+  var dd=String(d.getDate()).padStart(2,'0');
+  var mm=String(d.getMonth()+1).padStart(2,'0');
+  var yyyy=d.getFullYear();
+  return 'NC'+dd+mm+yyyy+String(numero||1);
+}
+
 function abrirModalNC(data){
   document.getElementById('nc-modal-titulo').textContent=data?'Editar no conformidad':'Nueva no conformidad';
   document.getElementById('nc-id').value=data?data.id:'';
-  document.getElementById('nc-fecha').value=data?data.fecha:today.toISOString().split('T')[0];
-  document.getElementById('nc-area').value=data?data.area:'';
+  var codigoRow=document.getElementById('nc-codigo-row');
+  if(data&&data.nc_codigo){codigoRow.style.display='block';document.getElementById('nc-codigo-display').textContent=data.nc_codigo;}
+  else{codigoRow.style.display='none';}
+  var hoy=today.toISOString().split('T')[0];
+  document.getElementById('nc-fecha-det').value=data?data.fecha_deteccion||hoy:hoy;
+  document.getElementById('nc-resp-det').value=data?data.responsable_deteccion||'':'';
+  document.getElementById('nc-fecha-inc').value=data?data.fecha_incidencia||'':'';
+  document.getElementById('nc-tipo').value=data?data.tipo||'':'';
+  document.getElementById('nc-ambito').value=data?data.ambito||'':'';
   document.getElementById('nc-desc').value=data?data.descripcion||'':'';
-  document.getElementById('nc-gravedad').value=data?data.gravedad:'';
-  document.getElementById('nc-resp').value=data?data.responsable||'':'';
-  document.getElementById('nc-accion').value=data?data.accion_correctiva||'':'';
-  document.getElementById('nc-limite').value=data?data.fecha_limite||'':'';
-  document.getElementById('nc-estado').value=data?data.estado:'abierta';
+  document.getElementById('nc-causa-raiz').value=data?data.causa_raiz||'':'';
+  document.getElementById('nc-tipologia').value=data?data.tipologia_causa||'':'';
+  document.getElementById('nc-accion-inm').value=data?data.accion_inmediata||'':'';
+  document.getElementById('nc-plazo-inm').value=data?data.plazo_inmediato||'':'';
+  document.getElementById('nc-resp-inm').value=data?data.responsable_inmediato||'':'';
+  document.getElementById('nc-seguimiento').value=data?data.seguimiento||'':'';
+  document.getElementById('nc-fecha-cierre').value=data?data.fecha_cierre||'':'';
+  var gp=data?data.genera_preventivas||'no':'no';
+  document.getElementById('nc-genera-prev').value=gp;
+  document.getElementById('nc-estado').value=data?data.estado||'abierta':'abierta';
+  document.getElementById('nc-acciones-prev').value=data?data.acciones_preventivas||'':'';
+  document.getElementById('nc-resp-prev').value=data?data.responsable_preventivas||'':'';
+  document.getElementById('nc-plazo-impl').value=data?data.plazo_implantacion||'':'';
+  document.getElementById('nc-metodo-seg').value=data?data.metodo_seguimiento||'':'';
+  document.getElementById('nc-valoracion').value=data?data.valoracion_eficacia||'':'';
+  document.getElementById('nc-cierre').value=data?data.cierre||'':'';
+  document.getElementById('nc-genera-nuevas').value=data?data.genera_nuevas_preventivas||'no':'no';
+  ncTogglePreventivas();
   abrirModal('modal-nc');
 }
 
 async function guardarNC(){
-  var desc=document.getElementById('nc-desc').value;
-  if(!desc){toast('Introduce la descripción',false);return;}
+  var desc=document.getElementById('nc-desc').value.trim();
+  if(!desc){toast('Introduce la descripción de la no conformidad',false);return;}
+  var fechaDet=document.getElementById('nc-fecha-det').value;
+  if(!fechaDet){toast('Introduce la fecha de detección',false);return;}
   var id=document.getElementById('nc-id').value;
-  var datos={fecha:document.getElementById('nc-fecha').value,area:document.getElementById('nc-area').value,descripcion:desc,gravedad:document.getElementById('nc-gravedad').value,responsable:document.getElementById('nc-resp').value,accion_correctiva:document.getElementById('nc-accion').value,fecha_limite:document.getElementById('nc-limite').value||null,estado:document.getElementById('nc-estado').value};
-  if(id){await db.from('no_conformidades').update(datos).eq('id',id);}
-  else{await db.from('no_conformidades').insert(datos);}
+  var datos={
+    fecha_deteccion:fechaDet,
+    responsable_deteccion:document.getElementById('nc-resp-det').value,
+    fecha_incidencia:document.getElementById('nc-fecha-inc').value||null,
+    tipo:document.getElementById('nc-tipo').value,
+    ambito:document.getElementById('nc-ambito').value,
+    descripcion:desc,
+    causa_raiz:document.getElementById('nc-causa-raiz').value,
+    tipologia_causa:document.getElementById('nc-tipologia').value,
+    accion_inmediata:document.getElementById('nc-accion-inm').value,
+    plazo_inmediato:document.getElementById('nc-plazo-inm').value,
+    responsable_inmediato:document.getElementById('nc-resp-inm').value,
+    seguimiento:document.getElementById('nc-seguimiento').value,
+    fecha_cierre:document.getElementById('nc-fecha-cierre').value||null,
+    genera_preventivas:document.getElementById('nc-genera-prev').value,
+    acciones_preventivas:document.getElementById('nc-acciones-prev').value,
+    responsable_preventivas:document.getElementById('nc-resp-prev').value,
+    plazo_implantacion:document.getElementById('nc-plazo-impl').value,
+    metodo_seguimiento:document.getElementById('nc-metodo-seg').value,
+    valoracion_eficacia:document.getElementById('nc-valoracion').value,
+    cierre:document.getElementById('nc-cierre').value,
+    genera_nuevas_preventivas:document.getElementById('nc-genera-nuevas').value,
+    estado:document.getElementById('nc-estado').value
+  };
+  var res;
+  if(id){
+    res=await db.from('no_conformidades').update(datos).eq('id',id);
+  } else {
+    var resIns=await db.from('no_conformidades').insert(datos).select().single();
+    if(!resIns.error&&resIns.data){
+      var codigo=ncGenerarCodigo(fechaDet,resIns.data.numero);
+      await db.from('no_conformidades').update({nc_codigo:codigo}).eq('id',resIns.data.id);
+    }
+    res=resIns;
+  }
+  if(res.error){toast('Error: '+res.error.message,false);return;}
   toast('No conformidad guardada');cerrarModal('modal-nc');cargarNC();
 }
 
 async function cargarNC(){
-  var res=await db.from('no_conformidades').select('*').order('created_at',{ascending:false});
+  var fTipo=document.getElementById('nc-f-tipo')&&document.getElementById('nc-f-tipo').value;
+  var fTipologia=document.getElementById('nc-f-tipologia')&&document.getElementById('nc-f-tipologia').value;
+  var fEstado=document.getElementById('nc-f-estado')&&document.getElementById('nc-f-estado').value;
+  var fResp=(document.getElementById('nc-f-resp')&&document.getElementById('nc-f-resp').value.toLowerCase())||'';
+  var q=db.from('no_conformidades').select('*').order('created_at',{ascending:false});
+  if(fTipo)q=q.eq('tipo',fTipo);
+  if(fTipologia)q=q.eq('tipologia_causa',fTipologia);
+  if(fEstado)q=q.eq('estado',fEstado);
+  var res=await q;
   var t=document.getElementById('tabla-nc');
-  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin no conformidades registradas</td></tr>';return;}
-  var gravBadge={leve:'b-pend',grave:'b-alert',critica:'b-alert'};
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="9" class="empty-state">Sin no conformidades registradas</td></tr>';return;}
+  var lista=res.data;
+  if(fResp)lista=lista.filter(function(nc){return(nc.responsable_deteccion||'').toLowerCase().indexOf(fResp)>-1||(nc.responsable_inmediato||'').toLowerCase().indexOf(fResp)>-1;});
   var estBadge={abierta:'b-alert',en_proceso:'b-pend',cerrada:'b-ok'};
+  var tipoBadge={P:'b-warn',R:'b-alert',I:'b-blue',E:'b-gray'};
   var html='';
-  res.data.forEach(function(nc,i){
-    html+='<tr><td style="font-weight:700;color:var(--dorado3)">'+(i+1).toString().padStart(3,'0')+'</td>';
-    html+='<td>'+nc.fecha+'</td>';
-    html+='<td>'+(nc.area||'—')+'</td>';
-    html+='<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">'+nc.descripcion+'</td>';
-    html+='<td><span class="badge '+(gravBadge[nc.gravedad]||'b-gray')+'">'+(nc.gravedad||'—')+'</span></td>';
+  lista.forEach(function(nc){
+    var codigo=nc.nc_codigo||('NC'+(nc.numero||''));
+    var descCorta=(nc.descripcion||'').substring(0,60)+(nc.descripcion&&nc.descripcion.length>60?'...':'');
+    html+='<tr>';
+    html+='<td style="font-family:monospace;font-size:10px;font-weight:700;color:var(--dorado3);white-space:nowrap">'+codigo+'</td>';
+    html+='<td style="white-space:nowrap">'+(nc.fecha_deteccion?new Date(nc.fecha_deteccion+'T12:00:00').toLocaleDateString('es-ES'):'—')+'</td>';
+    html+='<td>'+(nc.responsable_deteccion||'—')+'</td>';
+    html+='<td><span class="badge '+(tipoBadge[nc.tipo]||'b-gray')+'">'+(nc.tipo||'—')+'</span></td>';
+    html+='<td>'+(nc.ambito||'—')+'</td>';
+    html+='<td style="font-size:11px;max-width:220px">'+descCorta+'</td>';
+    html+='<td><span class="badge b-gray" style="font-size:9px">'+(nc.tipologia_causa||'—')+'</span></td>';
     html+='<td><span class="badge '+(estBadge[nc.estado]||'b-gray')+'">'+(nc.estado||'—')+'</span></td>';
     html+='<td><div style="display:flex;gap:4px">';
     html+='<button class="btn btn-edit btn-sm" onclick="abrirModalNC('+JSON.stringify(nc).replace(/"/g,'&#34;')+')"><i class="ti ti-edit"></i></button>';
