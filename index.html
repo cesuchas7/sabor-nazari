@@ -47,6 +47,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .page-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .content{padding:20px 24px;flex:1}
 .screen{display:none}.screen.active{display:block}
+#app-content{display:contents}
 .btn{border:none;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;text-decoration:none}
 .btn-gold{background:var(--dorado);color:var(--negro)}.btn-gold:hover{background:var(--dorado2)}
 .btn-dark{background:var(--negro);color:#fff}.btn-dark:hover{background:var(--negro3)}
@@ -139,6 +140,20 @@ tbody tr:hover td{background:var(--bg3)}
 </style>
 </head>
 <body>
+
+<div id="login-screen" style="display:none;position:fixed;inset:0;background:var(--bg);align-items:center;justify-content:center;z-index:9999;flex-direction:column">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:44px 40px;width:360px;box-shadow:0 8px 40px rgba(0,0,0,0.10)">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="font-size:22px;font-weight:700;color:var(--negro);letter-spacing:.12em;margin-bottom:6px">SABOR <span style="color:var(--dorado)">NAZARÍ</span></div>
+      <div style="font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase">Sistema de gestión interno</div>
+    </div>
+    <div style="margin-bottom:14px"><label>Email</label><input type="email" id="login-email" placeholder="usuario@empresa.com" onkeydown="if(event.key==='Enter')loginSubmit()"/></div>
+    <div style="margin-bottom:6px"><label>Contraseña</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginSubmit()"/></div>
+    <div id="login-error" style="display:none;color:var(--red-text);font-size:11px;margin:10px 0;padding:8px 12px;background:var(--red-bg);border-radius:var(--radius);text-align:center"></div>
+    <button class="btn btn-gold" id="login-btn" style="width:100%;justify-content:center;margin-top:18px" onclick="loginSubmit()"><i class="ti ti-login"></i> Entrar</button>
+  </div>
+  <div style="margin-top:18px;font-size:10px;color:var(--text3)">Sabor Nazarí S.L. · Huéscar, Granada</div>
+</div>
 
 <div class="toast" id="toast"><i class="ti ti-check" id="toast-icon"></i><span id="toast-msg"></span></div>
 
@@ -425,6 +440,7 @@ tbody tr:hover td{background:var(--bg3)}
   </div>
 </div>
 
+<div id="app-content" style="display:none">
 <div class="sidebar">
   <div class="sb-brand">
     <div class="sb-logo">SABOR <span>NAZARÍ</span></div>
@@ -468,6 +484,7 @@ tbody tr:hover td{background:var(--bg3)}
     <div style="display:flex;align-items:center;gap:10px">
       <span style="font-size:11px;color:var(--text2);background:var(--bg3);padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border2)" id="fecha-hoy"></span>
       <button class="btn btn-gold" onclick="nav('elaboraciones')"><i class="ti ti-plus"></i> Nueva elaboración</button>
+      <button class="btn btn-sec btn-sm" onclick="cerrarSesion()" title="Cerrar sesión" style="padding:7px 10px"><i class="ti ti-logout"></i></button>
     </div>
   </div>
   <div class="content">
@@ -838,6 +855,7 @@ tbody tr:hover td{background:var(--bg3)}
     </div>
 
   </div>
+</div>
 </div>
 
 <script>
@@ -1870,6 +1888,42 @@ async function cargarDashboard(){
   }
 }
 
+// AUTENTICACIÓN
+function mostrarLogin(){
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app-content').style.display='none';
+}
+
+function mostrarApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-content').style.display='contents';
+}
+
+async function loginSubmit(){
+  var btn=document.getElementById('login-btn');
+  var err=document.getElementById('login-error');
+  var email=document.getElementById('login-email').value.trim();
+  var pass=document.getElementById('login-pass').value;
+  err.style.display='none';
+  if(!email||!pass){err.textContent='Introduce email y contraseña.';err.style.display='block';return;}
+  btn.disabled=true;btn.innerHTML='<i class="ti ti-loader"></i> Entrando...';
+  var res=await db.auth.signInWithPassword({email:email,password:pass});
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-login"></i> Entrar';
+  if(res.error){
+    err.textContent=(res.error.message==='Invalid login credentials'?'Email o contraseña incorrectos.':res.error.message);
+    err.style.display='block';
+    return;
+  }
+  mostrarApp();
+  await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
+  nav(localStorage.getItem('activePage')||'dashboard');
+}
+
+async function cerrarSesion(){
+  await db.auth.signOut();
+  mostrarLogin();
+}
+
 async function borrar(tabla,id,callback){
   if(!confirm('¿Eliminar este registro?'))return;
   await db.from(tabla).delete().eq('id',id);
@@ -1878,9 +1932,18 @@ async function borrar(tabla,id,callback){
 }
 
 async function init(){
-  await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
-  var page=localStorage.getItem('activePage')||'dashboard';
-  nav(page);
+  var sessionRes=await db.auth.getSession();
+  if(sessionRes.data&&sessionRes.data.session){
+    mostrarApp();
+    await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
+    nav(localStorage.getItem('activePage')||'dashboard');
+  } else {
+    mostrarLogin();
+  }
+  db.auth.onAuthStateChange(function(event,session){
+    if(event==='SIGNED_IN'&&session){mostrarApp();}
+    else if(event==='SIGNED_OUT'){mostrarLogin();}
+  });
 }
 
 init();
