@@ -321,13 +321,15 @@ tbody tr:hover td{background:var(--bg3)}
       <select id="nc-tipologia">
         <option value="">Seleccionar...</option>
         <option value="Organizativa">Organizativa</option>
-        <option value="Humana">Humana</option>
-        <option value="Técnica">Técnica</option>
-        <option value="De proceso">De proceso</option>
-        <option value="De sistema">De sistema</option>
+        <option value="Mantenimiento">Mantenimiento</option>
+        <option value="Formación">Formación</option>
+        <option value="Trazabilidad">Trazabilidad</option>
+        <option value="Legal">Legal</option>
+        <option value="Documental">Documental</option>
+        <option value="Infraestructura">Infraestructura</option>
+        <option value="Higiene">Higiene</option>
         <option value="Proveedor">Proveedor</option>
-        <option value="Externa">Externa</option>
-        <option value="Otra">Otra</option>
+        <option value="Equipamiento">Equipamiento</option>
       </select>
     </div>
 
@@ -370,6 +372,7 @@ tbody tr:hover td{background:var(--bg3)}
           <select id="nc-valoracion">
             <option value="">Pendiente evaluación</option>
             <option value="Eficaz">Eficaz</option>
+            <option value="Parcialmente eficaz">Parcialmente eficaz</option>
             <option value="No eficaz">No eficaz</option>
           </select>
         </div>
@@ -678,7 +681,7 @@ tbody tr:hover td{background:var(--bg3)}
         <div class="card-title"><i class="ti ti-filter"></i> Filtros</div>
         <div class="grid4" style="gap:8px">
           <div><label>Tipo</label><select id="nc-f-tipo" onchange="cargarNC()"><option value="">Todos</option><option value="P">P — Proveedor</option><option value="R">R — Reclamación</option><option value="I">I — Interna</option><option value="E">E — Externa</option></select></div>
-          <div><label>Tipología causa</label><select id="nc-f-tipologia" onchange="cargarNC()"><option value="">Todas</option><option>Organizativa</option><option>Humana</option><option>Técnica</option><option>De proceso</option><option>De sistema</option><option>Proveedor</option><option>Externa</option><option>Otra</option></select></div>
+          <div><label>Tipología causa</label><select id="nc-f-tipologia" onchange="cargarNC()"><option value="">Todas</option><option>Organizativa</option><option>Mantenimiento</option><option>Formación</option><option>Trazabilidad</option><option>Legal</option><option>Documental</option><option>Infraestructura</option><option>Higiene</option><option>Proveedor</option><option>Equipamiento</option></select></div>
           <div><label>Estado</label><select id="nc-f-estado" onchange="cargarNC()"><option value="">Todos</option><option value="abierta">Abierta</option><option value="en_proceso">En proceso</option><option value="cerrada">Cerrada</option></select></div>
           <div><label>Responsable</label><input type="text" id="nc-f-resp" placeholder="Nombre..." oninput="cargarNC()"/></div>
         </div>
