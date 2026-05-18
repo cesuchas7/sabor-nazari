@@ -261,23 +261,31 @@ tbody tr:hover td{background:var(--bg3)}
 
 <div class="modal-overlay" id="modal-expedicion">
   <div class="modal">
-    <div class="modal-title">Nueva expedición SAE <button class="modal-close" onclick="cerrarModal('modal-expedicion')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-title"><span id="exp-modal-titulo">Nueva expedición SAE</span> <button class="modal-close" onclick="cerrarModal('modal-expedicion')"><i class="ti ti-x"></i></button></div>
     <div class="grid2" style="margin-bottom:10px">
       <div><label>Lote</label><input type="text" id="exp-lote" placeholder="Ej: E104-0434725"/></div>
       <div><label>Cliente</label><input type="text" id="exp-cliente" placeholder="Ej: Alhambra Foods S.L."/></div>
     </div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div><label>Tipo</label><select id="exp-tipo"><option value="real">Expedición real</option><option value="simulacro">Simulacro</option></select></div>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Categoría</label><select id="exp-tipo"><option value="real">Expedición real</option><option value="simulacro">Simulacro</option></select></div>
+      <div><label>Estado</label><select id="exp-estado"><option value="en_proceso">En proceso</option><option value="terminada">Terminada</option></select></div>
       <div><label>País destino</label><select id="exp-pais"><option>UAE</option><option>Arabia Saudí</option><option>Qatar</option><option>Kuwait</option><option>Otro</option></select></div>
     </div>
-    <div class="grid2" style="margin-bottom:14px">
+    <div class="grid2" style="margin-bottom:10px">
       <div><label>Fecha prevista</label><input type="date" id="exp-fecha"/></div>
       <div><label>Nº DAC</label><input type="text" id="exp-dac" placeholder="DAC-2026-XXX"/></div>
     </div>
-    <div style="margin-bottom:14px"><label>Notas</label><textarea id="exp-notas" placeholder="Observaciones..."></textarea></div>
+    <div style="margin-bottom:14px">
+      <label>Documentos adjuntos</label>
+      <div class="upload-area" style="padding:12px" onclick="document.getElementById('exp-files-new').click()">
+        <input type="file" id="exp-files-new" multiple style="display:none" onchange="actualizarLabelArchivos()"/>
+        <i class="ti ti-cloud-upload" style="font-size:18px"></i>
+        <p id="exp-files-label" style="margin-top:4px"><strong style="color:var(--dorado)">Seleccionar archivos (opcional)</strong></p>
+      </div>
+    </div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-sec" onclick="cerrarModal('modal-expedicion')">Cancelar</button>
-      <button class="btn btn-gold" onclick="crearExpedicion()"><i class="ti ti-check"></i> Crear</button>
+      <button class="btn btn-gold" id="btn-crear-exp" onclick="crearExpedicion()"><i class="ti ti-check"></i> Crear</button>
     </div>
   </div>
 </div>
@@ -724,30 +732,40 @@ tbody tr:hover td{background:var(--bg3)}
 
     <!-- EXPEDICIONES SAE -->
     <div class="screen" id="screen-expediciones">
-      <div class="grid2" style="margin-bottom:12px">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-folder-open"></i> Plantillas SAE</div>
-          <div id="sae-plantillas-lista"></div>
-          <div class="upload-area" style="margin-top:10px;padding:14px" onclick="document.getElementById('upload-plantilla').click()">
-            <input type="file" id="upload-plantilla" onchange="subirDocCat(this,'SAE Plantilla')"/>
-            <i class="ti ti-upload" style="font-size:20px"></i>
-            <p><strong style="color:var(--dorado)">Subir nueva plantilla</strong></p>
-          </div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-plane-departure"></i> Expediciones</div>
-          <table><thead><tr><th>Nº</th><th>Tipo</th><th>Lote</th><th>Cliente</th><th>Estado</th></tr></thead>
-          <tbody id="tabla-expediciones"><tr><td colspan="5" class="empty-state">Cargando...</td></tr></tbody></table>
-          <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="abrirModal('modal-expedicion')"><i class="ti ti-plus"></i> Nueva expedición</button>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title"><i class="ti ti-folder-open"></i> Documentos SAE Generales</div>
+        <div id="sae-docs-generales-lista"></div>
+        <div class="upload-area" style="margin-top:8px;padding:12px" onclick="document.getElementById('upload-sae-general').click()">
+          <input type="file" id="upload-sae-general" multiple onchange="subirDocSAEGeneral(this)"/>
+          <i class="ti ti-cloud-upload" style="font-size:18px"></i>
+          <p><strong style="color:var(--dorado)">Subir documento SAE general</strong></p>
         </div>
       </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title" style="justify-content:space-between">
+          <span><i class="ti ti-plane-departure"></i> Expediciones</span>
+          <button class="btn btn-gold btn-sm" onclick="nuevaExpedicion()"><i class="ti ti-plus"></i> Nueva expedición</button>
+        </div>
+        <table><thead><tr><th>Nº</th><th>Categoría</th><th>Lote</th><th>Cliente</th><th>País</th><th>Fecha</th><th>Estado</th></tr></thead>
+        <tbody id="tabla-expediciones"><tr><td colspan="7" class="empty-state">Cargando...</td></tr></tbody></table>
+      </div>
       <div class="card" id="exp-detalle" style="display:none">
-        <div class="card-title" id="exp-detalle-titulo"><i class="ti ti-files"></i> Documentos de expedición</div>
+        <div class="card-title" style="justify-content:space-between">
+          <span id="exp-detalle-titulo"><i class="ti ti-plane-departure"></i> Expedición</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-edit btn-sm" onclick="editarExpedicion()"><i class="ti ti-edit"></i> Modificar</button>
+            <button class="btn btn-danger btn-sm" onclick="eliminarExpedicion()"><i class="ti ti-trash"></i></button>
+            <button class="btn btn-sec btn-sm" onclick="document.getElementById('exp-detalle').style.display='none'"><i class="ti ti-x"></i></button>
+          </div>
+        </div>
+        <div id="exp-detalle-info" style="margin-bottom:10px"></div>
+        <div class="sep"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 8px">Documentos adjuntos</div>
         <div id="exp-detalle-docs"></div>
-        <div class="upload-area" style="margin-top:10px;padding:14px" onclick="document.getElementById('upload-exp-doc').click()">
+        <div class="upload-area" style="margin-top:10px;padding:12px" onclick="document.getElementById('upload-exp-doc').click()">
           <input type="file" id="upload-exp-doc" multiple onchange="subirDocExpedicion(this)"/>
-          <i class="ti ti-upload" style="font-size:20px"></i>
-          <p><strong style="color:var(--dorado)">Añadir documento a esta expedición</strong></p>
+          <i class="ti ti-upload" style="font-size:18px"></i>
+          <p><strong style="color:var(--dorado)">Añadir documentos a esta expedición</strong></p>
         </div>
       </div>
     </div>
@@ -1042,9 +1060,10 @@ function verEtiqueta(e){
   var colorNombre = e.color||'';
   var udsVal = e.unidades && parseInt(e.unidades)>0 ? e.unidades+' uds' : '<span style="border-bottom:1px solid #aaa;display:inline-block;width:80px">&nbsp;</span> <span style="font-size:9px;color:#aaa">(para completar a mano)</span>';
   var pesoVal = e.peso_final && parseFloat(e.peso_final)>0 ? e.peso_final+' kg' : '';
+  var marca=(e.producto||'').toLowerCase().includes('pierna de pavo')?'CASA ALHAMBRA':'SABOR NAZARÍ';
   var etq='<div style="width:105mm;min-height:148mm;background:#fff;font-family:sans-serif;padding:8mm;box-sizing:border-box;border:1px solid #eee">';
-  etq+='<div style="text-align:center;margin-bottom:4mm">';
-  etq+='<img src="'+LOGO_B64+'" style="width:80mm;max-width:100%" alt="Sabor Nazari"/>';
+  etq+='<div style="text-align:center;margin-bottom:5mm;padding-bottom:3mm;border-bottom:2px solid #C9A84C">';
+  etq+='<div style="font-size:20pt;font-weight:900;letter-spacing:.08em;color:#0a0a0a">'+marca+'</div>';
   etq+='</div>';
   etq+='<div style="text-align:center;font-size:16pt;font-weight:700;margin-bottom:2mm">'+e.producto+'</div>';
   etq+='<div style="height:1px;background:#C9A84C;margin:3mm 0"></div>';
@@ -1596,45 +1615,128 @@ async function cargarFichaje(){
 
 // EXPEDICIONES SAE
 var _expedicionesList=[];
+var _expEditandoId=null;
+
+function nuevaExpedicion(){
+  _expEditandoId=null;
+  document.getElementById('exp-modal-titulo').textContent='Nueva expedición SAE';
+  document.getElementById('btn-crear-exp').innerHTML='<i class="ti ti-check"></i> Crear';
+  document.getElementById('exp-lote').value='';
+  document.getElementById('exp-cliente').value='';
+  document.getElementById('exp-tipo').value='real';
+  document.getElementById('exp-estado').value='en_proceso';
+  document.getElementById('exp-pais').selectedIndex=0;
+  document.getElementById('exp-fecha').value='';
+  document.getElementById('exp-dac').value='';
+  document.getElementById('exp-files-new').value='';
+  document.getElementById('exp-files-label').innerHTML='<strong style="color:var(--dorado)">Seleccionar archivos (opcional)</strong>';
+  abrirModal('modal-expedicion');
+}
+
+function actualizarLabelArchivos(){
+  var n=document.getElementById('exp-files-new').files.length;
+  document.getElementById('exp-files-label').innerHTML=n>0?'<strong style="color:var(--dorado)">'+n+' archivo(s) seleccionado(s)</strong>':'<strong style="color:var(--dorado)">Seleccionar archivos (opcional)</strong>';
+}
+
 async function crearExpedicion(){
-  var lote=document.getElementById('exp-lote').value;
-  var cliente=document.getElementById('exp-cliente').value;
+  var lote=document.getElementById('exp-lote').value.trim();
+  var cliente=document.getElementById('exp-cliente').value.trim();
   if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
-  var expDatos={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:'activo'};
-  var res=await db.from('expediciones').insert(expDatos);
-  if(res.error){toast('Error: '+res.error.message,false);return;}
-  toast('Expedición creada');cerrarModal('modal-expedicion');cargarExpediciones();
+  var datos={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:document.getElementById('exp-estado').value};
+  var inp=document.getElementById('exp-files-new');
+  if(_expEditandoId){
+    var ru=await db.from('expediciones').update(datos).eq('id',_expEditandoId);
+    if(ru.error){toast('Error: '+ru.error.message,false);return;}
+    if(inp.files.length>0)await subirArchivosExpedicion(_expEditandoId,inp);
+    toast('Expedición actualizada');cerrarModal('modal-expedicion');
+    await cargarExpediciones();
+    var upd=_expedicionesList.find(function(x){return x.id===_expEditandoId;});
+    if(upd)verExpedicion(upd);
+    return;
+  }
+  var ri=await db.from('expediciones').insert(datos).select();
+  if(ri.error){toast('Error: '+ri.error.message,false);return;}
+  var newExp=ri.data&&ri.data[0];
+  if(newExp&&inp.files.length>0)await subirArchivosExpedicion(newExp.id,inp);
+  toast('Expedición creada');cerrarModal('modal-expedicion');
+  await cargarExpediciones();
+  if(newExp){var found=_expedicionesList.find(function(x){return x.id===newExp.id;});if(found)verExpedicion(found);}
+}
+
+async function subirArchivosExpedicion(expId,input){
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='sae/'+expId+'/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){var urlData=db.storage.from('documentos').getPublicUrl(path);await db.from('documentos').insert({nombre:file.name,categoria:'SAE_EXP_'+expId,url:urlData.data.publicUrl,descripcion:file.name});}
+  }
+}
+
+async function subirDocSAEGeneral(input){
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='sae/general/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){var urlData=db.storage.from('documentos').getPublicUrl(path);await db.from('documentos').insert({nombre:file.name,categoria:'SAE General',url:urlData.data.publicUrl,descripcion:file.name});}
+  }
+  toast('Documentos SAE subidos');input.value='';cargarDocsSAEGeneral();
+}
+
+async function cargarDocsSAEGeneral(){
+  var res=await db.from('documentos').select('*').eq('categoria','SAE General').order('created_at',{ascending:false});
+  var c=document.getElementById('sae-docs-generales-lista');
+  if(!c)return;
+  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin documentos generales SAE</div>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
+    html+='<div style="flex:1;font-size:12px;font-weight:500">'+d.nombre+'</div>';
+    html+='<div style="font-size:10px;color:var(--text3);margin-right:8px">'+fmtFecha(d.created_at)+'</div>';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',cargarDocsSAEGeneral)"><i class="ti ti-trash"></i></button>';
+    html+='</div>';
+  });
+  c.innerHTML=html;
 }
 
 async function cargarExpediciones(){
   var t=document.getElementById('tabla-expediciones');
   var res;
-  try{res=await db.from('expediciones').select('*').order('created_at',{ascending:false});}catch(ex){t.innerHTML='<tr><td colspan="5" class="empty-state">Error cargando expediciones</td></tr>';return;}
-  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="5" class="empty-state">Sin expediciones</td></tr>';return;}
+  try{res=await db.from('expediciones').select('*').order('created_at',{ascending:false});}catch(ex){t.innerHTML='<tr><td colspan="7" class="empty-state">Error cargando</td></tr>';return;}
+  if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="7" class="empty-state">Sin expediciones. Crea la primera.</td></tr>';return;}
   _expedicionesList=res.data;
   var html='';
   res.data.forEach(function(e,i){
     var tipoVal=e.tipo||'real';
+    var estadoVal=e.estado||'en_proceso';
+    var catB=tipoVal==='simulacro'?'<span class="badge b-blue">Simulacro</span>':'<span class="badge b-info">Exp. real</span>';
+    var estB=estadoVal==='terminada'?'<span class="badge b-ok">Terminada</span>':'<span class="badge b-pend">En proceso</span>';
     html+='<tr style="cursor:pointer" onclick="verExpedicion(_expedicionesList['+i+'])">';
     html+='<td style="font-weight:700;color:var(--dorado3)">EXP-2026-'+(i+1).toString().padStart(3,'0')+'</td>';
-    html+='<td><span class="badge '+(tipoVal==='simulacro'?'b-blue':'b-info')+'">'+(tipoVal==='simulacro'?'Simulacro':'Real')+'</span></td>';
+    html+='<td>'+catB+'</td>';
     html+='<td style="font-family:monospace;font-size:11px">'+e.lote+'</td>';
     html+='<td>'+e.cliente+'</td>';
-    html+='<td><span class="badge '+(e.estado==='finalizada'?'b-ok':'b-pend')+'">'+(e.estado||'activo')+'</span></td>';
+    html+='<td>'+(e.pais||'—')+'</td>';
+    html+='<td style="font-size:11px">'+(e.fecha_salida?fmtFecha(e.fecha_salida):'—')+'</td>';
+    html+='<td>'+estB+'</td>';
     html+='</tr>';
   });
   t.innerHTML=html;
-  cargarPlantillasSAE();
+  cargarDocsSAEGeneral();
 }
 
 async function verExpedicion(e){
   expActual=e;
   var det=document.getElementById('exp-detalle');
   det.style.display='block';
-  document.getElementById('exp-detalle-titulo').innerHTML='<i class="ti ti-files"></i> '+e.lote+' — '+e.cliente;
+  var tipoLabel=e.tipo==='simulacro'?'Simulacro':'Expedición real';
+  var estadoLabel=e.estado==='terminada'?'Terminada':'En proceso';
+  document.getElementById('exp-detalle-titulo').innerHTML='<i class="ti ti-plane-departure"></i> '+e.lote+' — '+e.cliente;
+  document.getElementById('exp-detalle-info').innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px"><div><span style="color:var(--text3)">Categoría: </span><strong>'+tipoLabel+'</strong></div><div><span style="color:var(--text3)">Estado: </span><strong>'+estadoLabel+'</strong></div><div><span style="color:var(--text3)">País: </span><strong>'+(e.pais||'—')+'</strong></div><div><span style="color:var(--text3)">Fecha: </span><strong>'+(e.fecha_salida?fmtFecha(e.fecha_salida):'—')+'</strong></div><div><span style="color:var(--text3)">DAC: </span><strong>'+(e.dac||'—')+'</strong></div></div>';
+  det.scrollIntoView({behavior:'smooth',block:'nearest'});
   var res=await db.from('documentos').select('*').eq('categoria','SAE_EXP_'+e.id).order('created_at',{ascending:false});
   var c=document.getElementById('exp-detalle-docs');
-  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin documentos en esta expedición. Sube el primero.</div>';return;}
+  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin documentos. Sube el primero.</div>';return;}
   var html='';
   res.data.forEach(function(d){
     html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
@@ -1647,32 +1749,42 @@ async function verExpedicion(e){
   c.innerHTML=html;
 }
 
+function editarExpedicion(){
+  if(!expActual)return;
+  _expEditandoId=expActual.id;
+  document.getElementById('exp-modal-titulo').textContent='Modificar expedición';
+  document.getElementById('btn-crear-exp').innerHTML='<i class="ti ti-check"></i> Guardar cambios';
+  document.getElementById('exp-lote').value=expActual.lote||'';
+  document.getElementById('exp-cliente').value=expActual.cliente||'';
+  document.getElementById('exp-tipo').value=expActual.tipo||'real';
+  document.getElementById('exp-estado').value=expActual.estado||'en_proceso';
+  document.getElementById('exp-pais').value=expActual.pais||'UAE';
+  document.getElementById('exp-fecha').value=expActual.fecha_salida||'';
+  document.getElementById('exp-dac').value=expActual.dac||'';
+  document.getElementById('exp-files-new').value='';
+  document.getElementById('exp-files-label').innerHTML='<strong style="color:var(--dorado)">Añadir más archivos (opcional)</strong>';
+  abrirModal('modal-expedicion');
+}
+
+async function eliminarExpedicion(){
+  if(!expActual)return;
+  if(!confirm('¿Eliminar esta expedición y todos sus documentos?'))return;
+  await db.from('documentos').delete().eq('categoria','SAE_EXP_'+expActual.id);
+  await db.from('expediciones').delete().eq('id',expActual.id);
+  toast('Expedición eliminada');
+  document.getElementById('exp-detalle').style.display='none';
+  expActual=null;cargarExpediciones();
+}
+
 async function subirDocExpedicion(input){
   if(!expActual){toast('Selecciona una expedición primero',false);return;}
   for(var i=0;i<input.files.length;i++){
     var file=input.files[i];
-    var path='sae/'+expActual.id+'/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+    var path='sae/'+expActual.id+'/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
-    if(!up.error){
-      var urlData=db.storage.from('documentos').getPublicUrl(path);
-      await db.from('documentos').insert({nombre:file.name,categoria:'SAE_EXP_'+expActual.id,url:urlData.data.publicUrl,descripcion:file.name});
-    }
+    if(!up.error){var urlData=db.storage.from('documentos').getPublicUrl(path);await db.from('documentos').insert({nombre:file.name,categoria:'SAE_EXP_'+expActual.id,url:urlData.data.publicUrl,descripcion:file.name});}
   }
-  toast('Documento SAE subido');input.value='';verExpedicion(expActual);
-}
-
-async function cargarPlantillasSAE(){
-  var res=await db.from('documentos').select('*').eq('categoria','SAE Plantilla').order('created_at',{ascending:false});
-  var c=document.getElementById('sae-plantillas-lista');
-  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin plantillas. Sube la primera.</div>';return;}
-  var html='';
-  res.data.forEach(function(d){
-    html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
-    html+='<div style="flex:1;font-size:12px;font-weight:500">'+d.nombre+'</div>';
-    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-download"></i></a>';
-    html+='</div>';
-  });
-  c.innerHTML=html;
+  toast('Documentos subidos');input.value='';verExpedicion(expActual);
 }
 
 // CALENDARIO
