@@ -287,7 +287,7 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="modal-title">Etiqueta A6 <button class="modal-close" onclick="cerrarModal('modal-etiqueta')"><i class="ti ti-x"></i></button></div>
     <div id="etiqueta-contenido" style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:14px;min-height:200px"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-dark" onclick="imprimirEtiqueta()"><i class="ti ti-printer"></i> Imprimir A6</button>
+      <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir A6</button>
       <button class="btn btn-sec" onclick="cerrarModal('modal-etiqueta')">Cerrar</button>
     </div>
   </div>
@@ -969,12 +969,14 @@ async function guardarElab(){
   cargarElaboraciones();
 }
 
+var _elaboracionesList=[];
 async function cargarElaboraciones(){
   var res=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(50);
   var t=document.getElementById('tabla-elabs');
   if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin elaboraciones</td></tr>';return;}
+  _elaboracionesList=res.data;
   var html='';
-  res.data.forEach(function(e){
+  res.data.forEach(function(e,i){
     var c=colores[e.color]||'—';
     html+='<tr>';
     html+='<td style="font-family:monospace;font-size:11px;font-weight:700;color:var(--dorado3)">'+e.lote+'</td>';
@@ -985,8 +987,8 @@ async function cargarElaboraciones(){
     html+='<td>'+(e.peso_final?e.peso_final+' kg':'—')+'</td>';
     html+='<td><span class="badge b-purple">'+(e.estado||'secadero')+'</span></td>';
     html+='<td><div style="display:flex;gap:4px">';
-    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta('+JSON.stringify(e)+')"><i class="ti ti-tag"></i></button>';
-    html+='<button class="btn btn-edit btn-sm" onclick="editarElab('+JSON.stringify(e)+')"><i class="ti ti-edit"></i></button>';
+    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta(_elaboracionesList['+i+'])"><i class="ti ti-tag"></i></button>';
+    html+='<button class="btn btn-edit btn-sm" onclick="editarElab(_elaboracionesList['+i+'])"><i class="ti ti-edit"></i></button>';
     html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'elaboraciones\',\''+e.id+'\',cargarElaboraciones)"><i class="ti ti-trash"></i></button>';
     html+='</div></td>';
     html+='</tr>';
@@ -1063,14 +1065,6 @@ function verEtiqueta(e){
   abrirModal('modal-etiqueta');
 }
 
-function imprimirEtiqueta(){
-  var contenido=document.getElementById('etiqueta-contenido').innerHTML;
-  var w=window.open('','_blank','width=450,height=650');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:A6 portrait;margin:0}*{box-sizing:border-box}body{margin:0;padding:0;font-family:sans-serif}</style></head><body>'+contenido+'</body></html>');
-  w.document.close();
-  w.focus();
-  setTimeout(function(){w.print();},300);
-}
 
 function evalTemp(zona,val,tipo,min,max){
   var b=document.getElementById('tb-'+zona);
@@ -1137,6 +1131,7 @@ async function cargarTemperaturas(){
   t.innerHTML=html;
 }
 
+var _trazabilidadList=[];
 async function buscarTrazabilidad(){
   var lote=document.getElementById('tr-lote').value.trim().toUpperCase();
   var prod=document.getElementById('tr-producto').value;
@@ -1148,13 +1143,14 @@ async function buscarTrazabilidad(){
   var res=await q.order('created_at',{ascending:false});
   var c=document.getElementById('tr-resultados');
   if(!res.data||!res.data.length){c.innerHTML='<div class="card"><div class="empty-state">Sin resultados</div></div>';return;}
+  _trazabilidadList=res.data;
   var html='';
-  res.data.forEach(function(e){
+  res.data.forEach(function(e,i){
     html+='<div class="card" style="margin-bottom:8px">';
     html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
     html+='<div class="lote-cod" style="font-size:16px">'+e.lote+'</div>';
     html+='<span class="badge b-purple">'+e.estado+'</span>';
-    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta('+JSON.stringify(e)+')"><i class="ti ti-tag"></i> Etiqueta</button>';
+    html+='<button class="btn btn-gold btn-sm" onclick="verEtiqueta(_trazabilidadList['+i+'])"><i class="ti ti-tag"></i> Etiqueta</button>';
     html+='</div>';
     var campos=[['Producto',e.producto],['Proveedor',e.proveedor],['Fecha',fmtFecha(e.fecha)],['Proceso',e.proceso],['Exportación',e.exportacion==='E'?'Apto exportación':'Nacional'],['Unidades',e.unidades],['Peso',e.peso_final?e.peso_final+' kg':'—'],['Maduración',e.maduracion?e.maduracion+' días':'—']];
     html+='<table><thead><tr><th>Campo</th><th>Dato</th></tr></thead><tbody>';
@@ -1311,33 +1307,33 @@ function renderAppcc(){
 }
 
 async function subirAppccCarpeta(input,categoria){
-  var files=Array.from(input.files);
-  for(var i=0;i<files.length;i++){
-    var file=files[i];
-    var path='appcc/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+  var total=input.files.length;
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='appcc/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
     if(!up.error){
       var urlData=db.storage.from('documentos').getPublicUrl(path);
       await db.from('documentos').insert({nombre:file.name,categoria:'APPCC_'+categoria,url:urlData.data.publicUrl,descripcion:file.name});
     }
   }
-  toast('Documentos subidos ('+files.length+')');input.value='';cargarDocsAppcc();
+  toast('Documentos subidos ('+total+')');input.value='';cargarDocsAppcc();
 }
 
 async function subirRegistroAppcc(input,nombreReg){
   var mesRef=prompt('¿A qué mes corresponde este registro? (formato YYYY-MM)',new Date().toISOString().slice(0,7));
   if(!mesRef)mesRef=new Date().toISOString().slice(0,7);
-  var files=Array.from(input.files);
-  for(var i=0;i<files.length;i++){
-    var file=files[i];
-    var path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
+  var total=input.files.length;
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='appcc/registros/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
     if(!up.error){
       var urlData=db.storage.from('documentos').getPublicUrl(path);
       await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.data.publicUrl,descripcion:'['+mesRef+'] '+file.name});
     }
   }
-  toast('Registro subido ('+files.length+' archivo(s))');input.value='';cargarDocsAppcc();
+  toast('Registro subido ('+total+' archivo(s))');input.value='';cargarDocsAppcc();
 }
 
 async function cargarDocsAppcc(){
