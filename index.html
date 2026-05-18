@@ -137,7 +137,8 @@ tbody tr:hover td{background:var(--bg3)}
 .quick-btn span{font-size:12px;font-weight:600;color:var(--negro)}
 .prog-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:6px}
 .prog-fill{height:100%;background:var(--dorado);border-radius:2px;transition:width .3s}
-@media print { #login-screen,#app-content{display:none!important} .modal-overlay{display:block!important;position:static!important;background:none!important;padding:0} .modal{box-shadow:none!important;max-width:none!important;padding:0!important} #modal-etiqueta .modal{width:105mm!important;min-height:148mm!important} button,header,.topbar,.sidebar{display:none!important} }
+@page{size:A6 portrait;margin:0}
+@media print{body *{visibility:hidden!important}#etiqueta-contenido,#etiqueta-contenido *{visibility:visible!important}#etiqueta-contenido{position:fixed!important;top:0!important;left:0!important;width:105mm!important;min-height:148mm!important;margin:0!important;padding:0!important;border:none!important;border-radius:0!important;background:white!important}}
 </style>
 </head>
 <body>
@@ -1301,8 +1302,9 @@ function renderAppcc(){
 }
 
 async function subirAppccCarpeta(input,categoria){
-  for(var i=0;i<input.files.length;i++){
-    var file=input.files[i];
+  var files=Array.from(input.files);
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
     var path='appcc/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
     if(!up.error){
@@ -1310,14 +1312,15 @@ async function subirAppccCarpeta(input,categoria){
       await db.from('documentos').insert({nombre:file.name,categoria:'APPCC_'+categoria,url:urlData.data.publicUrl,descripcion:file.name});
     }
   }
-  toast('Documentos subidos');input.value='';cargarDocsAppcc();
+  toast('Documentos subidos ('+files.length+')');input.value='';cargarDocsAppcc();
 }
 
 async function subirRegistroAppcc(input,nombreReg){
   var mesRef=prompt('¿A qué mes corresponde este registro? (formato YYYY-MM)',new Date().toISOString().slice(0,7));
   if(!mesRef)mesRef=new Date().toISOString().slice(0,7);
-  for(var i=0;i<input.files.length;i++){
-    var file=input.files[i];
+  var files=Array.from(input.files);
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
     var path='appcc/registros/'+Date.now()+'_'+file.name.replace(/\s+/g,'_');
     var up=await db.storage.from('documentos').upload(path,file);
     if(!up.error){
@@ -1325,7 +1328,7 @@ async function subirRegistroAppcc(input,nombreReg){
       await db.from('documentos').insert({nombre:nombreReg,categoria:'APPCC_D.Registros',url:urlData.data.publicUrl,descripcion:'['+mesRef+'] '+file.name});
     }
   }
-  toast('Registro subido');input.value='';cargarDocsAppcc();
+  toast('Registro subido ('+files.length+' archivo(s))');input.value='';cargarDocsAppcc();
 }
 
 async function cargarDocsAppcc(){
@@ -1591,11 +1594,15 @@ async function crearExpedicion(){
   var lote=document.getElementById('exp-lote').value;
   var cliente=document.getElementById('exp-cliente').value;
   if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
-  var expDatos={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:'activo'};
+  var base={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:'activo'};
+  var expDatos=Object.assign({},base);
   try{expDatos.tipo=document.getElementById('exp-tipo').value;}catch(ex){}
   try{expDatos.notas=document.getElementById('exp-notas').value;}catch(ex){}
   var res=await db.from('expediciones').insert(expDatos);
-  if(res.error){toast('Error: '+res.error.message,false);return;}
+  if(res.error){
+    if(res.error.message&&(/notas|tipo/.test(res.error.message))){res=await db.from('expediciones').insert(base);}
+    if(res.error){toast('Error: '+res.error.message,false);return;}
+  }
   toast('Expedición creada');cerrarModal('modal-expedicion');cargarExpediciones();
 }
 
