@@ -287,7 +287,7 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="modal-title">Etiqueta A6 <button class="modal-close" onclick="cerrarModal('modal-etiqueta')"><i class="ti ti-x"></i></button></div>
     <div id="etiqueta-contenido" style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:14px;min-height:200px"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir A6</button>
+      <button class="btn btn-dark" onclick="imprimirEtiqueta()"><i class="ti ti-printer"></i> Imprimir A6</button>
       <button class="btn btn-sec" onclick="cerrarModal('modal-etiqueta')">Cerrar</button>
     </div>
   </div>
@@ -1063,6 +1063,15 @@ function verEtiqueta(e){
   abrirModal('modal-etiqueta');
 }
 
+function imprimirEtiqueta(){
+  var contenido=document.getElementById('etiqueta-contenido').innerHTML;
+  var w=window.open('','_blank','width=450,height=650');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:A6 portrait;margin:0}*{box-sizing:border-box}body{margin:0;padding:0;font-family:sans-serif}</style></head><body>'+contenido+'</body></html>');
+  w.document.close();
+  w.focus();
+  setTimeout(function(){w.print();},300);
+}
+
 function evalTemp(zona,val,tipo,min,max){
   var b=document.getElementById('tb-'+zona);
   if(!val){b.className='badge b-gray';b.textContent='—';return;}
@@ -1590,19 +1599,14 @@ async function cargarFichaje(){
 }
 
 // EXPEDICIONES SAE
+var _expedicionesList=[];
 async function crearExpedicion(){
   var lote=document.getElementById('exp-lote').value;
   var cliente=document.getElementById('exp-cliente').value;
   if(!lote||!cliente){toast('Introduce lote y cliente',false);return;}
-  var base={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:'activo'};
-  var expDatos=Object.assign({},base);
-  try{expDatos.tipo=document.getElementById('exp-tipo').value;}catch(ex){}
-  try{expDatos.notas=document.getElementById('exp-notas').value;}catch(ex){}
+  var expDatos={lote:lote,cliente:cliente,pais:document.getElementById('exp-pais').value,fecha_salida:document.getElementById('exp-fecha').value,dac:document.getElementById('exp-dac').value,estado:'activo'};
   var res=await db.from('expediciones').insert(expDatos);
-  if(res.error){
-    if(res.error.message&&(/notas|tipo/.test(res.error.message))){res=await db.from('expediciones').insert(base);}
-    if(res.error){toast('Error: '+res.error.message,false);return;}
-  }
+  if(res.error){toast('Error: '+res.error.message,false);return;}
   toast('Expedición creada');cerrarModal('modal-expedicion');cargarExpediciones();
 }
 
@@ -1611,10 +1615,11 @@ async function cargarExpediciones(){
   var res;
   try{res=await db.from('expediciones').select('*').order('created_at',{ascending:false});}catch(ex){t.innerHTML='<tr><td colspan="5" class="empty-state">Error cargando expediciones</td></tr>';return;}
   if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="5" class="empty-state">Sin expediciones</td></tr>';return;}
+  _expedicionesList=res.data;
   var html='';
   res.data.forEach(function(e,i){
     var tipoVal=e.tipo||'real';
-    html+='<tr style="cursor:pointer" onclick="verExpedicion('+JSON.stringify(e).replace(/"/g,'&#34;')+')">';
+    html+='<tr style="cursor:pointer" onclick="verExpedicion(_expedicionesList['+i+'])">';
     html+='<td style="font-weight:700;color:var(--dorado3)">EXP-2026-'+(i+1).toString().padStart(3,'0')+'</td>';
     html+='<td><span class="badge '+(tipoVal==='simulacro'?'b-blue':'b-info')+'">'+(tipoVal==='simulacro'?'Simulacro':'Real')+'</span></td>';
     html+='<td style="font-family:monospace;font-size:11px">'+e.lote+'</td>';
