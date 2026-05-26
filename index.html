@@ -2004,7 +2004,7 @@ async function cargarNC(){
   var fTipologia=document.getElementById('nc-f-tipologia')&&document.getElementById('nc-f-tipologia').value;
   var fEstado=document.getElementById('nc-f-estado')&&document.getElementById('nc-f-estado').value;
   var fResp=(document.getElementById('nc-f-resp')&&document.getElementById('nc-f-resp').value.toLowerCase())||'';
-  var q=db.from('no_conformidades').select('*').order('created_at',{ascending:false});
+  var q=db.from('no_conformidades').select('*').order('fecha_deteccion',{ascending:false});
   if(fTipo)q=q.eq('tipo',fTipo);
   if(fTipologia)q=q.eq('tipologia_causa',fTipologia);
   if(fEstado)q=q.eq('estado',fEstado);
