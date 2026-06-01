@@ -264,7 +264,7 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="modal-title"><span id="exp-modal-titulo">Nueva expedición SAE</span> <button class="modal-close" onclick="cerrarModal('modal-expedicion')"><i class="ti ti-x"></i></button></div>
     <div class="grid2" style="margin-bottom:10px">
       <div><label>Lote</label><input type="text" id="exp-lote" placeholder="Ej: E104-0434725"/></div>
-      <div><label>Cliente</label><input type="text" id="exp-cliente" placeholder="Ej: Alhambra Foods S.L."/></div>
+      <div><label>Cliente</label><input type="text" id="exp-cliente" placeholder="Ej: Linex GmbH"/></div>
     </div>
     <div class="grid3" style="margin-bottom:10px">
       <div><label>Categoría</label><select id="exp-tipo"><option value="real">Expedición real</option><option value="simulacro">Simulacro</option></select></div>
@@ -297,6 +297,80 @@ tbody tr:hover td{background:var(--bg3)}
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-dark" onclick="window.print()"><i class="ti ti-printer"></i> Imprimir A6</button>
       <button class="btn btn-sec" onclick="cerrarModal('modal-etiqueta')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-prov-docs">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-title"><span id="prov-docs-titulo">Ficha proveedor</span><button class="modal-close" onclick="cerrarModal('modal-prov-docs')"><i class="ti ti-x"></i></button></div>
+    <div class="grid2" style="margin-bottom:12px;align-items:end">
+      <div><label>Tipo de documento</label>
+        <select id="prov-doc-tipo">
+          <option value="Certificado Halal">Certificado Halal</option>
+          <option value="SAE">SAE</option>
+          <option value="IFS">IFS</option>
+          <option value="Registro sanitario">Registro sanitario</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div>
+        <div class="upload-area" style="padding:10px" onclick="document.getElementById('prov-doc-input').click()">
+          <input type="file" id="prov-doc-input" multiple style="display:none" onchange="subirDocProveedor(this)"/>
+          <i class="ti ti-cloud-upload" style="font-size:18px"></i>
+          <p style="font-size:11px;margin-top:4px"><strong style="color:var(--dorado)">Subir archivo(s)</strong></p>
+        </div>
+      </div>
+    </div>
+    <div id="prov-docs-lista"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-edit-elab">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-title"><span id="edit-elab-titulo">Editando lote —</span><button class="modal-close" onclick="cerrarModal('modal-edit-elab')"><i class="ti ti-x"></i></button></div>
+    <input type="hidden" id="edit-elab-id"/>
+    <div class="grid3" style="margin-bottom:10px">
+      <div><label>Proveedor</label><select id="edit-elab-prov"></select></div>
+      <div><label>Fecha</label><input type="date" id="edit-elab-fecha"/></div>
+      <div><label>Exportación</label><select id="edit-elab-exp"><option value="">Seleccionar...</option><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
+    </div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div><label>Proceso</label><select id="edit-elab-proceso"><option value="">Seleccionar...</option><option>Picado, amasado y embutido</option><option>Salado/aditivado</option><option>Salado/aditivado y adobado</option></select></div>
+      <div><label>Color identificación</label><select id="edit-elab-color"><option value="">Seleccionar...</option><option value="blanco">Blanco</option><option value="rojo">Rojo</option><option value="azul">Azul</option><option value="verde">Verde</option><option value="amarillo">Amarillo</option><option value="morado">Morado</option><option value="verdiblanco">Verdiblanco</option><option value="rojiblanco">Rojiblanco</option><option value="rojiamarillo">Rojiamarillo</option><option value="malla">Malla plástico</option></select></div>
+    </div>
+    <div class="grid4" style="margin-bottom:10px">
+      <div><label>Nº unidades</label><input type="number" id="edit-elab-uds" placeholder="120"/></div>
+      <div><label>Sin contabilizar</label><input type="number" id="edit-elab-uds-extra" placeholder="0"/></div>
+      <div><label>Peso total (kg)</label><input type="number" id="edit-elab-peso" placeholder="58.5"/></div>
+      <div><label>Maduración aprox. (días)</label><input type="number" id="edit-elab-mad" placeholder="30"/></div>
+    </div>
+    <div style="margin-bottom:10px"><label>Cliente maquila <span style="font-weight:400;color:var(--text3)">Opcional</span></label><input type="text" id="edit-elab-maquila" placeholder="Ej: CASA ALHAMBRA"/></div>
+    <div class="sep"></div>
+    <div class="ing-section" style="margin-bottom:8px">
+      <div class="ing-section-title">Carnes y materias primas</div>
+      <div id="edit-ing-carnes"></div>
+      <button class="btn btn-sec btn-sm" onclick="addIng('carnes','edit-ing')"><i class="ti ti-plus"></i> Añadir</button>
+    </div>
+    <div class="ing-section" style="margin-bottom:8px">
+      <div class="ing-section-title">Especias y aditivos</div>
+      <div id="edit-ing-especias"></div>
+      <button class="btn btn-sec btn-sm" onclick="addIng('especias','edit-ing')"><i class="ti ti-plus"></i> Añadir</button>
+    </div>
+    <div class="ing-section" style="margin-bottom:8px">
+      <div class="ing-section-title">Material auxiliar</div>
+      <div id="edit-ing-auxiliar"></div>
+      <button class="btn btn-sec btn-sm" onclick="addIng('auxiliar','edit-ing')"><i class="ti ti-plus"></i> Añadir</button>
+    </div>
+    <div class="sep"></div>
+    <div class="grid3" style="margin-bottom:14px">
+      <div><label>Peso inicial (kg)</label><input type="number" step="0.01" id="edit-elab-peso-ini" placeholder="Opcional" oninput="calcMermaModal()"/></div>
+      <div><label>Peso final tras maduración (kg)</label><input type="number" step="0.01" id="edit-elab-peso-fin" placeholder="Opcional" oninput="calcMermaModal()"/></div>
+      <div><label>% Merma</label><input type="text" id="edit-elab-merma" readonly placeholder="—" style="background:var(--bg3);color:var(--dorado3);font-weight:700"/></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-sec" onclick="cerrarModal('modal-edit-elab')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarEditarElabModal()"><i class="ti ti-check"></i> Guardar cambios</button>
     </div>
   </div>
 </div>
@@ -443,9 +517,10 @@ tbody tr:hover td{background:var(--bg3)}
     <div class="sb-cat">Empresa</div>
     <div class="sb-item" onclick="nav('clientes')"><i class="ti ti-users"></i> Clientes</div>
     <div class="sb-item" onclick="nav('proveedores')"><i class="ti ti-truck"></i> Proveedores</div>
+    <div class="sb-item" onclick="nav('documentos')"><i class="ti ti-folder"></i> Documentos</div>
+    <div class="sb-cat">Trabajadores</div>
     <div class="sb-item" onclick="nav('trabajadores')"><i class="ti ti-id-badge"></i> Trabajadores</div>
     <div class="sb-item" onclick="nav('fichaje')"><i class="ti ti-clock"></i> Fichaje</div>
-    <div class="sb-item" onclick="nav('documentos')"><i class="ti ti-folder"></i> Documentos</div>
   </div>
   <div class="sb-footer">
     <div class="sb-user">César Romero Gómez</div>
@@ -470,24 +545,33 @@ tbody tr:hover td{background:var(--bg3)}
 
     <!-- DASHBOARD -->
     <div class="screen" id="screen-dashboard">
-      <div class="grid5" style="margin-bottom:16px">
-        <div class="quick-btn" onclick="nav('temperaturas')"><i class="ti ti-thermometer"></i><span>Registrar temperaturas</span></div>
+      <div class="grid5" style="margin-bottom:20px">
+        <div class="quick-btn" onclick="nav('temperaturas')"><i class="ti ti-thermometer"></i><span>Registrar temperatura</span></div>
         <div class="quick-btn" onclick="nav('elaboraciones')"><i class="ti ti-clipboard-list"></i><span>Nueva elaboración</span></div>
         <div class="quick-btn" onclick="nav('expediciones')"><i class="ti ti-plane-departure"></i><span>Nueva expedición</span></div>
         <div class="quick-btn" onclick="abrirModalCliente()"><i class="ti ti-user-plus"></i><span>Añadir cliente</span></div>
         <div class="quick-btn" onclick="abrirModalProveedor()"><i class="ti ti-truck"></i><span>Añadir proveedor</span></div>
       </div>
-      <div id="dash-alertas"></div>
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-clipboard-list"></i> Últimas elaboraciones</div>
-          <table><thead><tr><th>Lote</th><th>Producto</th><th>Estado</th></tr></thead>
-          <tbody id="dash-elabs"><tr><td colspan="3" class="empty-state">Cargando...</td></tr></tbody></table>
+      <div class="grid4">
+        <div class="metric" id="dash-metric-temps">
+          <div class="metric-icon"><i class="ti ti-thermometer"></i></div>
+          <div class="metric-val" id="dash-val-temps">—</div>
+          <div class="metric-label">Temperaturas registradas hoy</div>
         </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-thermometer"></i> Temperaturas recientes</div>
-          <table><thead><tr><th>Fecha</th><th>Cám.2</th><th>Obrador</th><th>Estado</th></tr></thead>
-          <tbody id="dash-temps"><tr><td colspan="4" class="empty-state">Cargando...</td></tr></tbody></table>
+        <div class="metric" id="dash-metric-exp">
+          <div class="metric-icon"><i class="ti ti-plane-departure"></i></div>
+          <div class="metric-val" id="dash-val-exp">—</div>
+          <div class="metric-label">Expediciones abiertas</div>
+        </div>
+        <div class="metric" id="dash-metric-nc">
+          <div class="metric-icon"><i class="ti ti-alert-triangle"></i></div>
+          <div class="metric-val" id="dash-val-nc">—</div>
+          <div class="metric-label">NC sin cerrar</div>
+        </div>
+        <div class="metric" id="dash-metric-elab">
+          <div class="metric-icon"><i class="ti ti-clipboard-list"></i></div>
+          <div class="metric-val" id="dash-val-elab">—</div>
+          <div class="metric-label">Elaboraciones en secadero</div>
         </div>
       </div>
     </div>
@@ -524,39 +608,32 @@ tbody tr:hover td{background:var(--bg3)}
           <div><label>Producto</label>
             <select id="el-prod" onchange="genLote()">
               <option value="">Seleccionar producto...</option>
-              <option value="302|Chorizo picante|embutido|E|rojo">302 — Chorizo picante</option>
-              <option value="301|Chorizo dulce|embutido|E|azul">301 — Chorizo dulce</option>
+              <option value="101|Cecina de ternera|cecina|N|malla">101 — Cecina de ternera</option>
+              <option value="102|Pierna de cordero|cecina|N|">102 — Pierna de cordero</option>
+              <option value="103|Pierna de oveja|cecina|N|verde">103 — Pierna de oveja</option>
+              <option value="104|Pierna de pavo curada|cecina|E|malla">104 — Pierna de pavo curada</option>
               <option value="201|Salchichón natural|embutido|E|blanco">201 — Salchichón natural</option>
               <option value="202|Salchichón pistacho|embutido|E|verdiblanco">202 — Salchichón pistacho</option>
               <option value="203|Salchichón almendra|embutido|E|rojiblanco">203 — Salchichón almendra</option>
               <option value="204|Salchichón ahumado|embutido|N|verde">204 — Salchichón ahumado</option>
               <option value="205|Salchichón higos|embutido|E|amarillo">205 — Salchichón higos</option>
               <option value="206|Salchichón nueces|embutido|E|morado">206 — Salchichón nueces</option>
+              <option value="301|Chorizo dulce|embutido|E|azul">301 — Chorizo dulce</option>
+              <option value="302|Chorizo picante|embutido|E|rojo">302 — Chorizo picante</option>
               <option value="401|Sobrasada picante|embutido|E|rojiamarillo">401 — Sobrasada picante</option>
               <option value="501|Fuet|embutido|E|blanco">501 — Fuet</option>
-              <option value="101|Cecina de ternera|cecina|N|malla">101 — Cecina de ternera</option>
-              <option value="102|Pierna de cordero|cecina|N|">102 — Pierna de cordero</option>
-              <option value="103|Pierna de oveja|cecina|N|verde">103 — Pierna de oveja</option>
-              <option value="104|Pierna de pavo curada|cecina|E|malla">104 — Pierna de pavo curada</option>
             </select>
           </div>
           <div><label>Proveedor</label>
             <select id="el-prov" onchange="genLote()">
               <option value="">Seleccionar...</option>
-              <option value="01">01 — Sabor Nazarí</option>
-              <option value="02">02 — Cosegur</option>
-              <option value="03">03 — La Comarca</option>
-              <option value="04">04 — Al-Hambra</option>
-              <option value="05">05 — Matadero del Sur</option>
-              <option value="06">06 — Ganados Cartagena</option>
-              <option value="07">07 — Covap</option>
             </select>
           </div>
           <div><label>Fecha</label><input type="date" id="el-fecha" onchange="genLote()"/></div>
         </div>
         <div class="grid3" style="margin-bottom:10px">
           <div><label>Exportación</label><select id="el-exp" onchange="genLote()"><option value="">Seleccionar...</option><option value="E">E — Apto exportación</option><option value="N">N — Nacional</option></select></div>
-          <div><label>Proceso</label><select id="el-proceso"><option value="">Seleccionar...</option><option>Picado + amasado + embutido</option><option>Salado + adobado</option><option>Embutido + ahumado</option></select></div>
+          <div><label>Proceso</label><select id="el-proceso"><option value="">Seleccionar...</option><option>Picado, amasado y embutido</option><option>Salado/aditivado</option><option>Salado/aditivado y adobado</option></select></div>
           <div><label>Color identificación</label>
             <select id="el-color">
               <option value="">Seleccionar...</option>
@@ -566,6 +643,10 @@ tbody tr:hover td{background:var(--bg3)}
               <option value="rojiamarillo">Rojiamarillo</option><option value="malla">Malla plástico</option>
             </select>
           </div>
+        </div>
+        <div style="margin-bottom:10px">
+          <label>Cliente maquila <span style="font-weight:400;color:var(--text3)">Opcional — Si se rellena aparece en la etiqueta en lugar de «Sabor Nazarí»</span></label>
+          <input type="text" id="el-maquila" placeholder="Ej: CASA ALHAMBRA (se sugiere automáticamente para Pierna de pavo)"/>
         </div>
         <div class="lote-box">
           <div style="font-size:9px;color:var(--dorado3);font-weight:700;letter-spacing:.08em;margin-bottom:4px">LOTE GENERADO AUTOMÁTICAMENTE</div>
@@ -593,11 +674,15 @@ tbody tr:hover td{background:var(--bg3)}
           <div><label>Nº unidades</label><input type="number" id="el-uds" placeholder="120"/></div>
           <div><label>Sin contabilizar</label><input type="number" id="el-uds-extra" placeholder="0"/></div>
           <div><label>Peso total (kg)</label><input type="number" id="el-peso" placeholder="58.5"/></div>
-          <div><label>Días maduración</label><input type="number" id="el-mad" placeholder="30"/></div>
+          <div><label>Maduración aprox. (días)</label><input type="number" id="el-mad" placeholder="30"/></div>
+        </div>
+        <div class="grid3" style="margin-top:10px">
+          <div><label>Peso inicial (kg) <span style="font-weight:400;color:var(--text3)">Opcional</span></label><input type="number" step="0.01" id="el-peso-ini" placeholder="Ej: 65.0" oninput="calcMerma()"/></div>
+          <div><label>Peso final tras maduración (kg) <span style="font-weight:400;color:var(--text3)">Opcional</span></label><input type="number" step="0.01" id="el-peso-fin-mad" placeholder="Ej: 52.0" oninput="calcMerma()"/></div>
+          <div><label>% Merma <span style="font-weight:400;color:var(--text3)">(auto)</span></label><input type="text" id="el-merma" readonly placeholder="—" style="background:var(--bg3);color:var(--dorado3);font-weight:700"/></div>
         </div>
         <div style="margin-top:14px;display:flex;gap:8px">
           <button class="btn btn-gold" id="btn-guardar-elab" onclick="guardarElab()"><i class="ti ti-check"></i> Guardar elaboración</button>
-          <button class="btn btn-sec" id="btn-cancelar-elab" style="display:none" onclick="cancelarEdicion()"><i class="ti ti-x"></i> Cancelar edición</button>
         </div>
       </div>
       <div class="card">
@@ -693,7 +778,13 @@ tbody tr:hover td{background:var(--bg3)}
         </div>
       </div>
       <div class="card">
-        <div class="card-title"><i class="ti ti-alert-triangle"></i> Registro de no conformidades</div>
+        <div class="card-title" style="justify-content:space-between">
+          <span><i class="ti ti-alert-triangle"></i> Registro de no conformidades</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sec btn-sm" onclick="ncExportarCSV()"><i class="ti ti-table-export"></i> CSV</button>
+            <button class="btn btn-sec btn-sm" onclick="ncExportarPDF()"><i class="ti ti-file-text"></i> PDF</button>
+          </div>
+        </div>
         <div style="overflow-x:auto">
         <table style="min-width:900px"><thead><tr>
           <th>Nº</th><th>Fecha det.</th><th>Resp. detección</th><th>Tipo</th><th>Ámbito</th>
@@ -886,7 +977,7 @@ function nav(id){
   document.getElementById('page-title').textContent=titulos[id]||id;
   document.getElementById('page-sub').textContent=subs[id]||'';
   localStorage.setItem('activePage',id);
-  var loaders={temperaturas:cargarTemperaturas,elaboraciones:cargarElaboraciones,documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:function(){renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:cargarExpediciones,fichaje:cargarFichaje,trazabilidad:function(){},productos:renderProductos,noconformidades:cargarNC};
+  var loaders={temperaturas:cargarTemperaturas,elaboraciones:function(){cargarElaboraciones();cargarProveedoresSelector();},documentos:cargarDocumentos,dashboard:cargarDashboard,clientes:cargarClientes,trabajadores:cargarTrabajadores,calendario:function(){renderCalendario();cargarEventos();},proveedores:cargarProveedores,appcc:renderAppcc,halal:cargarHalal,expediciones:cargarExpediciones,fichaje:cargarFichaje,trazabilidad:function(){},productos:renderProductos,noconformidades:cargarNC};
   if(loaders[id])loaders[id]();
 }
 
@@ -938,30 +1029,84 @@ function genLote(){
   var cs=document.getElementById('el-color');
   var cv=p[4]||'';
   for(var i=0;i<cs.options.length;i++){if(cs.options[i].value===cv){cs.selectedIndex=i;break;}}
+  var maquilaEl=document.getElementById('el-maquila');
+  if(maquilaEl&&!maquilaEl.value&&p[0]==='104'){maquilaEl.value='CASA ALHAMBRA';}
+  else if(maquilaEl&&p[0]!=='104'&&maquilaEl.value==='CASA ALHAMBRA'){maquilaEl.value='';}
 }
 
 var carnesOpts=['Redondo de ternera','Pierna de cordero','Pierna de pavo','Carne de ternera','Carne de pavo','Grasa de pavo'];
 var especiasOpts=['Especia cecina 40g/kg','Especia salchichón halal 75g/kg','Especia chorizo halal 80g/kg','Especia chorizo picante halal 80g/kg','Especia sobrasada picante halal 100g/kg','Humo en polvo 5g/kg'];
-var auxiliarOpts=['Grapas','Tripas','Malla'];
+var auxiliarOpts=['Grapas','Tripas','Malla','Bolsa de vacío'];
 
-function addIng(tipo){
-  var c=document.getElementById('ing-'+tipo);
+function checkBolsaVacio(sel){
+  var nota=sel.parentNode.querySelector('.nota-bolsa');
+  if(nota)nota.style.display=sel.value==='Bolsa de vacío'?'inline':'none';
+}
+
+function addIng(tipo,prefijo){
+  prefijo=prefijo||'ing';
+  var c=document.getElementById(prefijo+'-'+tipo);
+  if(!c)return;
   var d=document.createElement('div');
   var opts=tipo==='carnes'?carnesOpts:tipo==='especias'?especiasOpts:auxiliarOpts;
-  var sel='<select><option value="">Seleccionar...</option>';
+  var sel='<select'+(tipo==='auxiliar'?' onchange="checkBolsaVacio(this)"':'')+' ><option value="">Seleccionar...</option>';
   opts.forEach(function(o){sel+='<option>'+o+'</option>';});
   sel+='</select>';
   if(tipo==='auxiliar'){
     d.className='ing-row-aux';
-    d.innerHTML=sel+'<input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
+    d.innerHTML='<div style="position:relative">'+sel+'<small class="nota-bolsa" style="display:none;color:var(--amber-text);font-size:9px;position:absolute;top:100%;left:0;white-space:nowrap;background:var(--amber-bg);padding:2px 6px;border-radius:3px;z-index:2">Para producto terminado</small></div><input type="text" placeholder="Nº lote"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   } else {
     d.className='ing-row';
-    var unit=tipo==='carnes'?'kg':'g/kg';
-    d.innerHTML=sel+'<input type="text" placeholder="Nº lote"/><input type="number" step="0.1" placeholder="'+unit+'"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
+    var unit=tipo==='carnes'?'kg':'kg';
+    d.innerHTML=sel+'<input type="text" placeholder="Nº lote"/><input type="number" step="0.001" placeholder="'+unit+'"/><button class="btn-remove" onclick="this.parentNode.remove()">×</button>';
   }
   c.appendChild(d);
 }
 
+function recogerIng(prefijo){
+  prefijo=prefijo||'ing';
+  var resultado={carnes:[],especias:[],auxiliar:[]};
+  ['carnes','especias','auxiliar'].forEach(function(tipo){
+    var c=document.getElementById(prefijo+'-'+tipo);
+    if(!c)return;
+    c.querySelectorAll('.ing-row,.ing-row-aux').forEach(function(row){
+      var s=row.querySelector('select');
+      if(!s||!s.value)return;
+      var inputs=row.querySelectorAll('input');
+      var obj={nombre:s.value,lote:inputs[0]?inputs[0].value:''};
+      if(inputs[1])obj.cantidad=inputs[1].value;
+      resultado[tipo].push(obj);
+    });
+  });
+  return resultado;
+}
+
+function restaurarIng(prefijo,ings){
+  ['carnes','especias','auxiliar'].forEach(function(tipo){
+    var c=document.getElementById(prefijo+'-'+tipo);
+    if(!c)return;
+    c.innerHTML='';
+    (ings[tipo]||[]).forEach(function(item){
+      addIng(tipo,prefijo);
+      var rows=c.querySelectorAll('.ing-row,.ing-row-aux');
+      var last=rows[rows.length-1];
+      if(!last)return;
+      var s=last.querySelector('select');
+      if(s){for(var i=0;i<s.options.length;i++){if(s.options[i].textContent===item.nombre){s.selectedIndex=i;break;}}}
+      var inp=last.querySelectorAll('input');
+      if(inp[0])inp[0].value=item.lote||'';
+      if(inp[1]&&item.cantidad!==undefined)inp[1].value=item.cantidad;
+    });
+  });
+}
+
+
+function calcMerma(){
+  var ini=parseFloat(document.getElementById('el-peso-ini').value);
+  var fin=parseFloat(document.getElementById('el-peso-fin-mad').value);
+  var el=document.getElementById('el-merma');
+  if(ini>0&&fin>=0&&ini>fin){el.value=((ini-fin)/ini*100).toFixed(1)+'%';}else{el.value='';}
+}
 
 async function guardarElab(){
   var lote=document.getElementById('el-lote').textContent;
@@ -970,20 +1115,26 @@ async function guardarElab(){
   var color=document.getElementById('el-color').value;
   if(!lote||lote==='—'){toast('Selecciona producto, proveedor, fecha y exportación',false);return;}
   var p=pv.split('|');
-  if(editandoElabId){
-    var datosEdit={proveedor:document.getElementById('el-prov').value,fecha:fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,color:color};
-    var resEdit=await db.from('elaboraciones').update(datosEdit).eq('id',editandoElabId);
-    if(resEdit.error){toast('Error: '+resEdit.error.message,false);return;}
-    toast('Elaboración actualizada · '+lote);
-    editandoElabId=null;
-    var btnG=document.getElementById('btn-guardar-elab');if(btnG)btnG.innerHTML='<i class="ti ti-check"></i> Guardar elaboración';
-    var btnCancel=document.getElementById('btn-cancelar-elab');if(btnCancel)btnCancel.style.display='none';
-    cargarElaboraciones();
-    return;
+  var pIni=parseFloat(document.getElementById('el-peso-ini').value)||null;
+  var pFinMad=parseFloat(document.getElementById('el-peso-fin-mad').value)||null;
+  var merma=(pIni&&pFinMad&&pIni>0)?((pIni-pFinMad)/pIni*100).toFixed(1):null;
+  var maquila=(document.getElementById('el-maquila')&&document.getElementById('el-maquila').value)||'';
+  var ings=recogerIng('ing');
+  var datosInsert={lote:lote,producto:p[1],codigo:p[0],proveedor:document.getElementById('el-prov').value,fecha:fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,unidades_extra:parseInt(document.getElementById('el-uds-extra').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,estado:'secadero',color:color,peso_inicial:pIni,peso_final_maduracion:pFinMad,merma_pct:merma,maquila_cliente:maquila,ingredientes:JSON.stringify(ings)};
+  var res=await db.from('elaboraciones').insert(datosInsert);
+  if(res.error){
+    var datosBase={lote:lote,producto:p[1],codigo:p[0],proveedor:document.getElementById('el-prov').value,fecha:fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,estado:'secadero',color:color};
+    res=await db.from('elaboraciones').insert(datosBase);
+    if(res.error){toast('Error: '+res.error.message,false);return;}
   }
-  var res=await db.from('elaboraciones').insert({lote:lote,producto:p[1],codigo:p[0],proveedor:document.getElementById('el-prov').value,fecha:fecha,proceso:document.getElementById('el-proceso').value,exportacion:document.getElementById('el-exp').value,unidades:parseInt(document.getElementById('el-uds').value)||0,peso_final:parseFloat(document.getElementById('el-peso').value)||0,maduracion:parseInt(document.getElementById('el-mad').value)||30,estado:'secadero',color:color});
-  if(res.error){toast('Error: '+res.error.message,false);return;}
   toast('Elaboración guardada · '+lote);
+  document.getElementById('el-peso-ini').value='';
+  document.getElementById('el-peso-fin-mad').value='';
+  document.getElementById('el-merma').value='';
+  if(document.getElementById('el-maquila'))document.getElementById('el-maquila').value='';
+  document.getElementById('ing-carnes').innerHTML='';
+  document.getElementById('ing-especias').innerHTML='';
+  document.getElementById('ing-auxiliar').innerHTML='';
   cargarElaboraciones();
 }
 
@@ -1015,44 +1166,70 @@ async function cargarElaboraciones(){
 }
 
 function editarElab(e){
-  editandoElabId = e.id;
-  nav('elaboraciones');
-  var ps = document.getElementById('el-prod');
-  for(var i=0;i<ps.options.length;i++){if(ps.options[i].value.indexOf(e.codigo+'|')===0){ps.selectedIndex=i;break;}}
-  document.getElementById('el-prov').value = e.proveedor||'';
-  document.getElementById('el-fecha').value = e.fecha||'';
-  document.getElementById('el-exp').value = e.exportacion||'';
-  var procs = document.getElementById('el-proceso');
-  for(var j=0;j<procs.options.length;j++){if(procs.options[j].value===e.proceso||procs.options[j].textContent===e.proceso){procs.selectedIndex=j;break;}}
-  var cs = document.getElementById('el-color');
+  document.getElementById('edit-elab-titulo').textContent='Editando lote '+e.lote;
+  document.getElementById('edit-elab-id').value=e.id;
+  document.getElementById('edit-elab-fecha').value=e.fecha||'';
+  document.getElementById('edit-elab-exp').value=e.exportacion||'';
+  document.getElementById('edit-elab-peso').value=e.peso_final||'';
+  document.getElementById('edit-elab-mad').value=e.maduracion||'';
+  document.getElementById('edit-elab-uds').value=e.unidades||'';
+  document.getElementById('edit-elab-uds-extra').value=e.unidades_extra||'';
+  document.getElementById('edit-elab-peso-ini').value=e.peso_inicial||'';
+  document.getElementById('edit-elab-peso-fin').value=e.peso_final_maduracion||'';
+  var pI=parseFloat(e.peso_inicial),pF=parseFloat(e.peso_final_maduracion);
+  document.getElementById('edit-elab-merma').value=(pI>0&&pF>=0&&pI>pF)?((pI-pF)/pI*100).toFixed(1)+'%':'';
+  var proc=document.getElementById('edit-elab-proceso');
+  for(var j=0;j<proc.options.length;j++){if(proc.options[j].value===e.proceso||proc.options[j].textContent===e.proceso){proc.selectedIndex=j;break;}}
+  var cs=document.getElementById('edit-elab-color');
   for(var k=0;k<cs.options.length;k++){if(cs.options[k].value===(e.color||'')){cs.selectedIndex=k;break;}}
-  document.getElementById('el-uds').value = e.unidades||'';
-  document.getElementById('el-peso').value = e.peso_final||'';
-  document.getElementById('el-mad').value = e.maduracion||'';
-  genLote();
-  var btn = document.getElementById('btn-guardar-elab');
-  if(btn) btn.innerHTML = '<i class="ti ti-check"></i> Guardar cambios';
-  var btnCancel = document.getElementById('btn-cancelar-elab');
-  if(btnCancel) btnCancel.style.display = 'inline-flex';
+  var ps=document.getElementById('edit-elab-prov');
+  if(ps){for(var i=0;i<ps.options.length;i++){if(ps.options[i].value===(e.proveedor||'')){ps.selectedIndex=i;break;}}}
+  if(document.getElementById('edit-elab-maquila'))document.getElementById('edit-elab-maquila').value=e.maquila_cliente||'';
+  ['edit-ing-carnes','edit-ing-especias','edit-ing-auxiliar'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
+  if(e.ingredientes){try{var ings=JSON.parse(e.ingredientes);restaurarIng('edit-ing',ings);}catch(ex){}}
+  abrirModal('modal-edit-elab');
 }
 
-function cancelarEdicion(){
-  editandoElabId = null;
-  document.getElementById('el-prod').selectedIndex=0;
-  document.getElementById('el-prov').selectedIndex=0;
-  document.getElementById('el-fecha').value=today.toISOString().split('T')[0];
-  document.getElementById('el-exp').selectedIndex=0;
-  document.getElementById('el-proceso').selectedIndex=0;
-  document.getElementById('el-color').selectedIndex=0;
-  document.getElementById('el-uds').value='';
-  document.getElementById('el-peso').value='';
-  document.getElementById('el-mad').value='';
-  document.getElementById('el-lote').textContent='—';
-  document.getElementById('el-lote-sub').textContent='Selecciona producto y fecha';
-  var btn = document.getElementById('btn-guardar-elab');
-  if(btn) btn.innerHTML = '<i class="ti ti-check"></i> Guardar elaboración';
-  var btnCancel = document.getElementById('btn-cancelar-elab');
-  if(btnCancel) btnCancel.style.display = 'none';
+function calcMermaModal(){
+  var ini=parseFloat(document.getElementById('edit-elab-peso-ini').value);
+  var fin=parseFloat(document.getElementById('edit-elab-peso-fin').value);
+  var el=document.getElementById('edit-elab-merma');
+  if(ini>0&&fin>=0&&ini>fin){el.value=((ini-fin)/ini*100).toFixed(1)+'%';}else{el.value='';}
+}
+
+async function guardarEditarElabModal(){
+  var id=document.getElementById('edit-elab-id').value;
+  if(!id){toast('Error: sin ID',false);return;}
+  var pIni=parseFloat(document.getElementById('edit-elab-peso-ini').value)||null;
+  var pFin2=parseFloat(document.getElementById('edit-elab-peso-fin').value)||null;
+  var merma=(pIni&&pFin2&&pIni>0)?((pIni-pFin2)/pIni*100).toFixed(1):null;
+  var maquila=document.getElementById('edit-elab-maquila')?document.getElementById('edit-elab-maquila').value:'';
+  var ings=recogerIng('edit-ing');
+  var datos={
+    proveedor:document.getElementById('edit-elab-prov').value,
+    fecha:document.getElementById('edit-elab-fecha').value,
+    proceso:document.getElementById('edit-elab-proceso').value,
+    exportacion:document.getElementById('edit-elab-exp').value,
+    unidades:parseInt(document.getElementById('edit-elab-uds').value)||0,
+    unidades_extra:parseInt(document.getElementById('edit-elab-uds-extra').value)||0,
+    peso_final:parseFloat(document.getElementById('edit-elab-peso').value)||0,
+    maduracion:parseInt(document.getElementById('edit-elab-mad').value)||30,
+    color:document.getElementById('edit-elab-color').value,
+    peso_inicial:pIni,
+    peso_final_maduracion:pFin2,
+    merma_pct:merma,
+    maquila_cliente:maquila,
+    ingredientes:JSON.stringify(ings)
+  };
+  var res=await db.from('elaboraciones').update(datos).eq('id',id);
+  if(res.error){
+    delete datos.maquila_cliente; delete datos.ingredientes;
+    res=await db.from('elaboraciones').update(datos).eq('id',id);
+    if(res.error){toast('Error: '+res.error.message,false);return;}
+  }
+  toast('Elaboración actualizada');
+  cerrarModal('modal-edit-elab');
+  cargarElaboraciones();
 }
 
 function verEtiqueta(e){
@@ -1060,7 +1237,7 @@ function verEtiqueta(e){
   var colorNombre = e.color||'';
   var udsVal = e.unidades && parseInt(e.unidades)>0 ? e.unidades+' uds' : '<span style="border-bottom:1px solid #aaa;display:inline-block;width:80px">&nbsp;</span> <span style="font-size:9px;color:#aaa">(para completar a mano)</span>';
   var pesoVal = e.peso_final && parseFloat(e.peso_final)>0 ? e.peso_final+' kg' : '';
-  var marca=(e.producto||'').toLowerCase().includes('pierna de pavo')?'CASA ALHAMBRA':'SABOR NAZARÍ';
+  var marca=(e.maquila_cliente&&e.maquila_cliente.trim())?e.maquila_cliente.trim():'SABOR NAZARÍ';
   var etq='<div style="width:105mm;min-height:148mm;background:#fff;font-family:sans-serif;padding:8mm;box-sizing:border-box;border:1px solid #eee">';
   etq+='<div style="text-align:center;margin-bottom:5mm;padding-bottom:3mm;border-bottom:2px solid #C9A84C">';
   etq+='<div style="font-size:20pt;font-weight:900;letter-spacing:.08em;color:#0a0a0a">'+marca+'</div>';
@@ -1115,7 +1292,7 @@ async function guardarTemp(){
 }
 
 async function cargarTemperaturas(){
-  var res=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(30);
+  var res=await db.from('temperaturas').select('*').order('fecha',{ascending:false}).order('created_at',{ascending:false}).limit(30);
   var t=document.getElementById('tabla-temps');
   if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="8" class="empty-state">Sin registros</td></tr>';return;}
   var html='';
@@ -1514,7 +1691,7 @@ async function cargarProveedores(){
     {codigo:'01',nombre:'Sabor Nazarí',pais:'ES',actividad:'Producción propia',registro:'Sala 10.01428/GR',sae:'na',estado:'homologado'},
     {codigo:'02',nombre:'Cosegur',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
     {codigo:'03',nombre:'La Comarca',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
-    {codigo:'04',nombre:'Al-Hambra',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
+    {codigo:'04',nombre:'Linex',pais:'ES',actividad:'Cárnico',registro:'—',sae:'na',estado:'homologado'},
     {codigo:'05',nombre:'Matadero del Sur',pais:'ES',actividad:'Matadero',registro:'—',sae:'na',estado:'homologado'},
     {codigo:'06',nombre:'Ganados Cartagena',pais:'ES',actividad:'Ganadería',registro:'—',sae:'na',estado:'homologado'},
     {codigo:'07',nombre:'Covap',pais:'ES',actividad:'Cooperativa',registro:'—',sae:'na',estado:'homologado'},
@@ -1531,7 +1708,10 @@ async function cargarProveedores(){
     html+='<td style="font-family:monospace;font-size:11px">'+(p.registro||'—')+'</td>';
     html+='<td>'+(saeBadge[p.sae]||saeBadge.na)+'</td>';
     html+='<td>'+(estBadge[p.estado]||estBadge.homologado)+'</td>';
-    html+='<td><button class="btn btn-edit btn-sm" onclick="abrirModalProveedor('+JSON.stringify(p).replace(/"/g,"'").replace(/'/g,'&#39;')+')"><i class="ti ti-edit"></i></button></td>';
+    html+='<td><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-sec btn-sm" onclick="abrirFichaProveedor(\''+p.codigo+'\',\''+p.nombre.replace(/'/g,"\\'")+'\')" title="Ver documentos"><i class="ti ti-folder-open"></i></button>';
+    html+='<button class="btn btn-edit btn-sm" onclick="abrirModalProveedor('+JSON.stringify(p).replace(/"/g,"'").replace(/'/g,'&#39;')+')"><i class="ti ti-edit"></i></button>';
+    html+='</div></td>';
     html+='</tr>';
   });
   t.innerHTML=html;
@@ -1877,6 +2057,7 @@ function cambiarMes(dir){
 }
 
 // NO CONFORMIDADES
+var _ncListAll=[];
 function nc_filtro_periodo(p) {
   var hoy = new Date();
   var desde, hasta;
@@ -2004,7 +2185,7 @@ async function cargarNC(){
   var fTipologia=document.getElementById('nc-f-tipologia')&&document.getElementById('nc-f-tipologia').value;
   var fEstado=document.getElementById('nc-f-estado')&&document.getElementById('nc-f-estado').value;
   var fResp=(document.getElementById('nc-f-resp')&&document.getElementById('nc-f-resp').value.toLowerCase())||'';
-  var q=db.from('no_conformidades').select('*').order('fecha_deteccion',{ascending:false}).order('numero',{ascending:true});
+  var q=db.from('no_conformidades').select('*').order('fecha_deteccion',{ascending:false}).order('numero',{ascending:false});
   if(fTipo)q=q.eq('tipo',fTipo);
   if(fTipologia)q=q.eq('tipologia_causa',fTipologia);
   if(fEstado)q=q.eq('estado',fEstado);
@@ -2017,6 +2198,7 @@ async function cargarNC(){
   if(!res.data||!res.data.length){t.innerHTML='<tr><td colspan="9" class="empty-state">Sin no conformidades registradas</td></tr>';return;}
   var lista=res.data;
   if(fResp)lista=lista.filter(function(nc){return(nc.responsable_deteccion||'').toLowerCase().indexOf(fResp)>-1||(nc.responsable_inmediato||'').toLowerCase().indexOf(fResp)>-1;});
+  _ncListAll=lista;
   var estBadge={abierta:'b-alert',en_proceso:'b-pend',cerrada:'b-ok'};
   var tipoBadge={P:'b-warn',R:'b-alert',I:'b-blue',E:'b-gray'};
   var html='';
@@ -2077,9 +2259,11 @@ function renderProductos(){
   c.innerHTML=html;
 }
 
-async function abrirFichasProducto(cod){
+async function abrirFichasProducto(cod,forceOpen){
   var el=document.getElementById('fichas-'+cod);
   if(!el)return;
+  if(!forceOpen&&el.dataset.open==='1'){el.innerHTML='';el.dataset.open='0';return;}
+  el.dataset.open='1';
   var res=await db.from('documentos').select('*').eq('categoria','Producto_'+cod).order('created_at',{ascending:false});
   var docs=res.data||[];
   var html2='';
@@ -2089,67 +2273,193 @@ async function abrirFichasProducto(cod){
       html2+='<div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div>';
       html2+='<div style="font-size:10px;color:var(--text3)">'+fmtFecha(d.created_at)+'</div></div>';
       if(d.url)html2+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
-      html2+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){abrirFichasProducto(\''+cod+'\');})"><i class="ti ti-trash"></i></button>';
+      html2+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){abrirFichasProducto(\''+cod+'\',true);})"><i class="ti ti-trash"></i></button>';
       html2+='</div>';
     });
   } else {
     html2='<div style="font-size:11px;color:var(--text3);padding:4px 8px">Sin fichas técnicas</div>';
   }
   html2+='<div class="upload-area" style="margin-top:6px;padding:10px" onclick="document.getElementById(\'upload-ficha-'+cod+'\').click()">';
-  html2+='<input type="file" id="upload-ficha-'+cod+'" style="display:none" onchange="subirFichaProducto(this,\''+cod+'\')">';
-  html2+='<i class="ti ti-upload" style="font-size:18px"></i><p style="font-size:11px"><strong style="color:var(--dorado)">Subir ficha técnica</strong></p></div>';
+  html2+='<input type="file" id="upload-ficha-'+cod+'" multiple style="display:none" onchange="subirFichaProducto(this,\''+cod+'\')">';
+  html2+='<i class="ti ti-upload" style="font-size:18px"></i><p style="font-size:11px"><strong style="color:var(--dorado)">Subir ficha técnica o proceso productivo</strong></p></div>';
   el.innerHTML=html2;
 }
 
 async function subirFichaProducto(input,cod){
-  var file=input.files[0];if(!file)return;
-  var path='productos/'+cod+'/'+Date.now()+'_'+file.name.replace(/s+/g,'_');
-  var up=await db.storage.from('documentos').upload(path,file);
-  if(!up.error){
-    var urlData=db.storage.from('documentos').getPublicUrl(path);
-    await db.from('documentos').insert({nombre:file.name,categoria:'Producto_'+cod,url:urlData.data.publicUrl,descripcion:file.name});
-    toast('Ficha subida: '+file.name);
-    input.value='';
-    abrirFichasProducto(cod);
-  } else {
-    toast('Error: '+up.error.message,false);
+  if(!input.files||!input.files.length)return;
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='productos/'+cod+'/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:file.name,categoria:'Producto_'+cod,url:urlData.data.publicUrl,descripcion:file.name});
+    } else {
+      toast('Error: '+up.error.message,false);
+    }
   }
+  toast('Ficha(s) subida(s)');
+  input.value='';
+  abrirFichasProducto(cod,true);
 }
 
 // DASHBOARD
 async function cargarDashboard(){
-  var resExp=await db.from('expediciones').select('lote,cliente,estado').neq('estado','finalizada').catch(function(){return{data:null};});
-  var alertas=document.getElementById('dash-alertas');
-  if(resExp&&resExp.data&&resExp.data.length){
-    var msg=resExp.data.map(function(x){return(x.lote||x.cliente);}).join(' · ');
-    alertas.innerHTML='<div style="display:flex;align-items:center;gap:10px;background:var(--amber-bg);border:1px solid rgba(201,168,76,0.4);border-radius:var(--radius);padding:11px 16px;font-size:12px;color:var(--amber-text);margin-bottom:14px"><i class="ti ti-alert-triangle"></i> '+resExp.data.length+' expedición(es) activa(s): '+msg+'</div>';
-  } else {
-    alertas.innerHTML='';
+  var hoy=today.toISOString().split('T')[0];
+  var resT=await db.from('temperaturas').select('id').eq('fecha',hoy).limit(1).catch(function(){return{data:null};});
+  var tieneTemps=resT&&resT.data&&resT.data.length>0;
+  var vT=document.getElementById('dash-val-temps');
+  var mT=document.getElementById('dash-metric-temps');
+  if(vT){vT.textContent=tieneTemps?'Sí':'No';vT.style.color=tieneTemps?'var(--green-text)':'var(--red-text)';}
+  if(mT)mT.style.borderTop='3px solid '+(tieneTemps?'var(--green-text)':'var(--red-text)');
+
+  var resE=await db.from('expediciones').select('id').neq('estado','terminada').catch(function(){return{data:null};});
+  var numExp=resE&&resE.data?resE.data.length:0;
+  var vE=document.getElementById('dash-val-exp');
+  var mE=document.getElementById('dash-metric-exp');
+  if(vE){vE.textContent=numExp;vE.style.color=numExp>0?'var(--amber-text)':'var(--green-text)';}
+  if(mE)mE.style.borderTop='3px solid '+(numExp>0?'var(--amber-text)':'var(--green-text)');
+
+  var resNC=await db.from('no_conformidades').select('id').or('estado.neq.cerrada,estado.is.null').catch(function(){return{data:null};});
+  var numNC=resNC&&resNC.data?resNC.data.length:0;
+  var vNC=document.getElementById('dash-val-nc');
+  var mNC=document.getElementById('dash-metric-nc');
+  if(vNC){vNC.textContent=numNC;vNC.style.color=numNC>0?'var(--red-text)':'var(--green-text)';}
+  if(mNC)mNC.style.borderTop='3px solid '+(numNC>0?'var(--red-text)':'var(--green-text)');
+
+  var resEl=await db.from('elaboraciones').select('id').eq('estado','secadero').catch(function(){return{data:null};});
+  var numEl=resEl&&resEl.data?resEl.data.length:0;
+  var vEl=document.getElementById('dash-val-elab');
+  var mEl=document.getElementById('dash-metric-elab');
+  if(vEl){vEl.textContent=numEl;vEl.style.color=numEl>0?'var(--dorado3)':'var(--text3)';}
+  if(mEl)mEl.style.borderTop='3px solid '+(numEl>0?'var(--dorado)':'var(--border2)');
+}
+
+// NC EXPORT
+function ncExportarCSV(){
+  if(!_ncListAll||!_ncListAll.length){toast('Sin datos para exportar',false);return;}
+  var cols=['nc_codigo','fecha_deteccion','responsable_deteccion','tipo','ambito','descripcion','causa_raiz','tipologia_causa','accion_inmediata','plazo_inmediato','responsable_inmediato','estado','fecha_cierre','genera_preventivas'];
+  var header=cols.map(function(c){return '"'+c+'"';}).join(',');
+  var rows=_ncListAll.map(function(nc){
+    return cols.map(function(c){
+      var v=(nc[c]||'').toString().replace(/"/g,'""');
+      return '"'+v+'"';
+    }).join(',');
+  });
+  var csv='﻿'+[header].concat(rows).join('\r\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='no_conformidades_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function ncExportarPDF(){
+  if(!_ncListAll||!_ncListAll.length){toast('Sin datos para exportar',false);return;}
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>No Conformidades</title><style>';
+  html+='body{font-family:Arial,sans-serif;font-size:10px;margin:15mm}';
+  html+='h2{font-size:13px;margin-bottom:4px}h3{font-size:10px;color:#888;margin-bottom:10px;font-weight:normal}';
+  html+='table{border-collapse:collapse;width:100%}th{background:#f0eeea;font-size:9px;text-align:left;padding:4px 6px;border:1px solid #ddd}td{padding:4px 6px;border:1px solid #eee;vertical-align:top}';
+  html+='tr:nth-child(even)td{background:#fafafa}.ok{color:#2d6b0f}.alerta{color:#c0392b}.pend{color:#8a5c0a}';
+  html+='</style></head><body>';
+  html+='<h2>No Conformidades — Sabor Nazarí S.L.</h2>';
+  html+='<h3>Exportado el '+new Date().toLocaleDateString('es-ES')+' · '+_ncListAll.length+' registros</h3>';
+  html+='<table><thead><tr><th>Código</th><th>Fecha det.</th><th>Responsable</th><th>Tipo</th><th>Ámbito</th><th>Descripción</th><th>Tipología</th><th>Estado</th><th>Fecha cierre</th></tr></thead><tbody>';
+  _ncListAll.forEach(function(nc){
+    var codigo=nc.nc_codigo||('NC'+(nc.numero||''));
+    var est=nc.estado||'—';
+    var cls=est==='cerrada'?'ok':est==='abierta'?'alerta':'pend';
+    html+='<tr>';
+    html+='<td><b>'+codigo+'</b></td>';
+    html+='<td style="white-space:nowrap">'+fmtFecha(nc.fecha_deteccion)+'</td>';
+    html+='<td>'+(nc.responsable_deteccion||'—')+'</td>';
+    html+='<td>'+(nc.tipo||'—')+'</td>';
+    html+='<td>'+(nc.ambito||'—')+'</td>';
+    html+='<td style="max-width:200px">'+(nc.descripcion||'—')+'</td>';
+    html+='<td>'+(nc.tipologia_causa||'—')+'</td>';
+    html+='<td class="'+cls+'"><b>'+est+'</b></td>';
+    html+='<td>'+fmtFecha(nc.fecha_cierre)+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table></body></html>';
+  var w=window.open('','_blank','width=900,height=700');
+  if(!w){toast('Permite ventanas emergentes para imprimir PDF',false);return;}
+  w.document.open();w.document.write(html);w.document.close();
+  setTimeout(function(){w.focus();w.print();},600);
+}
+
+// DOCUMENTOS POR PROVEEDOR
+var _provActualCod='', _provActualNombre='';
+
+function abrirFichaProveedor(cod,nombre){
+  _provActualCod=cod;_provActualNombre=nombre;
+  document.getElementById('prov-docs-titulo').textContent='Ficha · '+nombre+' ('+cod+')';
+  document.getElementById('prov-docs-lista').innerHTML='<div class="empty-state">Cargando...</div>';
+  abrirModal('modal-prov-docs');
+  cargarDocsProveedor(cod);
+}
+
+async function cargarDocsProveedor(cod){
+  var c=document.getElementById('prov-docs-lista');
+  var res=await db.from('documentos').select('*').eq('categoria','Proveedor_'+cod).order('created_at',{ascending:false});
+  if(!res.data||!res.data.length){c.innerHTML='<div class="empty-state">Sin documentos subidos</div>';return;}
+  var html='';
+  res.data.forEach(function(d){
+    html+='<div class="doc-row"><i class="ti ti-file-text" style="color:var(--dorado)"></i>';
+    html+='<div style="flex:1"><div style="font-size:12px;font-weight:500">'+d.nombre+'</div>';
+    html+='<div style="font-size:10px;color:var(--text3)">'+(d.descripcion||'')+(d.descripcion?' · ':'')+fmtFecha(d.created_at)+'</div></div>';
+    if(d.url)html+='<a href="'+d.url+'" target="_blank" class="btn btn-gold btn-sm"><i class="ti ti-external-link"></i></a>';
+    html+='<button class="btn btn-danger btn-sm" onclick="borrar(\'documentos\',\''+d.id+'\',function(){cargarDocsProveedor(\''+cod+'\');})"><i class="ti ti-trash"></i></button>';
+    html+='</div>';
+  });
+  c.innerHTML=html;
+}
+
+async function subirDocProveedor(input){
+  if(!input.files||!input.files.length)return;
+  var tipo=document.getElementById('prov-doc-tipo').value;
+  var cod=_provActualCod;
+  for(var i=0;i<input.files.length;i++){
+    var file=input.files[i];
+    var path='proveedores/'+cod+'/'+Date.now()+'_'+i+'_'+file.name.replace(/\s+/g,'_');
+    var up=await db.storage.from('documentos').upload(path,file);
+    if(!up.error){
+      var urlData=db.storage.from('documentos').getPublicUrl(path);
+      await db.from('documentos').insert({nombre:file.name,categoria:'Proveedor_'+cod,url:urlData.data.publicUrl,descripcion:tipo});
+    }else{toast('Error subiendo: '+up.error.message,false);}
   }
-  var res1=await db.from('elaboraciones').select('*').order('created_at',{ascending:false}).limit(5);
-  var res2=await db.from('temperaturas').select('*').order('created_at',{ascending:false}).limit(3);
-  if(res1.data){
-    var t=document.getElementById('dash-elabs');
-    var html='';
-    res1.data.forEach(function(e){
-      html+='<tr><td style="font-family:monospace;font-size:11px;color:var(--dorado3)">'+e.lote+'</td>';
-      html+='<td>'+e.producto+'</td>';
-      html+='<td><span class="badge b-purple">'+(e.estado||'secadero')+'</span></td></tr>';
+  toast('Documento(s) subido(s)');input.value='';cargarDocsProveedor(cod);
+}
+
+var _provFallback=[
+  {codigo:'01',nombre:'Sabor Nazarí'},{codigo:'02',nombre:'Cosegur'},{codigo:'03',nombre:'La Comarca'},
+  {codigo:'04',nombre:'Linex'},{codigo:'05',nombre:'Matadero del Sur'},{codigo:'06',nombre:'Ganados Cartagena'},{codigo:'07',nombre:'Covap'}
+];
+
+async function cargarProveedoresSelector(){
+  var provs=_provFallback;
+  try{
+    var res=await db.from('proveedores').select('codigo,nombre').order('codigo');
+    if(res&&res.data&&res.data.length)provs=res.data;
+  }catch(ex){}
+  _poblarSelectoresProveedor(provs);
+}
+
+function _poblarSelectoresProveedor(provs){
+  ['el-prov','edit-elab-prov'].forEach(function(id){
+    var sel=document.getElementById(id);
+    if(!sel)return;
+    var cur=sel.value;
+    sel.innerHTML='<option value="">Seleccionar...</option>';
+    provs.forEach(function(p){
+      var opt=document.createElement('option');
+      opt.value=p.codigo;
+      opt.textContent=p.codigo+' — '+p.nombre;
+      sel.appendChild(opt);
     });
-    t.innerHTML=html||'<tr><td colspan="3" class="empty-state">Sin elaboraciones</td></tr>';
-  }
-  if(res2.data){
-    var t2=document.getElementById('dash-temps');
-    var h2='';
-    res2.data.forEach(function(r){
-      var estClass=r.estado==='alerta'?'b-alert':r.estado==='cuidado'?'b-warn':'b-ok';
-      h2+='<tr><td>'+fmtFecha(r.fecha)+'</td>';
-      h2+='<td>'+(r.cam2!==null?r.cam2+'°C':'—')+'</td>';
-      h2+='<td>'+(r.obrador!==null?r.obrador+'°C':'—')+'</td>';
-      h2+='<td><span class="badge '+estClass+'">'+(r.estado||'ok')+'</span></td></tr>';
-    });
-    t2.innerHTML=h2||'<tr><td colspan="4" class="empty-state">Sin registros</td></tr>';
-  }
+    if(cur)sel.value=cur;
+  });
 }
 
 // AUTENTICACIÓN
@@ -2180,6 +2490,7 @@ async function loginSubmit(){
   }
   mostrarApp();
   await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
+  cargarProveedoresSelector();
   nav(localStorage.getItem('activePage')||'dashboard');
 }
 
@@ -2200,6 +2511,7 @@ async function init(){
   if(sessionRes.data&&sessionRes.data.session){
     mostrarApp();
     await db.storage.createBucket('documentos',{public:true,fileSizeLimit:10485760}).catch(function(){});
+    cargarProveedoresSelector();
     nav(localStorage.getItem('activePage')||'dashboard');
   } else {
     mostrarLogin();
